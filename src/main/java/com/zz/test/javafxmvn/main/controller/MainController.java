@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zz.test.javafxmvn.main.service.MainService;
 
+import de.felixroske.jfxsupport.AbstractFxmlView;
 import de.felixroske.jfxsupport.FXMLController;
+import de.felixroske.jfxsupport.FXMLView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -27,12 +29,13 @@ import javafx.scene.control.Button;
  * 1.0 		  2020-01-13 14:32:04    jld.zhangzhou     mobile base 3th,BeiJing      1.create the class            
  * </note>
  */
+@FXMLController
 public class MainController {
 	
 	@Autowired
 	private MainService ms;
 
-	@FXMLController
+	@FXML
     public void handlerBtnClick(ActionEvent event) {
         Button btnSource = (Button) event.getSource();
         ms.handlerBtnClick();
@@ -47,7 +50,7 @@ public class MainController {
 	 * @modify_record:
 	 * @param event
 	 */
-	@FXMLController
+	@FXML
     public void getProcessList(ActionEvent event) {
         Button btnSource = (Button) event.getSource();
         btnSource.setText("I am clicked!");

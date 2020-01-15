@@ -63,7 +63,7 @@ public class Main extends Application {
 		}*///初始化原本代码
 		
 		
-		 Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/main/Main.fxml"));
+		 Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/main/Main.fxml"));
 	        Scene scene = new Scene(root, 600, 500);
 	        scene.getStylesheets().add(getClass().getClassLoader().getResource("application.css").toExternalForm());
 	        

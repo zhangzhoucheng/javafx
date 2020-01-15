@@ -37,7 +37,7 @@ import com.zz.test.javafxmvn.main.Main;
  *             1.0 2020-01-13 14:31:17 jld.zhangzhou mobile base 3th,BeiJing
  *             1.create the class </note>
  */
-@SpringBootApplication
+//@SpringBootApplication
 //@ComponentScan(basePackages = { "com.zz.test.web","com.zz.test.javafxmvn","com.zz.test.javafxmvn.main.service" })
 @EnableTransactionManagement
 public class AppDesktop implements CommandLineRunner {
