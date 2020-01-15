@@ -1,0 +1,225 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.zz.test</groupId>
+	<artifactId>z3_javafx_maven</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.0.5.RELEASE</version>
+		<!-- <relativePath /> --> <!-- lookup parent from repository -->
+	</parent>
+
+	<name>z3_javafx_maven</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
+	</properties>
+
+	<dependencies>
+		<!-- 基础启动依赖 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+
+		<!-- 测试 -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+
+		<!-- jfoenix插件ui -->
+		<dependency>
+			<groupId>com.jfoenix</groupId>
+			<artifactId>jfoenix</artifactId>
+			<version>8.0.8</version>
+		</dependency>
+
+
+		<!-- spring javafx支持 -->
+		<dependency>
+			<groupId>de.roskenet</groupId>
+			<artifactId>springboot-javafx-support</artifactId>
+			<version>2.1.6</version>
+		</dependency>
+		
+		<dependency>
+            <groupId>de.roskenet</groupId>
+            <artifactId>springboot-javafx-test</artifactId>
+            <version>1.3.0</version>
+            <scope>test</scope>
+        </dependency>
+
+
+		<!-- 数据库服务相关 start -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+			<version>1.3.2</version>
+		</dependency>
+
+
+		<!-- jna库 -->
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/net.java.dev.jna/jna-platform -->
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna-platform</artifactId>
+		</dependency>
+
+		<!-- 这种方式引入sun库 -->
+		<dependency>
+			<groupId>com.sun</groupId>
+			<artifactId>tools</artifactId>
+			<version>1.5</version>
+			<scope>system</scope>
+			<systemPath>${JAVA_HOME}/lib/tools.jar</systemPath>
+		</dependency>
+
+		<!-- apache便捷字符操作如stringutils等 -->
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
+		</dependency>
+
+
+		<!-- 分页插件 -->
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper-spring-boot-starter</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+
+
+		<!-- HTTPUTILS -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.9.3</version>
+		</dependency>
+
+	</dependencies>
+
+	<!-- <build> <finalName>HelloJavaFX</finalName> <plugins> <plugin> <groupId>org.apache.maven.plugins</groupId> 
+		<artifactId>maven-compiler-plugin</artifactId> <configuration> <source>${maven.compiler.source}</source> 
+		<target>${maven.compiler.target}</target> </configuration> </plugin> <plugin> 
+		<groupId>org.apache.maven.plugins</groupId> <artifactId>maven-jar-plugin</artifactId> 
+		<configuration> <outputDirectory>${project.build.directory}</outputDirectory> 
+		<archive> <manifest> <addClasspath>true</addClasspath> <classpathPrefix>libs/</classpathPrefix> 
+		<mainClass>com.zz.test.javafxmvn.App</mainClass> </manifest> </archive> </configuration> 
+		</plugin> </plugins> </build> -->
+
+	<build>
+		<finalName>z3_javafx_maven</finalName>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<!-- 指定该Main Class为全局的唯一入口 -->
+					<mainClass>com.zz.test.javafxmvn.AppDesktopBoot</mainClass>
+					<layout>ZIP</layout>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal><!--可以把依赖的包都打包到生成的Jar包中 -->
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.properties</include>
+					<include>**/*.xml</include>
+				</includes>
+				<filtering>false</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.*</include>
+				</includes>
+				<excludes>
+					<exclude>font/*</exclude>
+				</excludes>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>font/*</include>
+				</includes>
+				<filtering>false</filtering>
+			</resource>
+		</resources>
+
+	</build>
+
+</project>
