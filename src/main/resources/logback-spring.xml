@@ -13,7 +13,7 @@
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!--日志文件输出的文件名 -->
-			<FileNamePattern>/apps/bbc/logs/${HOSTNAME}-bbc-service-end2end.%d{yyyy-MM-dd}.log</FileNamePattern>
+			<FileNamePattern>/apps/zz/logs/${HOSTNAME}-zz-javafx.%d{yyyy-MM-dd}.log</FileNamePattern>
 			<!--日志文件保留天数 -->
 			<maxHistory>15</maxHistory>
 			<totalSizeCap>30GB</totalSizeCap>

@@ -37,5 +37,8 @@ public class MainService {
 		List<Map<String, Object>> list = db.getList("main.handlerBtnClick");
 	}
 	
-	
+	public List<Map<String, Object>> getProcessList() {
+		List<Map<String, Object>> list = db.getList("main.getProcessListNew");
+		return list;
+	}
 }

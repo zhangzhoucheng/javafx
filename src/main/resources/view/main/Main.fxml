@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.media.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.canvas.*?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -8,13 +16,143 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.Label?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TreeItem?>
 
-<!-- <GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.zz.test.javafxmvn.MainController"  alignment="center" hgap="10" vgap="10">
-    <Label text="hello wolrd！"/>
-</GridPane> -->
+<!-- <GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.zz.test.javafxmvn.MainController" 
+	alignment="center" hgap="10" vgap="10"> <Label text="hello wolrd！"/> </GridPane> -->
 
-<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zz.test.javafxmvn.main.controller.MainController">
-   <center>
-      <Button maxHeight="50.0" maxWidth="100.0" minHeight="-Infinity" minWidth="-Infinity" onAction="#handlerBtnClick" prefHeight="50.0" prefWidth="100.0" text="Click Me" BorderPane.alignment="TOP_LEFT" />
-   </center>
-</BorderPane>
+<JFXMasonryPane id="id_rootPane" fx:id="pane_root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="768.0" minWidth="1366.0" prefHeight="1040.0" prefWidth="1600.0" style="-fx-border-color: red;" styleClass="root" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zz.test.javafxmvn.main.controller.MainController">
+	<children>
+		<VBox alignment="CENTER" prefHeight="1040.0" prefWidth="1600.0">
+			<children>
+				<Pane prefHeight="100.0" prefWidth="1600.0">
+					<children>
+						<VBox alignment="CENTER" prefHeight="100.0" prefWidth="1600.0">
+							<children>
+								<Pane prefHeight="30.0" prefWidth="1600.0">
+									<rotationAxis>
+										<Point3D />
+									</rotationAxis>
+									<children>
+										<TilePane prefHeight="30.0" prefWidth="1600.0">
+											<children>
+												<Label text="JLD ZZ WORLD!">
+													<padding>
+														<Insets left="22.0" top="4.0" />
+													</padding>
+													<font>
+														<Font size="12.0" />
+													</font>
+												</Label>
+											</children>
+										</TilePane>
+									</children>
+								</Pane>
+								<Pane prefHeight="40.0" prefWidth="1600.0">
+									<children>
+										<MenuButton graphicTextGap="2.0" layoutX="15.0" layoutY="9.0" mnemonicParsing="false" text="项目">
+											<items>
+												<MenuItem fx:id="menu1_1task12" mnemonicParsing="false" onAction="#getMenuItem" text="进程任务" />
+												<MenuItem mnemonicParsing="false" text="Unspecified Action" />
+												<MenuItem mnemonicParsing="false" text="Unspecified Action" />
+											</items>
+										</MenuButton>
+										<MenuButton graphicTextGap="2.0" layoutX="105.0" layoutY="9.0" mnemonicParsing="false" text="视图">
+											<items>
+												<MenuItem fx:id="menu1_1task" mnemonicParsing="false" onAction="#getMenuItem" text="进程任务" />
+												<MenuItem mnemonicParsing="false" text="Unspecified Action" />
+												<MenuItem mnemonicParsing="false" text="Unspecified Action" />
+											</items>
+										</MenuButton>
+										<MenuButton graphicTextGap="2.0" layoutX="195.0" layoutY="9.0" mnemonicParsing="false" text="帮助">
+											<items>
+												<MenuItem fx:id="menu1_1task2" mnemonicParsing="false" onAction="#getMenuItem" text="进程任务" />
+												<MenuItem mnemonicParsing="false" text="Unspecified Action" />
+												<MenuItem mnemonicParsing="false" text="Unspecified Action" />
+											</items>
+										</MenuButton>
+									</children>
+								</Pane>
+								<Pane prefHeight="30.0" prefWidth="1600.0" />
+							</children>
+						</VBox>
+					</children>
+				</Pane>
+				<Pane prefHeight="840.0" prefWidth="1600.0">
+					<children>
+						<SplitPane id="splitpane_main" dividerPositions="0.1339" prefHeight="840.0" prefWidth="1600.0">
+							<items>
+								<AnchorPane prefHeight="200.0" prefWidth="200.0">
+									<children>
+										<VBox prefHeight="840.0" prefWidth="200.0">
+											<children>
+												<Pane prefHeight="4.0" prefWidth="200.0" />
+												<MenuBar prefHeight="32.0" prefWidth="185.0">
+													<menus>
+														<Menu mnemonicParsing="false" text="File">
+															<items>
+																<MenuItem mnemonicParsing="false" text="Unspecified Action" />
+																<MenuItem mnemonicParsing="false" text="Close" />
+															</items>
+														</Menu>
+														<Menu mnemonicParsing="false" text="Edit">
+															<items>
+																<MenuItem mnemonicParsing="false" text="Delete" />
+															</items>
+														</Menu>
+														<Menu mnemonicParsing="false" text="Help">
+															<items>
+																<MenuItem mnemonicParsing="false" text="About" />
+															</items>
+														</Menu>
+													</menus>
+													<opaqueInsets>
+														<Insets />
+													</opaqueInsets>
+												</MenuBar>
+												<Pane prefHeight="10.0" prefWidth="200.0" />
+												<Pane id="treeview_main" prefHeight="24" prefWidth="200">
+												</Pane>
+											</children>
+										</VBox>
+									</children>
+								</AnchorPane>
+								<AnchorPane minHeight="500.0" minWidth="50.0" prefHeight="600.0" prefWidth="1500.0">
+									<opaqueInsets>
+										<Insets />
+									</opaqueInsets>
+									<children>
+										<TabPane prefHeight="600.0" prefWidth="1378.0" tabClosingPolicy="UNAVAILABLE">
+											<tabs>
+												<Tab text="Untitled Tab">
+													<content>
+														<ScrollPane prefHeight="600.0" prefWidth="1378.0">
+															<content>
+																<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="1378.0" />
+															</content>
+														</ScrollPane>
+													</content>
+												</Tab>
+												<Tab text="Untitled Tab 1">
+													<content>
+														<AnchorPane />
+													</content>
+												</Tab>
+												<Tab text="Untitled Tab 2">
+													<content>
+														<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="1378.0" />
+													</content>
+												</Tab>
+											</tabs>
+										</TabPane>
+									</children>
+								</AnchorPane>
+							</items>
+							<!-- </items> -->
+						</SplitPane>
+					</children>
+				</Pane>
+			</children>
+		</VBox>
+	</children>
+</JFXMasonryPane>

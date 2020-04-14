@@ -2,22 +2,90 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="main">
 
-	<select id="handlerBtnClick" resultType="map"> 
+	<select id="getProcessList" resultType="map">
 		select
+		t1.code
+		processType,
+		t1.name processTypeName,
 		process_id processId,
-		process_code processCode,
+		process_code
+		processCode,
 		process_name processName,
-		process_remark processRemark,
+		process_remark
+		processRemark,
 		process_status processStatus,
 		process_cron processCron,
 		cron_calibration cronCalibration,
-		every_day_start_flag everyDayStartFlag,
+		every_day_start_flag
+		everyDayStartFlag,
 		execute_max executeMax,
-		process_limittime processLimittime
+		process_limittime
+		processLimittime
 
-		from py_process t
+		from py_process t inner join py_process_type t1 on
+		t.process_type=t1.code
 		where t.disable = '1'
 
 	</select>
 
+	<select id="getProcessListNew" resultType="map">
+		select
+		t.item_code f_f_1_menuId,
+		t.item_name f_f_1_menuName,
+		y1.icon_addr f_f_1_icon,
+		s1.is_expend f_f_1_expanded,
+		
+		t1.type_code f_f_2_menuId,
+		t1.name f_f_2_menuName,
+		y2.icon_addr f_f_2_icon,
+		s2.is_expend f_f_2_expanded,
+		
+	
+		t2.process_code f_f_3_menuId,
+		t2.process_name f_f_3_menuName,
+		y3.icon_addr f_f_3_icon,
+		s3.is_expend f_f_3_expanded,
+		
+		t2.process_id processId
+	
+		from  py_process_m0_item t
+		left join py_process_m1_type t1 on  t.item_code=t1.item_code and t1.`disable`=1
+		left join py_process_m2_process t2 on t2.type_code=t1.type_code and t2.`disable`=1
+		
+		left join py_style_tooth s1 on s1.`type`='main_m0' and s1.item_code=t.item_code  and s1.`disable`=1
+		left join py_style y1 on s1.style_code = y1.code and y1.diable=1
+		
+		left join py_style_tooth s2 on s2.`type`='main_m1' and s2.item_code=t1.type_code and s2.`disable`=1
+		left join py_style y2 on s2.style_code = y2.code and y2.diable=1
+		
+		left join py_style_tooth s3 on s3.`type`='main_m2' and s3.item_code=t2.process_code and s3.`disable`=1 
+		left join py_style y3 on s3.style_code = y3.code and y3.diable=1
+		
+		
+
+		where  t.`disable`= '1'
+		order by t.`order`,t1.`order`,t2.`order`
+	</select>
+	<select id="getProcessListTest" resultType="map">
+		select
+		cast(t0.id as char) f_f_1_menuId,
+		t0.name f_f_1_menuName,
+
+		cast(t1.id as char) f_f_2_menuId,
+		t1.name f_f_2_menuName,
+
+		cast(t2.id as char) f_f_3_menuId,
+		t2.name f_f_3_menuName,
+
+		cast(t3.id as char) f_f_4_menuId,
+		t3.name f_f_4_menuName
+
+		from
+
+		menu0 t0 left join menu1 t1 on t0.id=t1.parent_id
+
+		left join menu2 t2 on t1.id=t2.parent_id
+
+		left join menu3 t3 on t2.id=t3.parent_id
+	</select>
 </mapper>
