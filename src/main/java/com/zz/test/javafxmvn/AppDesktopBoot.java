@@ -19,7 +19,6 @@ import de.felixroske.jfxsupport.AbstractJavaFxApplicationSupport;
 import com.zz.test.javafaxmvn.commoninterceptor.LogInterceptor;
 import com.zz.test.javafxmvn.commondb.CommonDb;
 import com.zz.test.javafxmvn.commondb.SqlMapper;
-import com.zz.test.javafxmvn.main.Main;
 import com.zz.test.javafxmvn.main.view.MainFxmlView;
 
 

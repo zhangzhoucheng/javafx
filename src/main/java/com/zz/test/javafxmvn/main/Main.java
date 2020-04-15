@@ -65,7 +65,7 @@ public class Main extends Application {
 		
 		 Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("view/main/Main.fxml"));
 	        Scene scene = new Scene(root, 600, 500);
-	        scene.getStylesheets().add(getClass().getClassLoader().getResource("application.css").toExternalForm());
+	        scene.getStylesheets().add(getClass().getClassLoader().getResource("view/main/main.css").toExternalForm());
 	        
 	        // 设置程序在菜单栏 和左上角 显示的图标，以及标题
 	        primaryStage.getIcons().add(new Image("/img/logo.jpg"));

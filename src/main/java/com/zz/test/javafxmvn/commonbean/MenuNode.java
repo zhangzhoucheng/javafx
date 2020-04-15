@@ -11,7 +11,9 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
+import com.zz.test.javafxmvn.commontool.KeyValTool;
 import com.zz.test.javafxmvn.commontool.RegexpTool;
+import com.zz.test.javafxmvn.main.view.MainFxmlView;
 
 import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
@@ -273,7 +275,9 @@ public class MenuNode {
 		int i = 0;
 		for(MenuNode m : menuNode.getMenuSub()) {
 			TreeItem<String> item = MenuNode.TreeItemZ(m.getMenuName(), m.getIcon());
+			KeyValTool.itemKeyVal.put(m.getMenuId(), m.getMenuName());//把菜单的code,和name存入map
 			item.setExpanded(m.getExpanded());
+			KeyValTool.mainTreeViewCode2Item.put(m.getMenuId(), item);
 			rootNode.getChildren().add(item);
 			MenuNode.setMenuNodeToTreeItem(rootNode.getChildren().get(i), m);
 			i++;
@@ -298,6 +302,7 @@ public class MenuNode {
 			Node icon = new ImageView(new Image(graphic));
 			i = new TreeItem<String>(value, icon);
 		}
+		
 		return i;
 	}
 	

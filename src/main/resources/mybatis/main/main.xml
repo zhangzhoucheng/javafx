@@ -49,8 +49,8 @@
 		t2.process_id processId
 	
 		from  py_process_m0_item t
-		left join py_process_m1_type t1 on  t.item_code=t1.item_code and t1.`disable`=1
-		left join py_process_m2_process t2 on t2.type_code=t1.type_code and t2.`disable`=1
+		left join py_process_m1_type t1 on  t.item_code=t1.item_code and t1.`disable`>1
+		left join py_process_m2_process t2 on t2.type_code=t1.type_code and t2.`disable`>1
 		
 		left join py_style_tooth s1 on s1.`type`='main_m0' and s1.item_code=t.item_code  and s1.`disable`=1
 		left join py_style y1 on s1.style_code = y1.code and y1.diable=1
@@ -63,7 +63,7 @@
 		
 		
 
-		where  t.`disable`= '1'
+		where  t.`disable`> 1
 		order by t.`order`,t1.`order`,t2.`order`
 	</select>
 	<select id="getProcessListTest" resultType="map">

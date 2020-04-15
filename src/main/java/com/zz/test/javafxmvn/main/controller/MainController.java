@@ -16,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TabPane;
 
 /**
  * 
@@ -46,6 +47,9 @@ public class MainController implements Initializable {
 
 	@FXML
 	private MenuItem menu1_1task12;
+	
+	@FXML
+	private TabPane main_tabpane;
 
 	@FXML
 	public void handlerBtnClick(ActionEvent event) {

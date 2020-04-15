@@ -1,19 +1,37 @@
 package com.zz.test.javafxmvn.main.view;
 
+import java.awt.Label;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.jfoenix.svg.SVGGlyph;
 import com.zz.test.javafxmvn.commonbean.BaseObjectView;
 import com.zz.test.javafxmvn.commonbean.MenuNode;
+import com.zz.test.javafxmvn.commontag.TagTool;
+import com.zz.test.javafxmvn.commontool.KeyValTool;
 import com.zz.test.javafxmvn.main.service.MainService;
 
 import de.felixroske.jfxsupport.FXMLView;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ListChangeListener.Change;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 
@@ -49,15 +67,13 @@ public class MainFxmlView extends BaseObjectView {
 	
 	@Autowired
 	private MainService ms;
-
-
+	public static Parent parent = null;
+	public static TreeView<String> mainTreeView = null;
 	@PostConstruct
 	 void initUI() throws Exception {
 		// 初始化界面，恩，主要是初始化界面的样式，因为我想让他可以换皮肤和主题
 		// UIUtils.configUI((BorderPane)this.getView(), config);
-
-		Parent parent = this.getView();//获取当前parent
-		
+		parent = this.getView();
 		SplitPane sp = (SplitPane) parent.lookup("#splitpane_main");//获取splitpane
 		
 		Pane paneForTree = (Pane) sp.getItems().get(0).lookup("#treeview_main");//获取存放treeview的pane(注意：此处需要要先获取SplitPane，不然直接通过#treeview_main定位不到。
@@ -69,16 +85,27 @@ public class MainFxmlView extends BaseObjectView {
 		
 		long start = System.currentTimeMillis();
 		
-		TreeView<String> treeView = MenuNode.getMenuTreeview(MenuNode.getMenu(this.ms.getProcessList(), new MenuNode("-1", "0", "项目所有", true, "")));
-		treeView.setShowRoot(false);//展示根菜单
+		mainTreeView = MenuNode.getMenuTreeview(MenuNode.getMenu(this.ms.getProcessList(), new MenuNode("-1", "0", "项目所有", true, "")));
+		mainTreeView.setShowRoot(false);//展示根菜单
 	    //treeView.setEditable(true);//可编辑
 	    //treeView.setCellFactory((TreeView<String> p)-> new TextFieldTreeCellImpl()); 界面操作新加菜单，详情看TreeViewSample
-	        
+	    
+		//treeView.setOnMouseEntered(this.mainTreeViewEnter(treeView));
+		mainTreeView.setOnMouseClicked(this.mainTreeViewClick(mainTreeView));//点击菜单事件
+	
+		
 		long end = System.currentTimeMillis();
 		logger.warn("@@@time,initUI,getMenuTreeview:"+(end-start));
 		
-		paneForTree.getChildren().add(treeView);
-
+		paneForTree.getChildren().add(mainTreeView);//添加菜单渲染
+		
+		TabPane tbp = (TabPane) sp.getItems().get(1).lookup("#main_tabpane");
+		
+		for(Tab tab : tbp.getTabs()) {
+			tab.setOnSelectionChanged(this.mainTabSelectionChanged(tab));//添加select被改变事件。
+		}
+		//tbp.getTabs().addEventHandler(MouseEvent.MOUSE_CLICKED, this.mainTabPaneClick(tbp));//此处给tab添加点击事件，导致点击下方区域框内容也触发。
+		
 		
 		//treeviewProcess.setRoot(item);
 		//new JMetro(JMetro.Style.LIGHT).applyTheme(parent);
@@ -89,4 +116,118 @@ public class MainFxmlView extends BaseObjectView {
 		 */
 		this.logger.warn("MainFxmlView initUI");
 	}
+	
+	/**
+	 * Desc:主treeview点击事件
+	 * @author jld.zhangzhou
+	 * @datetime 2020-04-14 17:37:55
+	 * @modify_record:
+	 * @param treeView
+	 * @return
+	 */
+	private EventHandler<MouseEvent> mainTreeViewClick(TreeView<String> treeView){
+		return (new EventHandler<MouseEvent>()//定义点击事件
+	    {
+	        @Override
+	        public void handle(MouseEvent mouseEvent)
+	        {
+	            if(mouseEvent.getClickCount() == 1)
+	            {
+	                TreeItem<String> item = treeView.getSelectionModel().getSelectedItem();
+	                if(item == null) {
+	                	return;
+	                }
+	                if(item.isLeaf()) {
+	            		SplitPane sp = (SplitPane) parent.lookup("#splitpane_main");//获取splitpane
+	            		TabPane tbp = (TabPane) sp.getItems().get(1).lookup("#main_tabpane");
+	            		Tab choiceTab = null;
+	            		for(Tab t : tbp.getTabs()) {//存在该tab则不新增，而是选中。
+	            			if(t.getText().equals(item.getValue())) {
+	            				TagTool.tabPaneSelectionModel(tbp, t);
+	            				//mainTabPaneClickIntFlag = tbp.getTabs().indexOf(t);//标记当前最后的被点击的tab
+	            				return;
+	            			}
+	            			
+	            		}
+	            		choiceTab = new Tab(item.getValue());
+	            		choiceTab.setId(KeyValTool.getKeyByVal(item.getValue()));
+	            		tbp.getTabs().add(choiceTab);
+	            		TagTool.tabPaneSelectionModel(tbp, choiceTab);
+	            		choiceTab.setOnSelectionChanged(mainTabSelectionChanged(choiceTab));//新加的tab加上setOnSelectionChanged事件。
+	          
+	            		
+	                }
+	            }
+	        }
+	    });
+		
+	}
+	
+	/**
+	 * 标记之前最后被选中的tab index
+	 */
+	private int mainTabPaneClickIntFlag = -1;
+	private EventHandler<Event> mainTabSelectionChanged(Tab tab){
+		
+		return (new EventHandler<Event>() {
+			
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				/*SingleSelectionModel<Tab> select = tab.gets();
+				int i1 = select.getSelectedIndex();
+				int i2 =select.getSelectedIndex();
+				System.out.println("mainTabPaneClick"+select.getSelectedItem().getText());*/
+			}
+
+			@Override
+			public void handle(Event event) {
+				if(tab.selectedProperty().get()==true) {//当前被选中的tab
+					TreeItem<String> item1 = KeyValTool.mainTreeViewCode2Item.get(tab.getId());
+					mainTreeView.getSelectionModel().select(item1);
+					System.out.println(tab.getId());
+				}else {
+					TreeItem<String> item = KeyValTool.mainTreeViewCode2Item.get(tab.getId());
+					
+					System.out.println(tab.getId());
+				}
+				
+			}
+		});
+		
+		
+	}
+	
+	/**
+	 * Desc:鼠标进入事件，问题是，怎样获取进入的treeview哪个item
+	 * @author jld.zhangzhou
+	 * @datetime 2020-04-14 18:51:41
+	 * @modify_record:
+	 * @param treeView
+	 * @return
+	 */
+	private EventHandler<MouseEvent> mainTreeViewEnter(TreeView<String> treeView){
+		
+		return (new EventHandler<MouseEvent>()//定义点击事件
+	    {
+	        @Override
+	        public void handle(MouseEvent mouseEvent)
+	        {
+	            if(mouseEvent.getEventType()==MouseEvent.MOUSE_ENTERED)
+	            {	
+	            	System.out.println("t:"+ treeView.onMouseEnteredProperty().getBean());
+	                TreeItem<String> item = treeView.getFocusModel().getFocusedItem();
+	                if(item.getChildren().isEmpty()) {
+	                	System.out.println("Selected yezi Text : " + item.getValue());
+	                }
+	                System.out.println("Selected Text : " + item.getValue());
+
+	                if (item.getValue()=="Upload to HDFS") {
+	              
+	                }
+	            }
+	        }
+	    });
+	}
+	
+	
 }
