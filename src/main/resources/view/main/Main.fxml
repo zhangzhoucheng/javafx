@@ -17,6 +17,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TreeItem?>
+<?import javafx.scene.control.TextArea?>
 
 <!-- <GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.zz.test.javafxmvn.MainController" 
 	alignment="center" hgap="10" vgap="10"> <Label text="hello wolrd！"/> </GridPane> -->
@@ -124,25 +125,15 @@
 									<children>
 										<TabPane  fx:id="main_tabpane"  prefHeight="840.0" prefWidth="1400.0" tabClosingPolicy="ALL_TABS">
 											<tabs>
-												<Tab text="Untitled Tab"  >
+												<Tab text="长亭漫·蘋儿赋"  >
 													<content>
-														<ScrollPane   prefHeight="840.0" prefWidth="1600.0">
+														<ScrollPane   prefHeight="840.0" prefWidth="1400.0">
+															<Label   wrapText="true" underline="true" 
+																text="文:沍泪蹁跹，消柔并碎，长作归时意丶" />
 														</ScrollPane>
 													</content>
 												</Tab>
-												<Tab text="Untitled Tab1"  >
-													<content>
-														<ScrollPane   prefHeight="840.0" prefWidth="1600.0">
-														</ScrollPane>
-													</content>
-												</Tab>
-												<Tab text="Untitled Tab2" >
-													<content>
-														<ScrollPane   prefHeight="840.0" prefWidth="1600.0">
-														</ScrollPane>
-													</content>
-													
-												</Tab>
+											
 											</tabs>
 										</TabPane>
 									</children>

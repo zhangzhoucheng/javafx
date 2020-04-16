@@ -1,6 +1,7 @@
 package com.zz.test.javafxmvn.main.view;
 
 import java.awt.Label;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +11,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.jfoenix.svg.SVGGlyph;
+import com.sun.jna.platform.win32.OaIdl.ScodeArg;
+import com.sun.tools.doclets.internal.toolkit.Content;
 import com.zz.test.javafxmvn.commonbean.BaseObjectView;
 import com.zz.test.javafxmvn.commonbean.MenuNode;
 import com.zz.test.javafxmvn.commontag.TagTool;
@@ -22,8 +25,11 @@ import javafx.collections.ListChangeListener.Change;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
@@ -152,7 +158,22 @@ public class MainFxmlView extends BaseObjectView {
 	            		choiceTab = new Tab(item.getValue());
 	            		choiceTab.setId(KeyValTool.getKeyByVal(item.getValue()));
 	            		tbp.getTabs().add(choiceTab);
-	            		TagTool.tabPaneSelectionModel(tbp, choiceTab);
+	            		TagTool.tabPaneSelectionModel(tbp, choiceTab);//设置选中
+	            		String tabFxml = KeyValTool.mainTreeViewCode2MenuNode.get(choiceTab.getId()).getPath();
+	            		if(!StringUtils.isBlank(tabFxml)) {
+	            			//新建ScrollPane放入tab，之后tab渲染该菜单对应页面
+		            		ScrollPane theSp = new ScrollPane();
+		            		theSp.setPrefHeight(835);
+		            		theSp.setPrefWidth(1395);
+		            		choiceTab.setContent(theSp);
+		            		try {
+								TagTool.paneLoadFxml(theSp, tabFxml);
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+	            		}
+	            		
 	            		choiceTab.setOnSelectionChanged(mainTabSelectionChanged(choiceTab));//新加的tab加上setOnSelectionChanged事件。
 	          
 	            		
@@ -184,11 +205,11 @@ public class MainFxmlView extends BaseObjectView {
 				if(tab.selectedProperty().get()==true) {//当前被选中的tab
 					TreeItem<String> item1 = KeyValTool.mainTreeViewCode2Item.get(tab.getId());
 					mainTreeView.getSelectionModel().select(item1);
-					System.out.println(tab.getId());
+					//System.out.println(tab.getId());
 				}else {
 					TreeItem<String> item = KeyValTool.mainTreeViewCode2Item.get(tab.getId());
 					
-					System.out.println(tab.getId());
+					//System.out.println(tab.getId());
 				}
 				
 			}
@@ -214,12 +235,12 @@ public class MainFxmlView extends BaseObjectView {
 	        {
 	            if(mouseEvent.getEventType()==MouseEvent.MOUSE_ENTERED)
 	            {	
-	            	System.out.println("t:"+ treeView.onMouseEnteredProperty().getBean());
+	            	//System.out.println("t:"+ treeView.onMouseEnteredProperty().getBean());
 	                TreeItem<String> item = treeView.getFocusModel().getFocusedItem();
 	                if(item.getChildren().isEmpty()) {
-	                	System.out.println("Selected yezi Text : " + item.getValue());
+	                	//System.out.println("Selected yezi Text : " + item.getValue());
 	                }
-	                System.out.println("Selected Text : " + item.getValue());
+	                //System.out.println("Selected Text : " + item.getValue());
 
 	                if (item.getValue()=="Upload to HDFS") {
 	              

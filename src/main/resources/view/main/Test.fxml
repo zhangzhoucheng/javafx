@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1">
+	<!-- TODO Add Nodes -->
+	
+	<Pane prefHeight="1.0" prefWidth="1395.0" style="-fx-border-style: solid; -fx-border-color: #EEEEEE;">
+                        </Pane>
+</AnchorPane>
+

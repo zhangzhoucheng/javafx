@@ -34,6 +34,7 @@ public class MenuNode {
 	private String style = "";//风格，暂不实现
 	private String show = "1";//是否展示，
 	private boolean expanded = true;//根节点是否展开
+	private String path;//点击菜单跳转到fxml，路径
 	
 	/**
 	 * 菜单字段的格式，其中必须有数字，如菜单id：f_f_2_menuId,2表示是第二层菜单
@@ -81,7 +82,7 @@ public class MenuNode {
 	}
 	
 	public MenuNode(String parentID, String menuId, String menuName, String orderById, String remark, String icon,
-			String style, String show, boolean expanded) {
+			String style, String show, boolean expanded, String path) {
 		super();
 		this.parentID = parentID;
 		this.menuId = menuId;
@@ -92,6 +93,7 @@ public class MenuNode {
 		this.style = style;
 		this.show = show;
 		this.expanded = expanded;
+		this.path = path;
 	}
 
 
@@ -167,13 +169,14 @@ public class MenuNode {
 				String icon = (String) map.get(String.format("%s%d_%s", menuStartWith,i+1,"icon"));
 				String style = (String) map.get(String.format("%s%d_%s", menuStartWith,i+1,"style"));
 				String show = (String) map.get(String.format("%s%d_%s", menuStartWith,i+1,"show"));
+				String path = (String) map.get(String.format("%s%d_%s", menuStartWith,i+1,"path"));
 				boolean expanded = (boolean) (map.get(String.format("%s%d_%s", menuStartWith,i+1,"expanded")) == null ? false :map.get(String.format("%s%d_%s", menuStartWith,i+1,"expanded")));
 				if(menuId == null) {
 					break;
 				}
 				if(enuNodeList_1.size() == 0) {
 					menuNode = new MenuNode(parentID == null ? "-1" : parentID, menuId == null ? "0" : menuId, menuName == null ? "0" : menuName, orderById == null ? "" : orderById,
-							remark == null ? "" : remark, icon == null ? "" : icon, style == null ? "" : style, StringUtils.isBlank(show) ? "1" : show, expanded);
+							remark == null ? "" : remark, icon == null ? "" : icon, style == null ? "" : style, StringUtils.isBlank(show) ? "1" : show, expanded, path);
 					enuNodeList_1.add(menuNode);
 				}else {
 					//如果size>0，且相等于当前，则menuNode重新指向；如果size=0且不相等，则新建。
@@ -188,7 +191,7 @@ public class MenuNode {
 					
 					if(!f_sizem0e) {
 						menuNode = new MenuNode(parentID == null ? "-1" : parentID, menuId == null ? "0" : menuId, menuName == null ? "0" : menuName, orderById == null ? "" : orderById,
-								remark == null ? "" : remark, icon == null ? "" : icon, style == null ? "" : style, StringUtils.isBlank(show) ? "1" : show, expanded);
+								remark == null ? "" : remark, icon == null ? "" : icon, style == null ? "" : style, StringUtils.isBlank(show) ? "1" : show, expanded, path);
 						enuNodeList_1.add(menuNode);
 					}
 					
@@ -277,7 +280,9 @@ public class MenuNode {
 			TreeItem<String> item = MenuNode.TreeItemZ(m.getMenuName(), m.getIcon());
 			KeyValTool.itemKeyVal.put(m.getMenuId(), m.getMenuName());//把菜单的code,和name存入map
 			item.setExpanded(m.getExpanded());
+			
 			KeyValTool.mainTreeViewCode2Item.put(m.getMenuId(), item);
+			KeyValTool.mainTreeViewCode2MenuNode.put(m.getMenuId(), m);
 			rootNode.getChildren().add(item);
 			MenuNode.setMenuNodeToTreeItem(rootNode.getChildren().get(i), m);
 			i++;
@@ -425,6 +430,14 @@ public class MenuNode {
 
 	public void setExpanded(boolean expanded) {
 		this.expanded = expanded;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 	

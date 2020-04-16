@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+	<context id="mysqlTables" targetRuntime="MyBatis3">
+	
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+	
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://localhost:3306/py_money" 
+			userId="root"
+			password="root" />
+
+		<!--指定生成的类型为java类型，避免数据库中number等类型字段 -->
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+			
+		</javaTypeResolver>
+
+		<!--自动生成的实体的存放包路径 -->
+		 <javaModelGenerator targetPackage="com.zz.test.javafxmvn.common.entity"
+			targetProject="src/main/java">
+			<property name="enableSubPackages" value="false" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator> 
+
+		<!--自动生成的*Mapper.xml文件存放路径 -->
+		<sqlMapGenerator targetPackage="/mybatis/entity"
+			targetProject="src/main/resources">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<!--自动生成的*Mapper.java存放路径 -->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.zz.test.javafxmvn.common.entity.mapper" targetProject="src/main/java">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+	
+		<!-- <table tableName="tb_user" domainObjectName="User"></table>
+		<table tableName="tb_userdetail" domainObjectName="Userdetail"></table> 
+		<table tableName="tb_mybasetype" domainObjectName="Mybasetype"></table>
+		<table tableName="tb_ goodsorderdetils" domainObjectName="Goodsorderdetils"></table>
+		<table tableName="tb_goodsorder" domainObjectName="Goodsorder"></table>
+		<table tableName="tb_secretquestion" domainObjectName="Secretquestion"></table>
+		<table tableName="tb_sellergoods" domainObjectName="Sellergoods"></table>
+		<table tableName="tb_sellertransactionlist" domainObjectName="Sellertransactionlist"></table>
+		<table tableName="tb_shop" domainObjectName="Shop"></table>
+		<table tableName="tb_selltype" domainObjectName="Selltype"></table> -->
+		<!-- <table tableName="tb_companyimg" domainObjectName="Companyimg"></table> -->
+		<!-- <table tableName="tb_shop" domainObjectName="Shop"></table> -->
+		
+		
+		<table tableName="py_process" domainObjectName="PyProcess"></table>
+	</context>
+
+</generatorConfiguration>

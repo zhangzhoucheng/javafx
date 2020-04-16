@@ -32,17 +32,20 @@
 		select
 		t.item_code f_f_1_menuId,
 		t.item_name f_f_1_menuName,
+		t.fxml_path f_f_1_path,
 		y1.icon_addr f_f_1_icon,
 		s1.is_expend f_f_1_expanded,
 		
 		t1.type_code f_f_2_menuId,
 		t1.name f_f_2_menuName,
+		t1.fxml_path f_f_2_path,
 		y2.icon_addr f_f_2_icon,
 		s2.is_expend f_f_2_expanded,
 		
 	
 		t2.process_code f_f_3_menuId,
 		t2.process_name f_f_3_menuName,
+		t2.fxml_path f_f_3_path,
 		y3.icon_addr f_f_3_icon,
 		s3.is_expend f_f_3_expanded,
 		

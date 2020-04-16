@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.control.TreeItem?>
+<?import java.lang.Object?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="835.0" prefWidth="1395.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<VBox prefHeight="840.0" prefWidth="1395.0">
+			<children>
+				<Pane prefHeight="25.0" prefWidth="1395.0" />
+				<Pane prefHeight="805.0" prefWidth="1395.0">
+					<children>
+                  <VBox prefHeight="805.0" prefWidth="1395.0">
+                     <children>
+                        <Pane prefHeight="15.0" prefWidth="1395.0" />
+                        <Pane prefHeight="36.0" prefWidth="1395.0">
+                           <children>
+            						<!-- TODO Add Nodes -->
+            						<Label layoutX="34.0" prefHeight="22.0" prefWidth="70.0" text="登录进程:">
+            							<font>
+            								<Font size="16.0" />
+            							</font>
+            						</Label>
+            
+                  						<Button id="login_serch" fx:id="login_serch" layoutX="107.0" layoutY="-5.0" mnemonicParsing="false" onAction="#loginSerch" prefHeight="22.0" prefWidth="70.0" scaleX="0.7" scaleY="0.7" scaleZ="0.7" text="查看">
+            							<font>
+            								<Font name="Arial" size="16.0" />
+            							</font>
+            						</Button>
+                           </children>
+                        </Pane>
+                        <Separator prefWidth="1395.0" />
+                        
+                     </children>
+                  </VBox>
+					</children>
+				</Pane>
+			</children>
+		</VBox>
+	</children>
+</AnchorPane>
