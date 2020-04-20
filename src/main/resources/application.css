@@ -1,9 +1,0 @@
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
-
-/*字体设置 */
-.root{
-
-    -fx-font-size: 1.2em;
-    -fx-font-family: "Helvetica, Arial, sans-serif";
-
-}
