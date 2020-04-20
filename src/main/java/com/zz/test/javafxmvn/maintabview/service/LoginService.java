@@ -9,6 +9,7 @@ import com.zz.test.javafxmvn.common.entity.PyProcess;
 import com.zz.test.javafxmvn.common.entity.PyProcessExample;
 import com.zz.test.javafxmvn.common.entity.mapper.PyProcessMapper;
 import com.zz.test.javafxmvn.commondb.CommonDb;
+import com.zz.test.javafxmvn.maintabview.view.LoginFxmlView;
 
 @Service
 public class LoginService {
@@ -19,11 +20,14 @@ public class LoginService {
 	@Autowired
 	private PyProcessMapper pyProcessMapper;
 	
-	public void loginSerch() {
+	private LoginFxmlView loginFxmlView= new LoginFxmlView();
+	
+	public List<PyProcess> loginSerch() {
 		// TODO Auto-generated method stub
 		PyProcessExample pyProExa = new PyProcessExample();
-		List<PyProcess> pyProList = (List<PyProcess>) pyProExa.createCriteria().andTypeCodeEqualTo("login");
-		System.out.println(1);
+		pyProExa.createCriteria().andTypeCodeEqualTo("login");
+		List<PyProcess> pyProList = pyProcessMapper.selectByExample(pyProExa);
+		return pyProList;
 	}
 
 }

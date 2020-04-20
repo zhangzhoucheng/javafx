@@ -14,7 +14,8 @@ import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import de.felixroske.jfxsupport.AbstractJavaFxApplicationSupport;
-
+import javafx.application.Platform;
+import javafx.stage.Stage;
 
 import com.zz.test.javafaxmvn.commoninterceptor.LogInterceptor;
 import com.zz.test.javafxmvn.commondb.CommonDb;
@@ -53,6 +54,28 @@ public class AppDesktopBoot extends AbstractJavaFxApplicationSupport {
 		launch(AppDesktopBoot.class, MainFxmlView.class, args);
 	}
 
+	
+	/**
+	 * Desc:重启
+	 * @author jld.zhangzhou
+	 * @datetime 2020-04-16 21:32:11
+	 * @modify_record:
+	 */
+	public void relaunch(){
+        Platform.runLater(() -> {
+            // 关闭窗口
+            getStage().close();
+            try {
+                // 关闭ApplicationContext
+                this.stop();
+                // 重新初始化
+                this.init();
+                this.start(new Stage());
+            } catch (Exception e) {
+               
+            }
+        });
+ }
 	
 	@Bean
 	public CommonDb mybatisDao() {

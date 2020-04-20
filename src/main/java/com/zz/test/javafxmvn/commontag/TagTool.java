@@ -1,25 +1,30 @@
 package com.zz.test.javafxmvn.commontag;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.util.List;
 
-import com.sun.tools.extcheck.Main;
-import com.zz.test.javafxmvn.commontool.KeyValTool;
+import com.zz.test.javafxmvn.main.Main;
 import com.zz.test.javafxmvn.main.view.MainFxmlView;
+import com.zz.test.javafxmvn.maintabview.view.LoginFxmlView;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
-import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
+import javafx.scene.layout.Pane;
+
 
 /**
  * 
@@ -87,11 +92,12 @@ public class TagTool {
 	 * @throws IOException
 	 */
 	@SuppressWarnings("finally")
-	public static Initializable paneLoadFxml(ScrollPane pane, String fxml) throws IOException {
+	public static Initializable paneLoadFxml(Object pane, String fxml) throws IOException {
 		FXMLLoader loader = new FXMLLoader(); // 创建对象
 
 		loader.setBuilderFactory(new JavaFXBuilderFactory()); // BuilderFactory设置
-		loader.setLocation(Main.class.getResource(fxml)); // 设置路径基础
+		URL a=LoginFxmlView.class.getResource(fxml);
+		loader.setLocation(LoginFxmlView.class.getResource(fxml)); // 设置路径基础
 		InputStream in = null;
 		try {
 			in = Main.class.getResourceAsStream(fxml);
@@ -99,9 +105,15 @@ public class TagTool {
 			
 			//Scene scene = new Scene(page, 800, 600);
 			//Stage.setScene(scene);
-			//stage.sizeToScene();
-			
-			pane.setContent(page);
+			//stage.sizeToScene();//可以参照https://blog.csdn.net/baidu_30325009/article/details/93321504，完成场景切换。
+			if(pane.getClass() == Pane.class) {
+				((Pane)pane).getChildren().clear();
+				((Pane)pane).getChildren().add(page);
+			}
+			if(pane.getClass() == ScrollPane.class) {
+				((ScrollPane)pane).getChildrenUnmodifiable().clear();
+				((ScrollPane)pane).setContent(page);
+			}
 			//sp.getChildrenUnmodifiable().add(page);
 			return (Initializable) loader.getController(); // 这样得到Controller
 
@@ -111,7 +123,65 @@ public class TagTool {
 		}
 
 	}
+	
+	/**
+	 * Desc:在pane中加载资源fxml，和paneLoadFxml方法功能一样。
+	 * @author jld.zhangzhou
+	 * @datetime 2020-04-16 22:56:39
+	 * @modify_record:
+	 * @param pane
+	 * @param fxml
+	 * @param obj of ScrollPane or Pane
+	 * @throws IOException
+	 */
+	public static void paneLoadFxmlSimple(Object pane, String fxml, Object obj) throws IOException {
+		if(pane.getClass() == Pane.class) {
+			((Pane)pane).getChildren().clear();
+			((Pane)pane).getChildren().add(FXMLLoader.load(((Class<?>) obj).getResource(fxml)));
+		}
+		if(pane.getClass() == ScrollPane.class) {
+			((ScrollPane)pane).getChildrenUnmodifiable().clear();
+			((ScrollPane)pane).setContent(FXMLLoader.load(((Class<?>) obj).getResource(fxml)));
+		}
+	}
 
+	/**
+	 * 
+	 * <note>
+	 * Desc：表格操作的工具类 
+	 * @author jld.zhangzhou
+	 * @email idiot_jillidan@163.com;
+	 * @re be willing to communicate
+	 * @refactor for jld
+	 * @datetime 2020-04-17 08:52:18
+	 * @location mobile base 3th,BeiJing 
+	 * version  1.0
+	 *  
+	 * @REVISIONS: 
+	 * Version 	        Date 		         Author             Location                   Description          
+	 * ------------------------------------------------------------------------------------------------------  
+	 * 1.0 		  2020-04-17 08:52:18    jld.zhangzhou     mobile base 3th,BeiJing      1.create the class            
+	 * </note>
+	 */
+	static class TableTool<T> {
+		public  TableView<T> initTable(TableView<T> tableView, String [] cols, List<T> list) {
+			
+			
+			return tableView;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Desc:给TabPane 的tab 添加select改变事件(关于函数value中又传参问题？？？？？）
 	 * 

@@ -69,7 +69,7 @@ public class Main extends Application {
 	        
 	        // 设置程序在菜单栏 和左上角 显示的图标，以及标题
 	        primaryStage.getIcons().add(new Image("/img/logo.jpg"));
-	        primaryStage.setTitle("JLD ZZ WORLD!");
+	        primaryStage.setTitle("JLD ZZ22 WORLD!");
 	        
 	        // 设置窗体宽高
 	        primaryStage.setWidth(1980);

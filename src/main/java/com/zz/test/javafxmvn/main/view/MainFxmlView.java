@@ -1,8 +1,8 @@
 package com.zz.test.javafxmvn.main.view;
 
-import java.awt.Label;
+
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -10,33 +10,27 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.jfoenix.svg.SVGGlyph;
-import com.sun.jna.platform.win32.OaIdl.ScodeArg;
-import com.sun.tools.doclets.internal.toolkit.Content;
+
 import com.zz.test.javafxmvn.commonbean.BaseObjectView;
 import com.zz.test.javafxmvn.commonbean.MenuNode;
 import com.zz.test.javafxmvn.commontag.TagTool;
 import com.zz.test.javafxmvn.commontool.KeyValTool;
+import com.zz.test.javafxmvn.commontool.redis.service.CacheService;
+import com.zz.test.javafxmvn.commontool.redis.service.DictService;
 import com.zz.test.javafxmvn.main.service.MainService;
 
+
 import de.felixroske.jfxsupport.FXMLView;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ListChangeListener.Change;
+
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
@@ -71,12 +65,20 @@ public class MainFxmlView extends BaseObjectView {
 	//@FXML
 	//private TreeView<String> treeviewProcess;
 	
+	/**
+	 * 获取缓存的service
+	 */
+	@Autowired 
+	CacheService cacheService;
+	
 	@Autowired
 	private MainService ms;
 	public static Parent parent = null;
 	public static TreeView<String> mainTreeView = null;
 	@PostConstruct
 	 void initUI() throws Exception {
+		List<Map<String, String>> map = cacheService.queryMainTreeView("mainTreeView");//获取缓存，从redis（new boot 2.x Lettuce redis not jdis)
+		List<Map<String, String>> map1 = cacheService.queryMainTreeViewBySpring(null);
 		// 初始化界面，恩，主要是初始化界面的样式，因为我想让他可以换皮肤和主题
 		// UIUtils.configUI((BorderPane)this.getView(), config);
 		parent = this.getView();
@@ -167,7 +169,8 @@ public class MainFxmlView extends BaseObjectView {
 		            		theSp.setPrefWidth(1395);
 		            		choiceTab.setContent(theSp);
 		            		try {
-								TagTool.paneLoadFxml(theSp, tabFxml);
+		            			TagTool.paneLoadFxmlSimple(theSp, tabFxml, getClass());
+								//TagTool.paneLoadFxml(theSp, tabFxml);
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
