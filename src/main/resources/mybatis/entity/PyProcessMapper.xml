@@ -8,10 +8,10 @@
     <result column="type_code" jdbcType="VARCHAR" property="typeCode" />
     <result column="process_remark" jdbcType="VARCHAR" property="processRemark" />
     <result column="process_status" jdbcType="CHAR" property="processStatus" />
-    <result column="disable" jdbcType="BIT" property="disable" />
+    <result column="disable" jdbcType="TINYINT" property="disable" />
     <result column="process_cron" jdbcType="VARCHAR" property="processCron" />
-    <result column="cron_calibration" jdbcType="BIT" property="cronCalibration" />
-    <result column="every_day_start_flag" jdbcType="BIT" property="everyDayStartFlag" />
+    <result column="cron_calibration" jdbcType="TINYINT" property="cronCalibration" />
+    <result column="every_day_start_flag" jdbcType="TINYINT" property="everyDayStartFlag" />
     <result column="execute_max" jdbcType="INTEGER" property="executeMax" />
     <result column="process_limittime" jdbcType="INTEGER" property="processLimittime" />
   </resultMap>
@@ -115,8 +115,8 @@
       )
     values (#{processId,jdbcType=INTEGER}, #{processCode,jdbcType=VARCHAR}, #{processName,jdbcType=VARCHAR}, 
       #{typeCode,jdbcType=VARCHAR}, #{processRemark,jdbcType=VARCHAR}, #{processStatus,jdbcType=CHAR}, 
-      #{disable,jdbcType=BIT}, #{processCron,jdbcType=VARCHAR}, #{cronCalibration,jdbcType=BIT}, 
-      #{everyDayStartFlag,jdbcType=BIT}, #{executeMax,jdbcType=INTEGER}, #{processLimittime,jdbcType=INTEGER}
+      #{disable,jdbcType=INTEGER}, #{processCron,jdbcType=VARCHAR}, #{cronCalibration,jdbcType=INTEGER}, 
+      #{everyDayStartFlag,jdbcType=INTEGER}, #{executeMax,jdbcType=INTEGER}, #{processLimittime,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.zz.test.javafxmvn.common.entity.PyProcess">
@@ -179,16 +179,16 @@
         #{processStatus,jdbcType=CHAR},
       </if>
       <if test="disable != null">
-        #{disable,jdbcType=BIT},
+        #{disable,jdbcType=INTEGER},
       </if>
       <if test="processCron != null">
         #{processCron,jdbcType=VARCHAR},
       </if>
       <if test="cronCalibration != null">
-        #{cronCalibration,jdbcType=BIT},
+        #{cronCalibration,jdbcType=INTEGER},
       </if>
       <if test="everyDayStartFlag != null">
-        #{everyDayStartFlag,jdbcType=BIT},
+        #{everyDayStartFlag,jdbcType=INTEGER},
       </if>
       <if test="executeMax != null">
         #{executeMax,jdbcType=INTEGER},
@@ -226,16 +226,16 @@
         process_status = #{record.processStatus,jdbcType=CHAR},
       </if>
       <if test="record.disable != null">
-        disable = #{record.disable,jdbcType=BIT},
+        disable = #{record.disable,jdbcType=INTEGER},
       </if>
       <if test="record.processCron != null">
         process_cron = #{record.processCron,jdbcType=VARCHAR},
       </if>
       <if test="record.cronCalibration != null">
-        cron_calibration = #{record.cronCalibration,jdbcType=BIT},
+        cron_calibration = #{record.cronCalibration,jdbcType=INTEGER},
       </if>
       <if test="record.everyDayStartFlag != null">
-        every_day_start_flag = #{record.everyDayStartFlag,jdbcType=BIT},
+        every_day_start_flag = #{record.everyDayStartFlag,jdbcType=INTEGER},
       </if>
       <if test="record.executeMax != null">
         execute_max = #{record.executeMax,jdbcType=INTEGER},
@@ -256,10 +256,10 @@
       type_code = #{record.typeCode,jdbcType=VARCHAR},
       process_remark = #{record.processRemark,jdbcType=VARCHAR},
       process_status = #{record.processStatus,jdbcType=CHAR},
-      disable = #{record.disable,jdbcType=BIT},
+      disable = #{record.disable,jdbcType=INTEGER},
       process_cron = #{record.processCron,jdbcType=VARCHAR},
-      cron_calibration = #{record.cronCalibration,jdbcType=BIT},
-      every_day_start_flag = #{record.everyDayStartFlag,jdbcType=BIT},
+      cron_calibration = #{record.cronCalibration,jdbcType=INTEGER},
+      every_day_start_flag = #{record.everyDayStartFlag,jdbcType=INTEGER},
       execute_max = #{record.executeMax,jdbcType=INTEGER},
       process_limittime = #{record.processLimittime,jdbcType=INTEGER}
     <if test="_parameter != null">
@@ -285,16 +285,16 @@
         process_status = #{processStatus,jdbcType=CHAR},
       </if>
       <if test="disable != null">
-        disable = #{disable,jdbcType=BIT},
+        disable = #{disable,jdbcType=INTEGER},
       </if>
       <if test="processCron != null">
         process_cron = #{processCron,jdbcType=VARCHAR},
       </if>
       <if test="cronCalibration != null">
-        cron_calibration = #{cronCalibration,jdbcType=BIT},
+        cron_calibration = #{cronCalibration,jdbcType=INTEGER},
       </if>
       <if test="everyDayStartFlag != null">
-        every_day_start_flag = #{everyDayStartFlag,jdbcType=BIT},
+        every_day_start_flag = #{everyDayStartFlag,jdbcType=INTEGER},
       </if>
       <if test="executeMax != null">
         execute_max = #{executeMax,jdbcType=INTEGER},
@@ -312,10 +312,25 @@
       type_code = #{typeCode,jdbcType=VARCHAR},
       process_remark = #{processRemark,jdbcType=VARCHAR},
       process_status = #{processStatus,jdbcType=CHAR},
-      disable = #{disable,jdbcType=BIT},
+      disable = #{disable,jdbcType=INTEGER},
       process_cron = #{processCron,jdbcType=VARCHAR},
-      cron_calibration = #{cronCalibration,jdbcType=BIT},
-      every_day_start_flag = #{everyDayStartFlag,jdbcType=BIT},
+      cron_calibration = #{cronCalibration,jdbcType=INTEGER},
+      every_day_start_flag = #{everyDayStartFlag,jdbcType=INTEGER},
+      execute_max = #{executeMax,jdbcType=INTEGER},
+      process_limittime = #{processLimittime,jdbcType=INTEGER}
+    where process_id = #{processId,jdbcType=INTEGER}
+  </update>
+   <update id="updateByPrimaryKeyList" parameterType="com.zz.test.javafxmvn.common.entity.PyProcess">   
+    update py_process
+    set process_code = #{processCode,jdbcType=VARCHAR},
+      process_name = #{processName,jdbcType=VARCHAR},
+      type_code = #{typeCode,jdbcType=VARCHAR},
+      process_remark = #{processRemark,jdbcType=VARCHAR},
+      process_status = #{processStatus,jdbcType=CHAR},
+      disable = #{disable,jdbcType=INTEGER},
+      process_cron = #{processCron,jdbcType=VARCHAR},
+      cron_calibration = #{cronCalibration,jdbcType=INTEGER},
+      every_day_start_flag = #{everyDayStartFlag,jdbcType=INTEGER},
       execute_max = #{executeMax,jdbcType=INTEGER},
       process_limittime = #{processLimittime,jdbcType=INTEGER}
     where process_id = #{processId,jdbcType=INTEGER}

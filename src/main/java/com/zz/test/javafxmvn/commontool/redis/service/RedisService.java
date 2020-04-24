@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 /**
  * 
  * <note>
- * Desc： redis服务,管理查看已有缓存
+ * Desc： redis服务,管理查看已有缓存。通过redisTemplate去操作。
  * @author jld.zhangzhou
  * @email idiot_jillidan@163.com;
  * @re be willing to communicate

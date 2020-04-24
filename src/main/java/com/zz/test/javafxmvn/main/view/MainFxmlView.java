@@ -77,8 +77,8 @@ public class MainFxmlView extends BaseObjectView {
 	public static TreeView<String> mainTreeView = null;
 	@PostConstruct
 	 void initUI() throws Exception {
-		List<Map<String, String>> map = cacheService.queryMainTreeView("mainTreeView");//获取缓存，从redis（new boot 2.x Lettuce redis not jdis)
-		List<Map<String, String>> map1 = cacheService.queryMainTreeViewBySpring(null);
+		//List<Map<String, String>> map = cacheService.queryMainTreeView("mainTreeView");//获取缓存，从redis（new boot 2.x Lettuce redis not jdis)
+		//List<Map<String, String>> map1 = cacheService.queryMainTreeViewBySpring("bbb");//此处调用，该方法的@chcheable 不生效，由于上下文加载顺序问题。
 		// 初始化界面，恩，主要是初始化界面的样式，因为我想让他可以换皮肤和主题
 		// UIUtils.configUI((BorderPane)this.getView(), config);
 		parent = this.getView();

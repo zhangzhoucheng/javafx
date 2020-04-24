@@ -2,7 +2,7 @@
  * com.hpe.bbc.config.CacheKeyGenerator.java
  * Copyright (c) 2009 Hewlett-Packard Development Company, L.P.
  * All rights reserved.
- */
+ *//*
 package com.zz.test.javafxmvn.commontool.redis;
 
 import java.lang.reflect.Method;
@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.stereotype.Component;
 
-/**
+*//**
  * 
  * <note>
  * Desc： 
@@ -29,7 +29,7 @@ import org.springframework.stereotype.Component;
  * ------------------------------------------------------------------------------------------------------  
  * 1.0 		  2020-04-17 10:32:01    jld.zhangzhou     mobile base 3th,BeiJing      1.create the class            
  * </note>
- */
+ *//*
 //@Component
 public class RedisKeyGenerator implements KeyGenerator {
 
@@ -44,3 +44,4 @@ public class RedisKeyGenerator implements KeyGenerator {
 	
 
 }
+*/

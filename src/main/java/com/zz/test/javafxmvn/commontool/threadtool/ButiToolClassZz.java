@@ -3,6 +3,11 @@ package com.zz.test.javafxmvn.commontool.threadtool;
 
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -29,10 +34,17 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.zz.test.javafxmvn.common.entity.PyProcess;
 import com.zz.test.javafxmvn.commonbean.CommonRequest;
 import com.zz.test.javafxmvn.commonbean.CommonResult;
 import com.zz.test.javafxmvn.commonbean.PageCommonResult;
+import com.zz.test.javafxmvn.commontool.RegexpTool;
+
+import javafx.scene.control.TextField;
 
 
 
@@ -54,6 +66,7 @@ import com.zz.test.javafxmvn.commonbean.PageCommonResult;
  * </note>
  */
  public class ButiToolClassZz {
+	 private static final Logger logger = LoggerFactory.getLogger(ButiToolClassZz.class);
 
 	@SuppressWarnings("unused")
 	private static void getPageDataBySeveralList(List<List<Map<String, Object>>> serveralListMap,int pageNo,int pageSize) {
@@ -402,6 +415,338 @@ import com.zz.test.javafxmvn.commonbean.PageCommonResult;
 		return commonRequestNew;
 	}
 	
+	
+	/**
+	 * 
+	 * <note>
+	 * Desc： 反射操作相关的类
+	 * @author jld.zhangzhou
+	 * @email idiot_jillidan@163.com;
+	 * @re be willing to communicate
+	 * @refactor for jld
+	 * @datetime 2020-04-09 09:49:13
+	 * @location mobile base 3th,BeiJing 
+	 * version  1.0
+	 *  
+	 * @REVISIONS: 
+	 * Version 	        Date 		         Author             Location                   Description          
+	 * ------------------------------------------------------------------------------------------------------  
+	 * 1.0 		  2020-04-09 09:49:13    jld.zhangzhou     mobile base 3th,BeiJing      1.create the class            
+	 * </note>
+	 */
+	public static class ReflexRel<T>{
+		
+		/**
+		 * Desc:通过传入参数执行对应方法
+		 * @author jld.zhangzhou
+		 * @datetime 2020-04-09 09:49:52
+		 * @modify_record:
+		 * @param methodName
+		 * @param beanName
+		 * @param commonRequest
+		 * @return
+		 * @throws InstantiationException
+		 * @throws IllegalAccessException
+		 * @throws ClassNotFoundException
+		 * @throws NoSuchMethodException
+		 * @throws SecurityException
+		 * @throws IllegalArgumentException
+		 * @throws InvocationTargetException
+		 */
+		public static Object reflexMethod(String methodName, String beanName, CommonRequest commonRequest) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException {
+			//Object theClass=Class.forName(tableList.classMethod).newInstance();//获取class实例，即获取service层的对应class
+			Object ob=SpringUtils.getBean(beanName);
+			Method method=ob.getClass().getMethod(methodName,commonRequest.getClass());
+			return method.invoke(ob, commonRequest);
+		}
+		
+		/**
+		 * Desc:通过传入参数执行对应方法
+		 * @author jld.zhangzhou
+		 * @datetime 2020-04-09 09:50:49
+		 * @modify_record:
+		 * @param methodName
+		 * @param beanName
+		 * @param map
+		 * @return
+		 * @throws InstantiationException
+		 * @throws IllegalAccessException
+		 * @throws ClassNotFoundException
+		 * @throws NoSuchMethodException
+		 * @throws SecurityException
+		 * @throws IllegalArgumentException
+		 * @throws InvocationTargetException
+		 */
+		public static Object reflexMethodMap(String methodName, String beanName, Map<String, Object> map) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException {
+			//Object theClass=Class.forName(tableList.classMethod).newInstance();//获取class实例，即获取service层的对应class
+			Object ob=SpringUtils.getBean(beanName);
+			Method method=ob.getClass().getMethod(methodName,map.getClass());
+			return method.invoke(ob, map);
+		}
+		
+		/**
+		 * Desc:给对象某个属性设置值
+		 * @author jld.zhangzhou
+		 * @datetime 2020-04-22 21:55:00
+		 * @modify_record:
+		 * @param o
+		 * @param field
+		 * @param val
+		 * @throws NoSuchFieldException
+		 * @throws SecurityException
+		 * @throws IllegalArgumentException
+		 * @throws IllegalAccessException
+		 */
+		public static String reflexObjectSetFieldVal(Object o, String field, Object val) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+			//Field theField = o.getClass().getDeclaredField(field);
+			//theField.setAccessible(true);//设置可见
+			//theField.set(o, val);
+			
+			try {
+				Field theField = o.getClass().getDeclaredField(field);
+				theField.setAccessible(true);//设置可见
+				
+				if(theField.getType().isInstance(val)) {
+					theField.set(o, val);
+					return "1";
+				}
+				Object fieldObj = reflexTypeParseFromValToField((String)val, theField);
+				if(fieldObj == null) {
+					return String.format("字段[%s],类型必须是:%s", field,theField.getType().getName());
+				}
+				theField.set(o, reflexTypeParseFromValToField((String)val, theField));
+				/*if(e.getValue() instanceof (theField.getGenericType())) {
+					theField.getType();
+				}*/
+			} catch(Exception ee) {
+				ee.printStackTrace();
+				logger.error(String.format("@@reflexObjectSetFieldVal,error!"),ee);
+				return String.format("@@reflexObjectSetFieldVal error");
+			}
+			
+			return "1";
+		}
+		
+		/**
+		 * Desc:参数化类型判断，暂时没应用实例
+		 * @author jld.zhangzhou
+		 * @datetime 2020-04-23 15:05:34
+		 * @modify_record:
+		 * @param f
+		 * @return
+		 */
+		public static Class<?>[] getParameterizedType(Field f) {
+			// 获取f字段的通用类型
+			Type fc = f.getGenericType(); // 关键的地方得到其Generic的类型
+
+
+			// 如果不为空并且是泛型参数的类型
+			if (fc != null && fc instanceof ParameterizedType) {
+			ParameterizedType pt = (ParameterizedType) fc;
+
+
+			Type[] types = pt.getActualTypeArguments();
+
+
+			if (types != null && types.length > 0) {
+			Class<?>[] classes = new Class<?>[types.length];
+			for (int i = 0; i < classes.length; i++) {
+			classes[i] = (Class<?>) types[i];
+			}
+			return classes;
+			}
+			}
+			return null;
+			}
+		@Test
+		public void test1() throws NoSuchFieldException, SecurityException {
+			PyProcess p = new PyProcess();
+			Field f1 =p.getClass().getDeclaredField("disable");
+			Object t=this.getParameterizedType(f1);
+		}
+		
+		/**
+		 * Desc:给对象某多个属性设置值
+		 * @author jld.zhangzhou
+		 * @datetime 2020-04-23 13:41:40
+		 * @modify_record:
+		 * @param o
+		 * @param map
+		 * @throws NoSuchFieldException
+		 * @throws SecurityException
+		 * @throws IllegalArgumentException
+		 * @throws IllegalAccessException
+		 * @throws InvocationTargetException 
+		 * @throws NoSuchMethodException 
+		 * @throws ClassNotFoundException 
+		 */
+		public static String reflexObjectSetFieldVal(Object o, Map<String, Object> map) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+			
+			for(Entry<String, Object> e : map.entrySet()) {
+				String msg = reflexObjectSetFieldVal(o, e.getKey(), e.getValue());
+				if("1".equals(msg)) {
+					continue;
+				}
+				return msg;
+				/*try {
+					Field theField = o.getClass().getDeclaredField(e.getKey());
+					theField.setAccessible(true);//设置可见
+					
+					if(theField.getType().isInstance(e.getValue())) {
+						theField.set(o, e.getValue());
+						continue;
+					}
+					Object fieldObj = reflexTypeParseFromValToField((String)e.getValue(), theField);
+					if(fieldObj == null) {
+						return String.format("字段[%s],类型必须是:%s", e.getKey(),theField.getType().getName());
+					}
+					theField.set(o, reflexTypeParseFromValToField((String)e.getValue(), theField));
+					if(e.getValue() instanceof (theField.getGenericType())) {
+						theField.getType();
+					}
+				} catch(Exception ee) {
+					ee.printStackTrace();
+					logger.error(String.format("@@reflexObjectSetFieldVal,error!"),ee);
+					return String.format("@@reflexObjectSetFieldVal error");
+				}*/
+				
+				
+			}
+			
+			return "1";
+			
+		}
+		
+		/**
+		 * Desc:给对象某多个属性设置值,并且提示fieldsHead对应的中文
+		 * @author jld.zhangzhou
+		 * @datetime 2020-04-23 16:49:56
+		 * @modify_record:
+		 * @param o
+		 * @param map
+		 * @param fieldsHead
+		 * @return
+		 * @throws IllegalAccessException 
+		 * @throws IllegalArgumentException 
+		 * @throws SecurityException 
+		 * @throws NoSuchFieldException 
+		 */
+		public static String reflexObjectSetValByField2fieldsHead(Object o, Map<String, Object> map, final String[] fieldsHead) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+			String msg = reflexObjectSetFieldVal(o, map);
+			String msgsub = (String) RegexpTool.getContent4LR(msg, "\\[", "\\]");
+			for(String f : fieldsHead) {
+				String c_ = (String) RegexpTool.getContent4LR(f, "_\\$c_", "_");
+				if(c_.equals(msgsub)) {
+					String name_ = (String) RegexpTool.getContent4LR(f, "^", "_");
+					msg = msg.replace(String.format("[%s]", msgsub), "[" + name_ + "]");
+				}
+	
+			}
+			return msg;
+		}
+		
+		/**
+		 * Desc:把String val 值转换成field对应的类型。
+		 * @author jld.zhangzhou
+		 * @datetime 2020-04-23 15:29:06
+		 * @modify_record:
+		 * @param val
+		 * @param field
+		 * @return
+		 * @throws ClassNotFoundException
+		 * @throws NoSuchMethodException
+		 * @throws SecurityException
+		 * @throws IllegalAccessException
+		 * @throws IllegalArgumentException
+		 * @throws InvocationTargetException
+		 */
+		public static Object reflexTypeParseFromValToField(String val, Field field) {
+			//field为目标，value为投进来的值
+			String ftype = field.getType().getName(); //field为反射出来的字段类型
+			String fstype = field.getType().getSimpleName();
+			if (field.getType() == String.class)
+				return val.toString();
+			else if (ftype.indexOf("java.lang.") == 0) {
+				
+				try {
+					// java.lang下面类型通用转换函数
+					Class<?> class1 = Class.forName(ftype);
+					Method method = class1.getMethod("parse" + fixparse(fstype),String.class);
+					if (method != null) {
+						Object ret = method.invoke(null, val.toString());
+						if (ret != null)
+							return ret;
+					}
+				} catch(Exception e) {
+					//e.printStackTrace();
+					logger.warn(String.format("@@reflexTypeParseFromValToField,val=%s,field=%s error!", val,field.toString()));
+					return null;
+				}
+				
+			}
+			return null;
+
+			
+		}
+		private static String fixparse(String fstype) {
+			switch (fstype) {
+			case "Integer":
+				return "Int";
+			default:
+				return fstype;
+			}
+		}
+		
+		/**
+		 * Desc:transform String to T
+		 * @author jld.zhangzhou
+		 * @datetime 2020-04-23 22:19:30
+		 * @modify_record:
+		 * @param val
+		 * @param field
+		 * @return
+		 */
+		public static<T> Object reflexTypeParseFromValToObject(String val, Object field) {
+			//field为目标，value为投进来的值
+			String ftype = field.getClass().getName(); //field为反射出来的字段类型
+			String fstype = field.getClass().getSimpleName();
+			if (field.getClass() == String.class)
+				return val.toString();
+			else if (ftype.indexOf("java.lang.") == 0) {
+				
+				try {
+					// java.lang下面类型通用转换函数
+					Class<?> class1 = Class.forName(ftype);
+					Method method = class1.getMethod("parse" + fixparse(fstype),String.class);
+					if (method != null) {
+						Object ret = method.invoke(null, val.toString());
+						if (ret != null)
+							return ret;
+					}
+				} catch(Exception e) {
+					//e.printStackTrace();
+					logger.warn(String.format("@@reflexTypeParseFromValToField,val=%s,field=%s error!", val,field.toString()));
+					return null;
+				}
+				
+			}
+			return null;
+
+			
+		}
+		
+		@Test
+		public void test() {
+			Integer a = 11;
+			
+			System.out.println(a+"");
+		}
+
+	}
+	
+	
+	
+	
 	public void test() throws NoSuchAlgorithmException {
 		List<String> yearRodMonthList = new ArrayList<>();
 		yearRodMonthList =  ButiToolClassZz.queryYearRodMonthByNowTest(18, new Date(), 2, "yyyyMM");
@@ -483,7 +828,6 @@ import com.zz.test.javafxmvn.commonbean.PageCommonResult;
 			System.out.println(i);
 			i++;
 		}*/
-	    
-	    
-	}
+
+		}
 }

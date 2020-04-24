@@ -5,8 +5,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zz.test.javafxmvn.commonbean.MenuNode;
+import com.zz.test.javafxmvn.commontool.redis.service.CacheService;
+import com.zz.test.javafxmvn.commontool.redis.service.RedisService;
 
 import javafx.scene.control.TreeItem;
 
@@ -33,6 +36,11 @@ public class KeyValTool {
 	 * 主菜单渲染的时候，把菜单的code,和name存入map
 	 */
 	public static Map<String, Object> itemKeyVal = new HashMap<String, Object>();
+	@Autowired
+	public static CacheService cacheService;
+	
+	@Autowired
+	public static RedisService redisService;
 	
 	public static String getKeyByVal(String val) {
 		if(StringUtils.isBlank(val)) {
@@ -56,4 +64,8 @@ public class KeyValTool {
 	 * 主菜单渲染的时候，把菜单的code,MenuNode存入map
 	 */
 	public static Map<String, MenuNode> mainTreeViewCode2MenuNode = new HashMap<>();
+	
+	public static void test1() {
+		//KeyValTool.redisService.set(key, value);
+	}
 }

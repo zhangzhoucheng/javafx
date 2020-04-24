@@ -1,5 +1,10 @@
 package com.zz.test.javafxmvn.common.entity;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
+import com.zz.test.javafxmvn.commontool.threadtool.ButiToolClassZz;
+
 public class PyProcess {
     private Integer processId;
 
@@ -13,19 +18,23 @@ public class PyProcess {
 
     private String processStatus;
 
-    private Boolean disable;
+    private Integer disable;
 
     private String processCron;
 
-    private Boolean cronCalibration;
+    private Integer cronCalibration;
 
-    private Boolean everyDayStartFlag;
+    private Integer everyDayStartFlag;
 
     private Integer executeMax;
 
     private Integer processLimittime;
+    
+    public PyProcess() {
+		
+	}
 
-    public Integer getProcessId() {
+	public Integer getProcessId() {
         return processId;
     }
 
@@ -73,11 +82,11 @@ public class PyProcess {
         this.processStatus = processStatus == null ? null : processStatus.trim();
     }
 
-    public Boolean getDisable() {
+    public Integer getDisable() {
         return disable;
     }
 
-    public void setDisable(Boolean disable) {
+    public void setDisable(Integer disable) {
         this.disable = disable;
     }
 
@@ -89,19 +98,19 @@ public class PyProcess {
         this.processCron = processCron == null ? null : processCron.trim();
     }
 
-    public Boolean getCronCalibration() {
+    public Integer getCronCalibration() {
         return cronCalibration;
     }
 
-    public void setCronCalibration(Boolean cronCalibration) {
+    public void setCronCalibration(Integer cronCalibration) {
         this.cronCalibration = cronCalibration;
     }
 
-    public Boolean getEveryDayStartFlag() {
+    public Integer getEveryDayStartFlag() {
         return everyDayStartFlag;
     }
 
-    public void setEveryDayStartFlag(Boolean everyDayStartFlag) {
+    public void setEveryDayStartFlag(Integer everyDayStartFlag) {
         this.everyDayStartFlag = everyDayStartFlag;
     }
 

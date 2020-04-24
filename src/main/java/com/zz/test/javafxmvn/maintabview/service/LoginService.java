@@ -30,4 +30,12 @@ public class LoginService {
 		return pyProList;
 	}
 
+	
+	public void updatePyProcessList(PyProcess py) {
+		pyProcessMapper.updateByPrimaryKey(py);
+	}
+	
+	public void insertPyProcess(PyProcess py) {
+		pyProcessMapper.insertSelective(py);
+	}
 }

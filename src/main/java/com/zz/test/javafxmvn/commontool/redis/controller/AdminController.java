@@ -15,17 +15,22 @@ import com.zz.test.javafxmvn.commonbean.BaseController;
 
 
 /**
- * <pre>
- * Desc： 
- * @author gaoyang
- * @date   2017年9月7日 上午11:13:10
- * @version 1.0
- * @see  
- * REVISIONS: 
- * Version 	   Date 		    Author 			  Description
- * ------------------------------------------------------------------- 
- * 1.0 		  2017年9月7日 	   gaoyang 	         1. Created this class. 
- * </pre>  
+ * 
+ * <note>
+ * Desc：cache 界面 
+ * @author jld.zhangzhou
+ * @email idiot_jillidan@163.com;
+ * @re be willing to communicate
+ * @refactor for jld
+ * @datetime 2020-04-21 17:58:11
+ * @location mobile base 3th,BeiJing 
+ * version  1.0
+ *  
+ * @REVISIONS: 
+ * Version 	        Date 		         Author             Location                   Description          
+ * ------------------------------------------------------------------------------------------------------  
+ * 1.0 		  2020-04-21 17:58:11    jld.zhangzhou     mobile base 3th,BeiJing      1.create the class            
+ * </note>
  */
 @Controller
 @RequestMapping("/cache/manage")

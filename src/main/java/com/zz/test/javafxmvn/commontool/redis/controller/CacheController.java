@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.zz.test.javafxmvn.commonbean.BaseController;
 import com.zz.test.javafxmvn.commonbean.CommonResult;
+import com.zz.test.javafxmvn.commontool.redis.service.CacheService;
 import com.zz.test.javafxmvn.commontool.redis.service.DictInitRunner;
 import com.zz.test.javafxmvn.commontool.redis.service.DictService;
 import com.zz.test.javafxmvn.commontool.redis.service.RedisService;
@@ -54,6 +55,9 @@ public class CacheController extends BaseController {
 
 	@Autowired
 	private DictInitRunner dictInitRunner;
+	
+	@Autowired
+	private CacheService ca;
 	
 	@RequestMapping("/get")
 	public CommonResult getValueByKey(@RequestParam("key") String key){
@@ -205,5 +209,10 @@ public class CacheController extends BaseController {
 	}
 	
 	
+	@RequestMapping("/test")
+	public CommonResult  getM(String menu) throws Exception {
+		return new CommonResult(ca.queryMainTreeViewBySpring(menu));
+		
+	}
 	
 }

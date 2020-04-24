@@ -110,7 +110,9 @@ public class RedisConfig extends CachingConfigurerSupport{
                 // 设置缓存过期时间，单位秒
                 .entryTtl(Duration.ofSeconds(cacheExpireTime))
                 // 不缓存空值
-                .disableCachingNullValues();
+                .disableCachingNullValues()
+              //disableKeyPrefix禁用key生成的 cachename::key 前缀问题。如：zz-cache::cert_type:3。看了好多源码，最后回到最初方法，才发现，我傻逼了。
+                .disableKeyPrefix();
 
         return RedisCacheManager.builder(factory)
                 .cacheDefaults(cacheConfig)
@@ -126,7 +128,7 @@ public class RedisConfig extends CachingConfigurerSupport{
      * @param redisConnectionFactory
      * @return
      */
-   /* @Bean
+    @Bean
     RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         // 配置 json 序列化器 - Jackson2JsonRedisSerializer
         Jackson2JsonRedisSerializer jacksonSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
@@ -138,7 +140,7 @@ public class RedisConfig extends CachingConfigurerSupport{
         // 创建并配置自定义 RedisTemplateRedisOperator
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
-        // 将 key 序列化成字符串
+        // 将 key 序列化成字符串,//解决redis中出现\xac\xed\x00\x05t\x00\
         template.setKeySerializer(new StringRedisSerializer());
         // 将 hash 的 key 序列化成字符串
         template.setHashKeySerializer(new StringRedisSerializer());
@@ -148,17 +150,15 @@ public class RedisConfig extends CachingConfigurerSupport{
         template.setHashValueSerializer(jacksonSerializer);
         template.afterPropertiesSet();
         return template;
-    }*/
+    }
 
     /**
-	 * 
-	 * <pre>
-	 * Desc  异常回调处理配置
-	 * @return
-	 * @author gaoyang
-	 * @date   2017年7月27日 下午9:29:49
-	 * </pre>
-	 */
+     * Desc:异常回调处理配置
+     * @author jld.zhangzhou
+     * @datetime 2020-04-20 22:17:00
+     * @modify_record:
+     * @return
+     */
 	@Bean
 	public CacheErrorHandler cacheErrorHandler(){
 		return redisCacheErrorHandler;

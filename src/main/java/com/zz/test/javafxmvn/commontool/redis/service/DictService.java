@@ -9,8 +9,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
 import com.zz.test.javafxmvn.commondb.CommonDb;
@@ -36,6 +38,7 @@ import com.zz.test.javafxmvn.commondb.CommonDb;
  * </note>
  */
 @Service
+@CacheConfig(cacheNames="zz-cache")//给改类定义cache name,类下所有方法都会是cacheNames="zz-cache"，除非在方法上进一步定义。
 public class DictService {
 	@Autowired
 	private CommonDb mybatisDao;
@@ -134,7 +137,7 @@ public class DictService {
 
 	@Override
 	public String toString() {
-		return "saudit-cache";
+		return "zz-cache";
 	}
 	
 }
