@@ -524,52 +524,52 @@ public class PyProcessExample {
             return (Criteria) this;
         }
 
-        public Criteria andDisableEqualTo(Boolean value) {
+        public Criteria andDisableEqualTo(Integer value) {
             addCriterion("disable =", value, "disable");
             return (Criteria) this;
         }
 
-        public Criteria andDisableNotEqualTo(Boolean value) {
+        public Criteria andDisableNotEqualTo(Integer value) {
             addCriterion("disable <>", value, "disable");
             return (Criteria) this;
         }
 
-        public Criteria andDisableGreaterThan(Boolean value) {
+        public Criteria andDisableGreaterThan(Integer value) {
             addCriterion("disable >", value, "disable");
             return (Criteria) this;
         }
 
-        public Criteria andDisableGreaterThanOrEqualTo(Boolean value) {
+        public Criteria andDisableGreaterThanOrEqualTo(Integer value) {
             addCriterion("disable >=", value, "disable");
             return (Criteria) this;
         }
 
-        public Criteria andDisableLessThan(Boolean value) {
+        public Criteria andDisableLessThan(Integer value) {
             addCriterion("disable <", value, "disable");
             return (Criteria) this;
         }
 
-        public Criteria andDisableLessThanOrEqualTo(Boolean value) {
+        public Criteria andDisableLessThanOrEqualTo(Integer value) {
             addCriterion("disable <=", value, "disable");
             return (Criteria) this;
         }
 
-        public Criteria andDisableIn(List<Boolean> values) {
+        public Criteria andDisableIn(List<Integer> values) {
             addCriterion("disable in", values, "disable");
             return (Criteria) this;
         }
 
-        public Criteria andDisableNotIn(List<Boolean> values) {
+        public Criteria andDisableNotIn(List<Integer> values) {
             addCriterion("disable not in", values, "disable");
             return (Criteria) this;
         }
 
-        public Criteria andDisableBetween(Boolean value1, Boolean value2) {
+        public Criteria andDisableBetween(Integer value1, Integer value2) {
             addCriterion("disable between", value1, value2, "disable");
             return (Criteria) this;
         }
 
-        public Criteria andDisableNotBetween(Boolean value1, Boolean value2) {
+        public Criteria andDisableNotBetween(Integer value1, Integer value2) {
             addCriterion("disable not between", value1, value2, "disable");
             return (Criteria) this;
         }
@@ -654,52 +654,52 @@ public class PyProcessExample {
             return (Criteria) this;
         }
 
-        public Criteria andCronCalibrationEqualTo(Boolean value) {
+        public Criteria andCronCalibrationEqualTo(Integer value) {
             addCriterion("cron_calibration =", value, "cronCalibration");
             return (Criteria) this;
         }
 
-        public Criteria andCronCalibrationNotEqualTo(Boolean value) {
+        public Criteria andCronCalibrationNotEqualTo(Integer value) {
             addCriterion("cron_calibration <>", value, "cronCalibration");
             return (Criteria) this;
         }
 
-        public Criteria andCronCalibrationGreaterThan(Boolean value) {
+        public Criteria andCronCalibrationGreaterThan(Integer value) {
             addCriterion("cron_calibration >", value, "cronCalibration");
             return (Criteria) this;
         }
 
-        public Criteria andCronCalibrationGreaterThanOrEqualTo(Boolean value) {
+        public Criteria andCronCalibrationGreaterThanOrEqualTo(Integer value) {
             addCriterion("cron_calibration >=", value, "cronCalibration");
             return (Criteria) this;
         }
 
-        public Criteria andCronCalibrationLessThan(Boolean value) {
+        public Criteria andCronCalibrationLessThan(Integer value) {
             addCriterion("cron_calibration <", value, "cronCalibration");
             return (Criteria) this;
         }
 
-        public Criteria andCronCalibrationLessThanOrEqualTo(Boolean value) {
+        public Criteria andCronCalibrationLessThanOrEqualTo(Integer value) {
             addCriterion("cron_calibration <=", value, "cronCalibration");
             return (Criteria) this;
         }
 
-        public Criteria andCronCalibrationIn(List<Boolean> values) {
+        public Criteria andCronCalibrationIn(List<Integer> values) {
             addCriterion("cron_calibration in", values, "cronCalibration");
             return (Criteria) this;
         }
 
-        public Criteria andCronCalibrationNotIn(List<Boolean> values) {
+        public Criteria andCronCalibrationNotIn(List<Integer> values) {
             addCriterion("cron_calibration not in", values, "cronCalibration");
             return (Criteria) this;
         }
 
-        public Criteria andCronCalibrationBetween(Boolean value1, Boolean value2) {
+        public Criteria andCronCalibrationBetween(Integer value1, Integer value2) {
             addCriterion("cron_calibration between", value1, value2, "cronCalibration");
             return (Criteria) this;
         }
 
-        public Criteria andCronCalibrationNotBetween(Boolean value1, Boolean value2) {
+        public Criteria andCronCalibrationNotBetween(Integer value1, Integer value2) {
             addCriterion("cron_calibration not between", value1, value2, "cronCalibration");
             return (Criteria) this;
         }
@@ -714,52 +714,52 @@ public class PyProcessExample {
             return (Criteria) this;
         }
 
-        public Criteria andEveryDayStartFlagEqualTo(Boolean value) {
+        public Criteria andEveryDayStartFlagEqualTo(Integer value) {
             addCriterion("every_day_start_flag =", value, "everyDayStartFlag");
             return (Criteria) this;
         }
 
-        public Criteria andEveryDayStartFlagNotEqualTo(Boolean value) {
+        public Criteria andEveryDayStartFlagNotEqualTo(Integer value) {
             addCriterion("every_day_start_flag <>", value, "everyDayStartFlag");
             return (Criteria) this;
         }
 
-        public Criteria andEveryDayStartFlagGreaterThan(Boolean value) {
+        public Criteria andEveryDayStartFlagGreaterThan(Integer value) {
             addCriterion("every_day_start_flag >", value, "everyDayStartFlag");
             return (Criteria) this;
         }
 
-        public Criteria andEveryDayStartFlagGreaterThanOrEqualTo(Boolean value) {
+        public Criteria andEveryDayStartFlagGreaterThanOrEqualTo(Integer value) {
             addCriterion("every_day_start_flag >=", value, "everyDayStartFlag");
             return (Criteria) this;
         }
 
-        public Criteria andEveryDayStartFlagLessThan(Boolean value) {
+        public Criteria andEveryDayStartFlagLessThan(Integer value) {
             addCriterion("every_day_start_flag <", value, "everyDayStartFlag");
             return (Criteria) this;
         }
 
-        public Criteria andEveryDayStartFlagLessThanOrEqualTo(Boolean value) {
+        public Criteria andEveryDayStartFlagLessThanOrEqualTo(Integer value) {
             addCriterion("every_day_start_flag <=", value, "everyDayStartFlag");
             return (Criteria) this;
         }
 
-        public Criteria andEveryDayStartFlagIn(List<Boolean> values) {
+        public Criteria andEveryDayStartFlagIn(List<Integer> values) {
             addCriterion("every_day_start_flag in", values, "everyDayStartFlag");
             return (Criteria) this;
         }
 
-        public Criteria andEveryDayStartFlagNotIn(List<Boolean> values) {
+        public Criteria andEveryDayStartFlagNotIn(List<Integer> values) {
             addCriterion("every_day_start_flag not in", values, "everyDayStartFlag");
             return (Criteria) this;
         }
 
-        public Criteria andEveryDayStartFlagBetween(Boolean value1, Boolean value2) {
+        public Criteria andEveryDayStartFlagBetween(Integer value1, Integer value2) {
             addCriterion("every_day_start_flag between", value1, value2, "everyDayStartFlag");
             return (Criteria) this;
         }
 
-        public Criteria andEveryDayStartFlagNotBetween(Boolean value1, Boolean value2) {
+        public Criteria andEveryDayStartFlagNotBetween(Integer value1, Integer value2) {
             addCriterion("every_day_start_flag not between", value1, value2, "everyDayStartFlag");
             return (Criteria) this;
         }

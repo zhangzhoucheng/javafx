@@ -42,6 +42,7 @@ import com.zz.test.javafxmvn.common.entity.PyProcess;
 import com.zz.test.javafxmvn.commonbean.CommonRequest;
 import com.zz.test.javafxmvn.commonbean.CommonResult;
 import com.zz.test.javafxmvn.commonbean.PageCommonResult;
+import com.zz.test.javafxmvn.commontag.TableHeadFields;
 import com.zz.test.javafxmvn.commontool.RegexpTool;
 
 import javafx.scene.control.TextField;
@@ -485,6 +486,107 @@ import javafx.scene.control.TextField;
 		}
 		
 		/**
+		 * Desc:通过对Object,String field 获取Field
+		 * @author jld.zhangzhou
+		 * @datetime 2020-04-28 20:49:50
+		 * @modify_record:
+		 * @param o
+		 * @param field
+		 * @return
+		 * @throws NoSuchFieldException
+		 * @throws SecurityException
+		 * @throws IllegalArgumentException
+		 * @throws IllegalAccessException
+		 */
+		public static Field reflexObjectGetField(Object o, String field)  {
+			//Field theField = o.getClass().getDeclaredField(field);
+			//theField.setAccessible(true);//设置可见
+			//theField.set(o, val);
+			
+		
+			Field theField = null;
+			try {
+				theField = o.getClass().getDeclaredField(field);
+				theField.setAccessible(true);//设置可见
+				return theField;
+			} catch (NoSuchFieldException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return theField;
+			
+		}
+		
+		/**
+		 * Desc:to get Filed in T from variable name field belong to T
+		 * @author jld.zhangzhou
+		 * @datetime 2020-04-30 09:16:08
+		 * @modify_record:
+		 * @param t
+		 * @param field
+		 * @return
+		 */
+		public static<T> Field reflexTGetField(T t, String field)  {
+			//Field theField = o.getClass().getDeclaredField(field);
+			//theField.setAccessible(true);//设置可见
+			//theField.set(o, val);
+			
+		
+			Field theField = null;
+			try {
+				theField = t.getClass().getDeclaredField(field);
+				theField.setAccessible(true);//设置可见
+				return theField;
+			} catch (NoSuchFieldException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return theField;
+			
+		}
+		
+		/**
+		 * Desc:to get Filed val in T from variable name field belong to T
+		 * @author jld.zhangzhou
+		 * @datetime 2020-04-30 09:16:08
+		 * @modify_record:
+		 * @param t
+		 * @param field
+		 * @return
+		 * @throws IllegalAccessException 
+		 * @throws IllegalArgumentException 
+		 */
+		public static<T> Object reflexTGetFieldObject(T t, String field) throws IllegalArgumentException, IllegalAccessException  {
+			//Field theField = o.getClass().getDeclaredField(field);
+			//theField.setAccessible(true);//设置可见
+			//theField.set(o, val);
+			
+		
+			Field theField = null;
+			try {
+				theField = t.getClass().getDeclaredField(field);
+				theField.setAccessible(true);//设置可见
+				return theField.get(t);
+			} catch (NoSuchFieldException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Object o =theField.get(t);
+			return theField.get(t);
+			
+		}
+		
+		
+		/**
 		 * Desc:给对象某个属性设置值
 		 * @author jld.zhangzhou
 		 * @datetime 2020-04-22 21:55:00
@@ -631,14 +733,15 @@ import javafx.scene.control.TextField;
 		 * @throws SecurityException 
 		 * @throws NoSuchFieldException 
 		 */
-		public static String reflexObjectSetValByField2fieldsHead(Object o, Map<String, Object> map, final String[] fieldsHead) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		public static String reflexObjectSetValByField2fieldsHead(Object o, Map<String, Object> map, TableHeadFields fieldsHead) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 			String msg = reflexObjectSetFieldVal(o, map);
 			String msgsub = (String) RegexpTool.getContent4LR(msg, "\\[", "\\]");
-			for(String f : fieldsHead) {
-				String c_ = (String) RegexpTool.getContent4LR(f, "_\\$c_", "_");
+			for(TableHeadFields f : fieldsHead.getTableHeadFields()) {
+				String c_ = f.getField();
 				if(c_.equals(msgsub)) {
-					String name_ = (String) RegexpTool.getContent4LR(f, "^", "_");
+					String name_ = f.getFieldName();
 					msg = msg.replace(String.format("[%s]", msgsub), "[" + name_ + "]");
+					return msg;
 				}
 	
 			}
@@ -706,7 +809,7 @@ import javafx.scene.control.TextField;
 		 * @param field
 		 * @return
 		 */
-		public static<T> Object reflexTypeParseFromValToObject(String val, Object field) {
+		public static Object reflexTypeParseFromValToObject(String val, Object field) {
 			//field为目标，value为投进来的值
 			String ftype = field.getClass().getName(); //field为反射出来的字段类型
 			String fstype = field.getClass().getSimpleName();
@@ -734,6 +837,8 @@ import javafx.scene.control.TextField;
 
 			
 		}
+		
+		
 		
 		@Test
 		public void test() {

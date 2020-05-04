@@ -25,6 +25,7 @@ import de.felixroske.jfxsupport.FXMLView;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
@@ -32,6 +33,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 
@@ -145,7 +147,7 @@ public class MainFxmlView extends BaseObjectView {
 	                if(item == null) {
 	                	return;
 	                }
-	                if(item.isLeaf()) {
+	                if(item.isLeaf()) {//是叶子节点，则需要渲染tab content。
 	            		SplitPane sp = (SplitPane) parent.lookup("#splitpane_main");//获取splitpane
 	            		TabPane tbp = (TabPane) sp.getItems().get(1).lookup("#main_tabpane");
 	            		Tab choiceTab = null;
@@ -170,7 +172,28 @@ public class MainFxmlView extends BaseObjectView {
 		            		choiceTab.setContent(theSp);
 		            		try {
 		            			TagTool.paneLoadFxmlSimple(theSp, tabFxml, getClass());
-								//TagTool.paneLoadFxml(theSp, tabFxml);
+		            			//TagTool.paneLoadFxml(theSp, tabFxml);
+		            			
+		            			/**
+		            			 * 获取子页面的隐藏域中的参数
+		            			 */
+		            			AnchorPane p = (AnchorPane) theSp.getContent();
+		            			Label type_code_l = (Label) p.lookup("#type_code");
+		            			Label process_code_l = (Label) p.lookup("#process_code");
+		            			int level  = treeView.getTreeItemLevel(item);
+		            			if(level == 2) {//当是第二级菜单，则属于py_process_m1_type层次，此时menu_id的值是存的type_code值。
+		            				type_code_l.setText(choiceTab.getId());
+		            			}
+		            			if(level == 3) {//当是第三级菜单，则属于py_process_m2_process层次，此时menu_id的值是存的process_code值，
+		            				process_code_l.setText(choiceTab.getId());
+		            				type_code_l.setText(KeyValTool.getKeyByVal(item.getParent().getValue()));//获取该元素父级之后获取type_code的值。
+		            			}
+		            			System.out.println("lev:"+level);
+		            			//type_code_l.setText(value);
+		            			System.out.println("type_code_l:"+type_code_l.getText());
+		            			System.out.println("process_code_l:"+process_code_l.getText());
+		            			
+								
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();

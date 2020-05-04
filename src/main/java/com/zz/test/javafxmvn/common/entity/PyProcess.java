@@ -1,9 +1,7 @@
 package com.zz.test.javafxmvn.common.entity;
 
-import java.util.Map;
-import java.util.Map.Entry;
-
-import com.zz.test.javafxmvn.commontool.threadtool.ButiToolClassZz;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 
 public class PyProcess {
     private Integer processId;
@@ -30,11 +28,16 @@ public class PyProcess {
 
     private Integer processLimittime;
     
-    public PyProcess() {
-		
-	}
-
-	public Integer getProcessId() {
+    /**
+     * 多余列，用来首列显示checkbox复选框。
+     */
+    //private boolean choice_val = true;
+    
+    // Property variables for table view，如果本身需要把该值写入数据库等，要么从BooleanProperty choice获取，
+    //要么建立一个boolean choice_val ，好直接引用	
+    private transient BooleanProperty choice = new SimpleBooleanProperty(false);
+    
+    public Integer getProcessId() {
         return processId;
     }
 
@@ -129,4 +132,14 @@ public class PyProcess {
     public void setProcessLimittime(Integer processLimittime) {
         this.processLimittime = processLimittime;
     }
+
+	public BooleanProperty getChoice() {
+		return choice;
+	}
+
+	public void setChoice(BooleanProperty choice) {
+		this.choice = choice;
+	}
+    
+    
 }

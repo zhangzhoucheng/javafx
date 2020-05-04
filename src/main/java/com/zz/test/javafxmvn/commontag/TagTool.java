@@ -1,23 +1,37 @@
 package com.zz.test.javafxmvn.commontag;
 
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.event.TableColumnModelEvent;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.zz.test.javafxmvn.common.entity.PyProcess;
+import com.zz.test.javafxmvn.commonbean.Constants;
 import com.zz.test.javafxmvn.commontool.RegexpTool;
 import com.zz.test.javafxmvn.commontool.threadtool.ButiToolClassZz;
 import com.zz.test.javafxmvn.main.Main;
 import com.zz.test.javafxmvn.main.view.MainFxmlView;
 import com.zz.test.javafxmvn.maintabview.view.LoginFxmlView;
 
+import ch.qos.logback.core.joran.action.Action;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
@@ -34,13 +48,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Callback;
-import javafx.util.StringConverter;
-import javafx.util.converter.NumberStringConverter;
 
 /**
  * 
@@ -185,6 +199,8 @@ public class TagTool {
 		 * 表格默认宽度
 		 */
 		static final int defaultWidth = 100;
+		
+
 
 		/**
 		 * Desc:通过传入的cols，和list<T>渲染T列表
@@ -196,7 +212,7 @@ public class TagTool {
 		 * @param list
 		 * @return
 		 */
-		public static <T> TableView initTableOld(String[] cols, List<T> list, int defaultWidth) {
+		public static<T> TableView initTable(String[] cols, List<T> list, int defaultWidth) {
 			if (defaultWidth <= 0) {
 				defaultWidth = TableTool.defaultWidth;
 			}
@@ -266,14 +282,17 @@ public class TagTool {
 		 * @modify_record:
 		 * @param cols
 		 * @param list
+		 * @param editAble
 		 * @return
+		 * @throws IllegalAccessException 
+		 * @throws InstantiationException 
 		 */
-		public static <T> TableView initTable(String[] cols, List<T> list, int defaultWidth) {
+		public  static<T> TableView initTableOld(List<TableHeadFields> cols, List<T> list, int defaultWidth, Boolean editAble) throws InstantiationException, IllegalAccessException {
 			if (defaultWidth <= 0) {
 				defaultWidth = TableTool.defaultWidth;
 			}
 			TableView<T> table = new TableView<>();
-			String[] fieldsHead = cols; /*
+			List<TableHeadFields> fieldsHead = cols; /*
 										 * { "进程编码_$c_processCode_$w_100", "进程名_$processName", "进程类型_$typeCode",
 										 * "进程描述_$processRemark", "进程开关_$processStatus", "进程可用_$disable",
 										 * "定时任务_$processCron", "定时任务校准_$cronCalibration",
@@ -285,63 +304,133 @@ public class TagTool {
 			ObservableList<T> data = FXCollections.observableArrayList(list);
 
 			// TagTool.TableTool.initTable( tableView, String [] args, List<T> list);
-			table.setEditable(true);
-
-			Callback<TableColumn<T, Object>, TableCell<T, Object>> cellFactory = (
-					TableColumn<T, Object> p) -> new TextFieldTableCell<T,Object>((StringConverter<Object>) new StringConverter<Object>() {
+			table.setEditable(editAble);
+			table.setItems(data);
+			/*Callback<TableColumn<T, R>, TableCell<T, R>> cellFactory = (
+					TableColumn<T, R> p) -> new TextFieldTableCell<T,R>( ( new StringConverter<R>() {
 
 						@Override
-						public String toString(Object object) {
+						public String toString(R object) {
 							
 							return ""+object;
 						}
 
 						@Override
-						public Object fromString(String string) {
-							return  ButiToolClassZz.ReflexRel.reflexTypeParseFromValToObject(string, Object.class);
+						public R fromString(String string) {
+							System.out.println(1);
+							return  (R) ButiToolClassZz.ReflexRel.reflexTypeParseFromValToObject(string,(Object)R);
 						}
-					});
+					})
+							);*/
 			List<TableColumn<T, Object>> listTabCol = new ArrayList();
+			
+			 
 
 			int i = 0;
-			for (String head : fieldsHead) {
-				TableColumn<T, Object> col = new TableColumn<>(fieldsHead[i].substring(0, fieldsHead[i].indexOf("_$")));
-				Object w_ = RegexpTool.getContent4LR(fieldsHead[i], "_\\$w_", "_");
-				Object c_ = RegexpTool.getContent4LR(fieldsHead[i], "_\\$c_", "_");
-				col.setPrefWidth(w_ == null ? defaultWidth : Integer.parseInt((String) w_));
-
-				col.setCellValueFactory(new PropertyValueFactory<>((String) c_));
+			boolean checkboxEtcFlag = false;//对于存在多选的表格，会进行标记，用于触发事件
+			for (TableHeadFields head : fieldsHead) {
 				
-				col.setCellFactory(cellFactory);
-				col.setOnEditCommit((CellEditEvent<T, Object> t) -> {
-					Object o = ((T) t.getTableView().getItems().get(t.getTablePosition().getRow()));
-					try {
-						ButiToolClassZz.ReflexRel.reflexObjectSetFieldVal(o, (String) c_, t.getNewValue());
-					} catch (NoSuchFieldException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (SecurityException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IllegalArgumentException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				Object w_ = head.getWidth();
+				Object c_ = head.getField();
+				String node_ = head.getStartCheckBox();
+				
 
-				});
-				listTabCol.add(col);
+				if(StringUtils.isNotBlank(node_)) {
+					checkboxEtcFlag = true;
+					if("CheckBoxTableCell".equals(node_)) {
+						String field_ObservableValue = (String) c_;
+						TableColumn<T,Boolean>	col = new TableColumn<T,Boolean>(head.getFieldName());
+						col.setPrefWidth(w_ == null ? defaultWidth : Integer.parseInt((String) w_));
+
+						//col.setCellValueFactory(new PropertyValueFactory<>((String) c_));
+						//Object ObjectT = list.get(0).getClass().newInstance();
+						
+						//Callback<TableColumn<T, Boolean>, TableCell<T, Boolean>> cellFactory = (TableColumn<T, Boolean> p) -> new CheckBoxTableCell();
+						/*Callback<Integer, ObservableValue<Boolean>>  callback = (param) -> {
+							return null;
+							
+						};
+						CheckBoxTableCell.forTableColumn(callback);
+						
+						col.setCellFactory(CheckBoxTableCell.forTableColumn((Callback<Integer, ObservableValue<Boolean>>) param -> {
+
+					     return boolean;
+					    }));*/
+						
+						col.setCellFactory(CheckBoxTableCell.forTableColumn((Callback<Integer, ObservableValue<Boolean>>) params -> {
+							T t = table.getItems().get(params);	
+							BooleanProperty bp;
+							try {
+								bp = (BooleanProperty) ButiToolClassZz.ReflexRel.reflexTGetFieldObject(t, field_ObservableValue);
+							
+								bp.addListener((observable, oldvalue, newvalue) -> {//监听事件，值改变，就会触发
+									//Object o2 =observable;
+									//System.out.println(oldvalue);
+									//System.out.println(newvalue);
+									return;
+								});
+								
+								return bp;
+							} catch (Exception e) {
+								e.printStackTrace();
+								return null;
+							}
+							
+						}));
+						/*col.setOnEditCommit((CellEditEvent<T, Boolean> t) -> {//checkbox无需处理
+							Object o = ((T) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+							try {
+								ButiToolClassZz.ReflexRel.reflexObjectSetFieldVal(o, (String) c_, t.getNewValue());
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} 
+
+						});*/
+						table.getColumns().add(col);
+					
+					
+					
+					
+					
+					}
+				}else {
+					TableColumn<T,Object> col = new TableColumn<T,Object>(head.getFieldName());
+				
+					col.setPrefWidth(w_ == null ? defaultWidth : Integer.parseInt((String) w_));
+					col.setCellValueFactory(new PropertyValueFactory<>((String) c_));
+				
+					Callback<TableColumn<T, Object>, TableCell<T, Object>> cellFactory = (TableColumn<T, Object> p) -> new TextFieldTableCell(new TagBase().new MyStringConverter(ButiToolClassZz.ReflexRel.reflexTGetField(list.get(0), (String) c_)));
+					
+					col.setCellFactory(cellFactory);
+					col.setOnEditCommit((CellEditEvent<T, Object> t) -> {
+						
+						Object o = ((T) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+						try {
+							ButiToolClassZz.ReflexRel.reflexObjectSetFieldVal(o, (String) c_, t.getNewValue());
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} 
+
+					});
+					table.getColumns().add(col);
+				
+				
+				}
 				i++;
 			}
+			
+			
+				
 
-			table.setItems(data);
-			table.getColumns().addAll(listTabCol);
+			
 
 			return table;
 		}
 
+		
+		
 		/**
 		 * Desc:get Fields by fieldsHead[]
 		 * 
@@ -370,10 +459,15 @@ public class TagTool {
 		 * @param nodes
 		 * @return
 		 */
-		public static Map<String, Object> getFieldsByfieldsHeadAndVal(String[] fieldsHead, ObservableList<Node> nodes) {
+		public static Map<String, Object> getFieldsByfieldsHeadAndVal(TableHeadFields fieldsHead, ObservableList<Node> nodes) {
 			Map<String, Object> map = new HashMap();
-			for (String head : fieldsHead) {
-				String c_ = (String) RegexpTool.getContent4LR(head, "_\\$c_", "_");
+			for (TableHeadFields head : fieldsHead.getTableHeadFields()) {
+				String c_ = head.getField();
+				
+				if(head.isNoAddFalg()) {
+					continue;
+				}
+				
 				map.put(c_, null);
 			}
 
@@ -381,7 +475,10 @@ public class TagTool {
 			for(Node node : nodes) {
 				if(node instanceof TextField) {
 					TextField t = (TextField) node;
-					map.put(t.getId(), t.getText());
+					if(map.containsKey(t.getId())) {
+						map.put(t.getId(), t.getText());
+					}
+					
 					//t.clear();
 				}
 			}
@@ -409,6 +506,15 @@ public class TagTool {
 				
 			}
 		}
+		
+/*		public  Class<T> getTClass()
+	    {
+	        Class<T> tClass = (Class<T>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+	        return tClass;
+	    }*/
+		
+		
+		
 
 	}
 	
@@ -438,6 +544,54 @@ public class TagTool {
             alert.showAndWait();
 
 		}
+		
+		/**
+		 * Desc:提示主题框
+		 * @author jld.zhangzhou
+		 * @datetime 2020-04-29 11:00:27
+		 * @modify_record:
+		 * @param msg
+		 */
+		public static void alertMsg_prompt(String msg) {
+			//alertEnum.
+			alertMsg( Constants.AlertPromptEnum.PROMPT.getTitle(), msg);
+		
+		}
+		
+		/**
+		 * Desc:警告主题框
+		 * @author jld.zhangzhou
+		 * @datetime 2020-04-29 11:00:41
+		 * @modify_record:
+		 * @param msg
+		 */
+		public static void alertMsg_warn(String msg) {
+			alertMsg( Constants.AlertPromptEnum.WARN.getTitle(), msg);
+		
+		}
+		
+		/**
+		 * Desc:异常主题框
+		 * @author jld.zhangzhou
+		 * @datetime 2020-04-29 11:18:18
+		 * @modify_record:
+		 * @param msg
+		 */
+		public static void alertMsg_exception(String msg) {
+			alertMsg( Constants.AlertPromptEnum.EXCEPTION.getTitle(), msg);
+		}
+		
+		/**
+		 * Desc:错误主题框
+		 * @author jld.zhangzhou
+		 * @datetime 2020-04-29 11:00:41
+		 * @modify_record:
+		 * @param msg
+		 */
+		public static void alertMsg_error(String msg) {
+			alertMsg( Constants.AlertPromptEnum.ERROR.getTitle(), msg);
+		
+		}
 	}
 	
 	/**
@@ -457,6 +611,7 @@ public class TagTool {
 		}
 		
 	}
-	
+
+
 	
 }

@@ -11,10 +11,12 @@ import com.zz.test.javafxmvn.common.entity.PyProcessExample;
 import com.zz.test.javafxmvn.common.entity.PyProcessExample.Criteria;
 import com.zz.test.javafxmvn.common.entity.mapper.PyProcessMapper;
 import com.zz.test.javafxmvn.commondb.CommonDb;
-import com.zz.test.javafxmvn.maintabview.view.LoginFxmlView;
+
+import javafx.scene.control.Label;
+
 
 @Service
-public class LoginService {
+public class MainZzService {
 
 	@Autowired
 	private CommonDb db;
@@ -22,12 +24,11 @@ public class LoginService {
 	@Autowired
 	private PyProcessMapper pyProcessMapper;
 	
-	private LoginFxmlView loginFxmlView= new LoginFxmlView();
+
 	
 	public List<PyProcess> loginSerch(String type_code, String process_code) {
 		// TODO Auto-generated method stub
 		PyProcessExample pyProExa = new PyProcessExample();
-		
 		Criteria c = pyProExa.createCriteria();
 		if(StringUtils.isNotBlank(type_code)) {
 			c.andTypeCodeEqualTo(type_code);
@@ -36,7 +37,6 @@ public class LoginService {
 			c.andProcessCodeEqualTo(process_code);
 		}
 		c.andDisableNotEqualTo(2);
-
 		List<PyProcess> pyProList = pyProcessMapper.selectByExample(pyProExa);
 		return pyProList;
 	}
@@ -49,7 +49,8 @@ public class LoginService {
 	public int insertPyProcess(PyProcess py) {
 		return pyProcessMapper.insertSelective(py);
 	}
-	
+
+
 	public int deleteByPrimaryKeySet2(PyProcess p) {
 		PyProcessExample pyProExa = new PyProcessExample();
 		

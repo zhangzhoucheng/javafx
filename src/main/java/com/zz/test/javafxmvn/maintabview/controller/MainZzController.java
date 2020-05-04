@@ -8,13 +8,16 @@ import java.util.List;
 import java.util.Map;
 
 
+
 import com.zz.test.javafxmvn.common.entity.PyProcess;
 import com.zz.test.javafxmvn.commonbean.BaseObjectViewOth;
 import com.zz.test.javafxmvn.commontag.TableHeadFields;
 import com.zz.test.javafxmvn.commontag.TagTool;
+import com.zz.test.javafxmvn.commontool.RegexpTool;
 import com.zz.test.javafxmvn.commontool.threadtool.ButiToolClassZz;
 import com.zz.test.javafxmvn.commontool.threadtool.SpringUtils;
 import com.zz.test.javafxmvn.maintabview.service.LoginService;
+import com.zz.test.javafxmvn.maintabview.service.MainZzService;
 
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.collections.ObservableList;
@@ -30,29 +33,31 @@ import javafx.scene.layout.Pane;
 
 /**
  * 
- * <note> Desc： 登陆进程的controller类
- * 
+ * <note>
+ * Desc： 主进程
  * @author jld.zhangzhou
  * @email idiot_jillidan@163.com;
  * @re be willing to communicate
  * @refactor for jld
- * @datetime 2020-04-16 22:02:54
- * @location mobile base 3th,BeiJing version 1.0
- * 
- * @REVISIONS: Version Date Author Location Description
- *             ------------------------------------------------------------------------------------------------------
- *             1.0 2020-04-16 22:02:54 jld.zhangzhou mobile base 3th,BeiJing
- *             1.create the class </note>
+ * @datetime 2020-04-29 13:12:22
+ * @location mobile base 3th,BeiJing 
+ * version  1.0
+ *  
+ * @REVISIONS: 
+ * Version 	        Date 		         Author             Location                   Description          
+ * ------------------------------------------------------------------------------------------------------  
+ * 1.0 		  2020-04-29 13:12:22    jld.zhangzhou     mobile base 3th,BeiJing      1.create the class            
+ * </note>
  */
 @FXMLController
-public class LoginController extends BaseObjectViewOth{
+public class MainZzController extends BaseObjectViewOth{
 
 	/*
 	 * @Autowired private LoginService logSer;
 	 */
 	// 不能通过注解方式获取实体，因为启动类不是该LoginFxmlView，而是MainFxmlView，
 	// 所以无法把具有fxmlcontroller的LoginController和容器依赖起来。此时暂时通过getBean方式获取。
-	private LoginService logSer = (LoginService) SpringUtils.getBean("loginService");
+	private MainZzService logSer = (MainZzService) SpringUtils.getBean("mainZzService");
 
 	/**
 	 * 登陆进程的table容器
@@ -103,11 +108,8 @@ public class LoginController extends BaseObjectViewOth{
 		login_table.getChildren().clear();
 		login_table.getChildren().add(table);
 		
-		if(login_table_addrow.getChildren().size() > 0) {
-			editButton.setText("编辑");//查询后置为 ’编辑‘
+		if(login_table_addrow.getChildren().size() > 0)
 			return;
-		}
-			
 		
 		
 		

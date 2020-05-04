@@ -8,13 +8,16 @@ import java.util.List;
 import java.util.Map;
 
 
+
 import com.zz.test.javafxmvn.common.entity.PyProcess;
 import com.zz.test.javafxmvn.commonbean.BaseObjectViewOth;
 import com.zz.test.javafxmvn.commontag.TableHeadFields;
 import com.zz.test.javafxmvn.commontag.TagTool;
+import com.zz.test.javafxmvn.commontool.RegexpTool;
 import com.zz.test.javafxmvn.commontool.threadtool.ButiToolClassZz;
 import com.zz.test.javafxmvn.commontool.threadtool.SpringUtils;
 import com.zz.test.javafxmvn.maintabview.service.LoginService;
+import com.zz.test.javafxmvn.maintabview.service.StartPyMainService;
 
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.collections.ObservableList;
@@ -45,14 +48,14 @@ import javafx.scene.layout.Pane;
  *             1.create the class </note>
  */
 @FXMLController
-public class LoginController extends BaseObjectViewOth{
+public class StartPyMainController extends BaseObjectViewOth{
 
 	/*
 	 * @Autowired private LoginService logSer;
 	 */
 	// 不能通过注解方式获取实体，因为启动类不是该LoginFxmlView，而是MainFxmlView，
 	// 所以无法把具有fxmlcontroller的LoginController和容器依赖起来。此时暂时通过getBean方式获取。
-	private LoginService logSer = (LoginService) SpringUtils.getBean("loginService");
+	private StartPyMainService logSer = (StartPyMainService) SpringUtils.getBean("startPyMainService");
 
 	/**
 	 * 登陆进程的table容器
@@ -103,11 +106,8 @@ public class LoginController extends BaseObjectViewOth{
 		login_table.getChildren().clear();
 		login_table.getChildren().add(table);
 		
-		if(login_table_addrow.getChildren().size() > 0) {
-			editButton.setText("编辑");//查询后置为 ’编辑‘
+		if(login_table_addrow.getChildren().size() > 0)
 			return;
-		}
-			
 		
 		
 		

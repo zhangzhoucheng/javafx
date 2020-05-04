@@ -263,4 +263,73 @@ public class Constants {
 	        return HALF_AN_HOUR;  
 	    }   
 	}
+	
+	/**
+	 * 
+	 * <note>
+	 * Desc： 弹框提示信息
+	 * @author jld.zhangzhou
+	 * @email idiot_jillidan@163.com;
+	 * @re be willing to communicate
+	 * @refactor for jld
+	 * @datetime 2020-04-29 11:13:02
+	 * @location mobile base 3th,BeiJing 
+	 * version  1.0
+	 *  
+	 * @REVISIONS: 
+	 * Version 	        Date 		         Author             Location                   Description          
+	 * ------------------------------------------------------------------------------------------------------  
+	 * 1.0 		  2020-04-29 11:13:02    jld.zhangzhou     mobile base 3th,BeiJing      1.create the class            
+	 * </note>
+	 */
+	public static enum AlertPromptEnum{
+		PROMPT("PROMPT", "提示！", "发生提示！"),
+		WARN("WARN", "警告！", "发生警告！"),
+		EXCEPTION("EXCEPTION", "异常！", "发生异常！"),
+		ERROR("ERROR", "错误！", "发生错误！"),
+		
+		;
+		private String titleCode;
+		private String title;
+		private String msg;
+		
+		private AlertPromptEnum() {
+
+		}
+		private AlertPromptEnum(String title) {
+			this.title = title;
+		}
+		
+		private AlertPromptEnum(String title, String msg) {
+			this.title = title;
+			this.msg = msg;
+		}
+		
+		private AlertPromptEnum(String titleCode, String title, String msg) {
+			this.titleCode = titleCode;
+			this.title = title;
+			this.msg = msg;
+		}
+		
+		public String getTitleCode() {
+			return titleCode;
+		}
+		public void setTitleCode(String titleCode) {
+			this.titleCode = titleCode;
+		}
+		public String getTitle() {
+			return title;
+		}
+		public void setTitle(String title) {
+			this.title = title;
+		}
+		public String getMsg() {
+			return msg;
+		}
+		public void setMsg(String msg) {
+			this.msg = msg;
+		}
+		
+		
+	}
 }

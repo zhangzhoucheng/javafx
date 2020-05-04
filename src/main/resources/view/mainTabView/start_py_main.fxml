@@ -14,11 +14,23 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="830.0" prefWidth="1395.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="830.0" prefWidth="1395.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zz.test.javafxmvn.maintabview.controller.StartPyMainController">
 	<children>
 		<VBox prefHeight="830.0" prefWidth="1395.0">
 			<children>
-				<Pane prefHeight="25.0" prefWidth="1395.0" />
+				<Pane prefHeight="25.0" prefWidth="1395.0">
+					<children>
+						<Pane prefHeight="20.0" prefWidth="1390.0">
+							<children>
+								<Label id="type_code" fx:id="type_code" managed="false"
+									text="" visible="false" />
+								<Label id="process_code" fx:id="process_code"
+									layoutX="10.0" layoutY="10.0" managed="false" text=""
+									visible="false" />
+							</children>
+						</Pane>
+					</children>
+				</Pane>
 				<Pane prefHeight="805.0" prefWidth="1395.0">
 					<children>
                   <VBox prefHeight="805.0" prefWidth="1395.0">
@@ -33,7 +45,7 @@
             							</font>
             						</Label>
             
-                  						<Button  layoutX="107.0" layoutY="-5.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="70.0" scaleX="0.7" scaleY="0.7" scaleZ="0.7" text="查看">
+                  						<Button layoutX="107.0" layoutY="-5.0" mnemonicParsing="false" onAction="#loginSerch" prefHeight="22.0" prefWidth="70.0" scaleX="0.7" scaleY="0.7" scaleZ="0.7" text="查看">
             							<font>
             								<Font name="Arial" size="16.0" />
             							</font>
@@ -41,6 +53,28 @@
                            </children>
                         </Pane>
                         <Separator prefWidth="1395.0" />
+                        <Pane prefHeight="40.0" prefWidth="1395.0" />
+                        <Pane prefHeight="715.0" prefWidth="1327.0">
+                           <children>
+                              <VBox prefHeight="715.0" prefWidth="1327.0">
+                                 <children>
+                                    <Pane fx:id="login_table" prefHeight="425.0" prefWidth="1327.0">
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </Pane>
+                                    <Pane prefHeight="32.0" prefWidth="1327.0">
+                                       <children>
+                                          <FlowPane fx:id="login_table_addrow" hgap="4.0" prefHeight="32.0" prefWidth="1327.0" vgap="4.0" />
+                                       </children>
+                                    </Pane>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets left="34.0" right="34.0" />
+                           </VBox.margin>
+                        </Pane>
                         
                      </children>
                   </VBox>
