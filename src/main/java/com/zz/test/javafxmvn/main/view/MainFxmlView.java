@@ -24,6 +24,7 @@ import de.felixroske.jfxsupport.FXMLView;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -35,6 +36,7 @@ import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
 
 /**
@@ -77,6 +79,7 @@ public class MainFxmlView extends BaseObjectView {
 	private MainService ms;
 	public static Parent parent = null;
 	public static TreeView<String> mainTreeView = null;
+	private TabPane tabPane;
 	@PostConstruct
 	 void initUI() throws Exception {
 		//List<Map<String, String>> map = cacheService.queryMainTreeView("mainTreeView");//获取缓存，从redis（new boot 2.x Lettuce redis not jdis)
@@ -84,11 +87,12 @@ public class MainFxmlView extends BaseObjectView {
 		// 初始化界面，恩，主要是初始化界面的样式，因为我想让他可以换皮肤和主题
 		// UIUtils.configUI((BorderPane)this.getView(), config);
 		parent = this.getView();
-		SplitPane sp = (SplitPane) parent.lookup("#splitpane_main");//获取splitpane
+		//SplitPane sp = (SplitPane) parent.lookup("#splitpane_main");//获取splitpane
+		ScrollPane sp = (ScrollPane) parent.lookup("#main_left_scrollpane");
 		
-		Pane paneForTree = (Pane) sp.getItems().get(0).lookup("#treeview_main");//获取存放treeview的pane(注意：此处需要要先获取SplitPane，不然直接通过#treeview_main定位不到。
+		ScrollPane paneForTree = (ScrollPane) parent.lookup("#treeview_main");//获取存放treeview的pane(注意：此处需要要先获取SplitPane，不然直接通过#treeview_main定位不到。
 		
-
+		
 		/*SVGGlyph svg = new SVGGlyph("M40,60 C42,48 44,30 25,32");
 		TreeItem<String> rootItem = new TreeItem<String>("项目所有", svg);//构建根菜单 //new ImageView("/img/treeview/logo.jpg")
 		rootItem.setExpanded(true);*/
@@ -107,11 +111,11 @@ public class MainFxmlView extends BaseObjectView {
 		long end = System.currentTimeMillis();
 		logger.warn("@@@time,initUI,getMenuTreeview:"+(end-start));
 		
-		paneForTree.getChildren().add(mainTreeView);//添加菜单渲染
+		paneForTree.setContent(mainTreeView);//添加菜单渲染
 		
-		TabPane tbp = (TabPane) sp.getItems().get(1).lookup("#main_tabpane");
+		tabPane = (TabPane)parent.lookup("#main_tabpane");
 		
-		for(Tab tab : tbp.getTabs()) {
+		for(Tab tab : tabPane.getTabs()) {
 			tab.setOnSelectionChanged(this.mainTabSelectionChanged(tab));//添加select被改变事件。
 		}
 		//tbp.getTabs().addEventHandler(MouseEvent.MOUSE_CLICKED, this.mainTabPaneClick(tbp));//此处给tab添加点击事件，导致点击下方区域框内容也触发。
@@ -148,8 +152,7 @@ public class MainFxmlView extends BaseObjectView {
 	                	return;
 	                }
 	                if(item.isLeaf()) {//是叶子节点，则需要渲染tab content。
-	            		SplitPane sp = (SplitPane) parent.lookup("#splitpane_main");//获取splitpane
-	            		TabPane tbp = (TabPane) sp.getItems().get(1).lookup("#main_tabpane");
+	            		TabPane tbp = tabPane;
 	            		Tab choiceTab = null;
 	            		for(Tab t : tbp.getTabs()) {//存在该tab则不新增，而是选中。
 	            			if(t.getText().equals(item.getValue())) {
@@ -167,8 +170,9 @@ public class MainFxmlView extends BaseObjectView {
 	            		if(!StringUtils.isBlank(tabFxml)) {
 	            			//新建ScrollPane放入tab，之后tab渲染该菜单对应页面
 		            		ScrollPane theSp = new ScrollPane();
-		            		theSp.setPrefHeight(835);
-		            		theSp.setPrefWidth(1395);
+		            		theSp.setPrefHeight(890);
+		            		theSp.setPrefWidth(1720);
+		            		theSp.setMinWidth(1160);
 		            		choiceTab.setContent(theSp);
 		            		try {
 		            			TagTool.paneLoadFxmlSimple(theSp, tabFxml, getClass());
@@ -177,7 +181,7 @@ public class MainFxmlView extends BaseObjectView {
 		            			/**
 		            			 * 获取子页面的隐藏域中的参数
 		            			 */
-		            			AnchorPane p = (AnchorPane) theSp.getContent();
+		            			Node p = theSp.getContent();
 		            			Label type_code_l = (Label) p.lookup("#type_code");
 		            			Label process_code_l = (Label) p.lookup("#process_code");
 		            			int level  = treeView.getTreeItemLevel(item);

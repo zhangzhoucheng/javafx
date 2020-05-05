@@ -75,9 +75,9 @@ public class LoginController extends BaseObjectViewOth{
 	/**
 	 * 菜单渲染行头 首字符：菜单名，_$c_ :菜单id(code),_$w_:菜单宽度，_$node_cb:启用CheckBoxTableCell。_$noadd_:'新增'按钮，新增内容是否有它，_$noadd_空则有，_$noadd_1存在值则没有
 	 */
-	final String[] fieldsHeadNew = { "选择_$c_choice_$w_100_$node_cb_$noadd_1", "进程编码_$c_processCode_$w_100", "进程名_$c_processName", "进程类型_$c_typeCode", "进程描述_$c_processRemark_$w_200",
-			"进程开关_$c_processStatus", "进程可用_$c_disable", "定时任务_$c_processCron", "定时任务校准_$c_cronCalibration_$w_200",
-			"by主任务启动标记_$c_everyDayStartFlag", "执行最大次数_$c_executeMax", "任务限制执行秒数_$c_processLimittime", };
+	final String[] fieldsHeadNew = { "选择_$c_choice_$w_100_$node_cb_$noadd_1", "进程编码_$c_processCode_$w_100", "进程名_$c_processName_$w_150", "进程类型_$c_typeCode", "进程描述_$c_processRemark_$w_300",
+			"进程开关_$c_processStatus", "进程可用_$c_disable", "定时任务_$c_processCron_$w_200", "定时任务校准_$c_cronCalibration_$w_120",
+			"by主任务启动标记_$c_everyDayStartFlag_$w_150", "执行最大次数_$c_executeMax_$w_120", "任务限制执行秒数_$c_processLimittime_$w_120", };
 	
 	private final TableHeadFields fieldsHead = new TableHeadFields(fieldsHeadNew);
 	/**

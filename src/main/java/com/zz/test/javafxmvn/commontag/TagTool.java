@@ -54,6 +54,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
 /**
@@ -176,6 +177,7 @@ public class TagTool {
 			((ScrollPane) pane).getChildrenUnmodifiable().clear();
 			((ScrollPane) pane).setContent(FXMLLoader.load(((Class<?>) obj).getResource(fxml)));
 		}
+		
 	}
 
 	/**
@@ -200,7 +202,7 @@ public class TagTool {
 		 */
 		static final int defaultWidth = 100;
 		
-
+		static final Double defaultTableWidth = 1720.0;
 
 		/**
 		 * Desc:通过传入的cols，和list<T>渲染T列表
@@ -275,7 +277,25 @@ public class TagTool {
 		}
 		
 		/**
-		 * Desc:通过传入的cols，和list<T>渲染T列表
+		 * Desc:Desc:通过传入的cols，和list<T>渲染T列表
+		 * @author jld.zhangzhou
+		 * @datetime 2020-05-05 21:52:27
+		 * @modify_record:
+		 * @param cols
+		 * @param list
+		 * @param defaultWidth
+		 * @param editAble
+		 * @return
+		 * @throws InstantiationException
+		 * @throws IllegalAccessException
+		 */
+		public  static<T> TableView initTableOld(List<TableHeadFields> cols, List<T> list, int defaultWidth, Boolean editAble) throws InstantiationException, IllegalAccessException {
+			return initTableOldWidth(cols, list, defaultWidth, editAble, defaultTableWidth);
+		}
+			 
+		
+		/**
+		 * Desc:通过传入的cols，和list<T>渲染T列表,包括表宽度
 		 * 
 		 * @author jld.zhangzhou
 		 * @datetime 2020-04-23 12:43:08
@@ -287,7 +307,7 @@ public class TagTool {
 		 * @throws IllegalAccessException 
 		 * @throws InstantiationException 
 		 */
-		public  static<T> TableView initTableOld(List<TableHeadFields> cols, List<T> list, int defaultWidth, Boolean editAble) throws InstantiationException, IllegalAccessException {
+		public  static<T> TableView initTableOldWidth(List<TableHeadFields> cols, List<T> list, int defaultWidth, Boolean editAble, Double width) throws InstantiationException, IllegalAccessException {
 			if (defaultWidth <= 0) {
 				defaultWidth = TableTool.defaultWidth;
 			}
@@ -299,7 +319,7 @@ public class TagTool {
 										 * "by主任务启动标记_$everyDayStartFlag", "执行最大次数_$executeMax",
 										 * "任务限制执行秒数_$processLimittime", };
 										 */
-			table.setPrefWidth(1325);
+			table.setPrefWidth(width);
 
 			ObservableList<T> data = FXCollections.observableArrayList(list);
 

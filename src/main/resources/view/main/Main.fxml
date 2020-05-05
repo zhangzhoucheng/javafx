@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.media.*?>
 <?import javafx.scene.text.*?>
@@ -22,127 +23,119 @@
 <!-- <GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.zz.test.javafxmvn.MainController" 
 	alignment="center" hgap="10" vgap="10"> <Label text="hello wolrd！"/> </GridPane> -->
 
-<JFXMasonryPane id="id_rootPane" fx:id="pane_root"   minHeight="960.0" minWidth="1600.0" prefHeight="960.0" prefWidth="1600.0" style="-fx-border-color: red;" styleClass="root" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zz.test.javafxmvn.main.controller.MainController">
+<JFXMasonryPane id="id_rootPane" fx:id="pane_root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="980.0" prefWidth="1920.0" styleClass="root" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zz.test.javafxmvn.main.controller.MainController">
 	<children>
-		<VBox alignment="CENTER" fillWidth="false"   minHeight="960.0" minWidth="1600.0" prefHeight="960.0" prefWidth="1600.0">
-			<children>
-				<Pane   prefHeight="120.0" prefWidth="1600.0">
-					<children>
-						<VBox alignment="CENTER" prefHeight="120.0" prefWidth="1600.0">
-							<children>
-								<Pane prefHeight="30.0" prefWidth="1600.0">
-									<rotationAxis>
-										<Point3D />
-									</rotationAxis>
-									<children>
-										<TilePane prefHeight="30.0" prefWidth="1600.0">
-											<children>
-												<Label text="JLD ZZ WORLD!">
-													<padding>
-														<Insets left="22.0" top="4.0" />
-													</padding>
-													<font>
-														<Font size="12.0" />
-													</font>
-												</Label>
-											</children>
-										</TilePane>
-									</children>
-								</Pane>
-								<Pane prefHeight="40.0" prefWidth="1600.0">
-									<children>
-										<MenuButton graphicTextGap="2.0" layoutX="15.0" layoutY="9.0" mnemonicParsing="false" text="项目">
-											<items>
-												<MenuItem fx:id="menu1_1task12" mnemonicParsing="false" onAction="#getMenuItem" text="进程任务" />
-												<MenuItem mnemonicParsing="false" text="Unspecified Action" />
-												<MenuItem mnemonicParsing="false" text="Unspecified Action" />
-											</items>
-										</MenuButton>
-										<MenuButton graphicTextGap="2.0" layoutX="105.0" layoutY="9.0" mnemonicParsing="false" text="视图">
-											<items>
-												<MenuItem fx:id="menu1_1task" mnemonicParsing="false" onAction="#getMenuItem" text="进程任务" />
-												<MenuItem mnemonicParsing="false" text="Unspecified Action" />
-												<MenuItem mnemonicParsing="false" text="Unspecified Action" />
-											</items>
-										</MenuButton>
-										<MenuButton graphicTextGap="2.0" layoutX="195.0" layoutY="9.0" mnemonicParsing="false" text="帮助">
-											<items>
-												<MenuItem fx:id="menu1_1task2" mnemonicParsing="false" onAction="#getMenuItem" text="进程任务" />
-												<MenuItem mnemonicParsing="false" text="Unspecified Action" />
-												<MenuItem mnemonicParsing="false" text="Unspecified Action" />
-											</items>
-										</MenuButton>
-									</children>
-								</Pane>
-								<Pane prefHeight="30.0" prefWidth="1600.0" />
-							</children>
-						</VBox>
-					</children>
-				</Pane>
-				<Pane   prefHeight="840.0" prefWidth="1600.0">
-					<children>
-						<SplitPane id="splitpane_main" dividerPositions="0.1339"   prefHeight="840.0" prefWidth="1600.0">
-							<items>
-								<AnchorPane   prefHeight="840.0" prefWidth="200.0">
-									<children>
-										<VBox   prefHeight="840.0" prefWidth="200.0">
-											<children>
-												<Pane   prefHeight="4.0" prefWidth="200.0" />
-												<MenuBar   prefHeight="32.0" prefWidth="185.0">
-													<menus>
-														<Menu mnemonicParsing="false" text="File">
-															<items>
-																<MenuItem mnemonicParsing="false" text="Unspecified Action" />
-																<MenuItem mnemonicParsing="false" text="Close" />
-															</items>
-														</Menu>
-														<Menu mnemonicParsing="false" text="Edit">
-															<items>
-																<MenuItem mnemonicParsing="false" text="Delete" />
-															</items>
-														</Menu>
-														<Menu mnemonicParsing="false" text="Help">
-															<items>
-																<MenuItem mnemonicParsing="false" text="About" />
-															</items>
-														</Menu>
-													</menus>
-													<opaqueInsets>
-														<Insets />
-													</opaqueInsets>
-												</MenuBar>
-												<Pane   prefHeight="10.0" prefWidth="200.0" />
-												<Pane id="treeview_main"   prefHeight="24" prefWidth="200">
-												</Pane>
-											</children>
-										</VBox>
-									</children>
-								</AnchorPane>
-								<AnchorPane   minHeight="500.0" minWidth="50.0" prefHeight="840.0" prefWidth="1400.0">
-									<opaqueInsets>
-										<Insets />
-									</opaqueInsets>
-									<children>
-										<TabPane  fx:id="main_tabpane"  prefHeight="840.0" prefWidth="1400.0" tabClosingPolicy="ALL_TABS">
-											<tabs>
-												<Tab text="长亭漫·蘋儿赋"  >
-													<content>
-														<ScrollPane   prefHeight="840.0" prefWidth="1400.0">
-															<Label   wrapText="true" underline="true" 
-																text="文:沍泪蹁跹，消柔并碎，长作归时意丶" />
-														</ScrollPane>
-													</content>
-												</Tab>
-											
-											</tabs>
-										</TabPane>
-									</children>
-								</AnchorPane>
-							</items>
-						</SplitPane>
-					</children>
-				</Pane>
-			</children>
-		</VBox>
+      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="980.0" prefWidth="1920.0">
+         <top>
+            <VBox alignment="CENTER" prefHeight="90.0" prefWidth="1920.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Pane prefHeight="8.0" prefWidth="1920.0">
+                     <rotationAxis>
+                        <Point3D />
+                     </rotationAxis>
+                  </Pane>
+                  <TilePane prefHeight="30.0" prefWidth="1600.0">
+                     <children>
+                        <Label text="JLD ZZ WORLD!">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                           <padding>
+                              <Insets left="22.0" top="4.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </TilePane>
+                  <Pane prefHeight="40.0" prefWidth="1600.0">
+                     <children>
+                        <MenuButton graphicTextGap="2.0" layoutX="15.0" layoutY="9.0" mnemonicParsing="false" text="项目">
+                           <items>
+                              <MenuItem fx:id="menu1_1task121" mnemonicParsing="false" onAction="#getMenuItem" text="进程任务" />
+                              <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                              <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                           </items>
+                        </MenuButton>
+                        <MenuButton graphicTextGap="2.0" layoutX="105.0" layoutY="9.0" mnemonicParsing="false" text="视图">
+                           <items>
+                              <MenuItem fx:id="menu1_1task1" mnemonicParsing="false" onAction="#getMenuItem" text="进程任务" />
+                              <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                              <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                           </items>
+                        </MenuButton>
+                        <MenuButton graphicTextGap="2.0" layoutX="195.0" layoutY="9.0" mnemonicParsing="false" text="帮助">
+                           <items>
+                              <MenuItem fx:id="menu1_1task21" mnemonicParsing="false" onAction="#getMenuItem" text="进程任务" />
+                              <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                              <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                           </items>
+                        </MenuButton>
+                     </children>
+                  </Pane>
+               </children>
+            </VBox>
+         </top>
+         <left>
+            <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="110.0" prefHeight="899.0" prefWidth="198.0" style="-fx-border-color: #B5B5B5;">
+               <children>
+                  <VBox minWidth="110.0" prefHeight="890.0" prefWidth="200.0">
+                     <children>
+                              <Pane minHeight="-Infinity" minWidth="100.0" prefHeight="5.0" prefWidth="200.0" />
+                              <MenuBar maxWidth="1.7976931348623157E308" minWidth="100.0" prefHeight="32.0" prefWidth="200.0">
+                                 <menus>
+                                    <Menu mnemonicParsing="false" text="File">
+                                       <items>
+                                          <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                                          <MenuItem mnemonicParsing="false" text="Close" />
+                                       </items>
+                                    </Menu>
+                                    <Menu mnemonicParsing="false" text="Edit">
+                                       <items>
+                                          <MenuItem mnemonicParsing="false" text="Delete" />
+                                       </items>
+                                    </Menu>
+                                    <Menu mnemonicParsing="false" text="Help">
+                                       <items>
+                                          <MenuItem mnemonicParsing="false" text="About" />
+                                       </items>
+                                    </Menu>
+                                 </menus>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </MenuBar>
+                        <ScrollPane id="treeview_main" prefHeight="843.0" prefWidth="198.0">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </ScrollPane>
+                     </children>
+                  </VBox>
+               </children>
+            </Pane>
+         </left>
+         <center>
+            <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="888.0" prefWidth="1720.0" style="-fx-border-color: #B5B5B5;">
+               <children>
+                  <TabPane id="main_tabpane" fx:id="main_tabpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="888.0" prefWidth="1720.0">
+                     <tabs>
+                        <Tab text="长亭漫·蘋儿赋">
+                           <content>
+                              <Pane>
+                                 <children>
+                                    <ScrollPane prefHeight="849.0" prefWidth="1720.0">
+                                       <content>
+                                          <Label prefHeight="1200.0" prefWidth="1900.0" text="123333123333333333333333344444444444444444444444444444444444444444444444123333333333333333344444444444444444444444444444444444444444444444333333333333344444444444444444444444444444444444444444444444123333333333333333344444444444444444444444444444444444444444444444123333333333333333344444444444444444444444444444444444444444444444123333333333333333344444444444444444444444444444444444444444444444123333333333333333344444444444444444444444444444444444444444444444123333333333333333344444444444444444444444444444444444444444444444123333333333333333344444444444444444444444444444444444444444444444123333333333333333344444444444444444444444444444444444444444444444123333333333333333344444444444444444444444444444444444444444444444123333333333333333344444444444444444444444444444444444444444444444123333333333333333344444444444444444444444444444444444444444444444123333333333333333344444444444444444444444444444444444444444444444123333333333333333344444444444444444444444444444444444444444444444123333333333333333344444444444444444444444444444444444444444444444123333333333333333344444444444444444444444444444444444444444444444123333333333333333344444444444444444444444444444444444444444444444women" />
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </Pane>
+                           </content>
+                        </Tab>
+                     </tabs>
+                  </TabPane>
+               </children>
+            </Pane>
+         </center>
+      </BorderPane>
 	</children>
 </JFXMasonryPane>
