@@ -39,7 +39,7 @@
 		</Pane>
 		<Separator minWidth="1160.0" prefWidth="1720.0" />
 		<Pane prefHeight="40.0" />
-		<Pane fx:id="login_table" prefHeight="425.0" prefWidth="1720.0">
+		<Pane fx:id="login_table" prefHeight="485.0" prefWidth="1720.0">
 			<VBox.margin>
 				<Insets left="34.0" />
 			</VBox.margin>

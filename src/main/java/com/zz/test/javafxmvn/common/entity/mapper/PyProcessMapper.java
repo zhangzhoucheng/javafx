@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface PyProcessMapper {
+	final static String namespace = "com.zz.test.javafxmvn.common.entity.mapper.PyProcessMapper";
     long countByExample(PyProcessExample example);
 
     int deleteByExample(PyProcessExample example);

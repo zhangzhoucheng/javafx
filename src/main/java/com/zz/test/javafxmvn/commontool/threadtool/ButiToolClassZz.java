@@ -580,7 +580,6 @@ import javafx.scene.control.TextField;
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			Object o =theField.get(t);
 			return theField.get(t);
 			
 		}

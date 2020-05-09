@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zz.test.javafxmvn.common.entity.mapper.PyProcessMapper">
+<mapper namespace="com.zz.test.javafxmvn.common.entity.mapper.PyProcessMapper" >
   <resultMap id="BaseResultMap" type="com.zz.test.javafxmvn.common.entity.PyProcess">
     <id column="process_id" jdbcType="INTEGER" property="processId" />
     <result column="process_code" jdbcType="VARCHAR" property="processCode" />

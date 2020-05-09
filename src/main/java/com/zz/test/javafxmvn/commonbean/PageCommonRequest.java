@@ -23,6 +23,14 @@ public class PageCommonRequest extends CommonRequest {
 
     // 每页显示的行数
     private int	pageSize = 10;
+    
+    public PageCommonRequest() {
+    	
+    }
+    public PageCommonRequest(int pageSize, int pageNo) {
+    	this.pageSize = pageSize;
+    	this.pageNo = pageNo;
+    }
 
     /**
      * @return the pageNo

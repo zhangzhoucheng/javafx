@@ -3,6 +3,7 @@ package com.zz.test.javafxmvn.commontag;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,11 +14,20 @@ import java.util.Map;
 import javax.swing.event.TableColumnModelEvent;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Component;
 
+import com.zz.test.javafxmvn.common.aop.PaginationAopAno;
 import com.zz.test.javafxmvn.common.entity.PyProcess;
+import com.zz.test.javafxmvn.commonbean.CommonRequest;
+import com.zz.test.javafxmvn.commonbean.CommonResult;
 import com.zz.test.javafxmvn.commonbean.Constants;
+import com.zz.test.javafxmvn.commonbean.PageCommonRequest;
+import com.zz.test.javafxmvn.commonbean.PageCommonResult;
+import com.zz.test.javafxmvn.commontag.TagBase.PaginationButi;
 import com.zz.test.javafxmvn.commontool.RegexpTool;
 import com.zz.test.javafxmvn.commontool.threadtool.ButiToolClassZz;
+import com.zz.test.javafxmvn.functioninterface.Test;
 import com.zz.test.javafxmvn.main.Main;
 import com.zz.test.javafxmvn.main.view.MainFxmlView;
 import com.zz.test.javafxmvn.maintabview.view.LoginFxmlView;
@@ -38,6 +48,8 @@ import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
+import javafx.scene.control.Pagination;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
@@ -54,6 +66,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
@@ -73,6 +86,7 @@ import javafx.util.Callback;
  *             1.0 2020-04-15 16:31:03 jld.zhangzhou mobile base 3th,BeiJing
  *             1.create the class </note>
  */
+
 public class TagTool {
 	/**
 	 * Desc:设置tabPane选中tab，其他clear
@@ -289,8 +303,17 @@ public class TagTool {
 		 * @throws InstantiationException
 		 * @throws IllegalAccessException
 		 */
-		public  static<T> TableView initTableOld(List<TableHeadFields> cols, List<T> list, int defaultWidth, Boolean editAble) throws InstantiationException, IllegalAccessException {
-			return initTableOldWidth(cols, list, defaultWidth, editAble, defaultTableWidth);
+		public  static<T> TableView initTableOld(List<TableHeadFields> cols, List<T> list, int defaultWidth, Boolean editAble){
+			try {
+				return initTableOldWidth(cols, list, defaultWidth, editAble, -1.0);
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
 		}
 			 
 		
@@ -319,8 +342,10 @@ public class TagTool {
 										 * "by主任务启动标记_$everyDayStartFlag", "执行最大次数_$executeMax",
 										 * "任务限制执行秒数_$processLimittime", };
 										 */
-			table.setPrefWidth(width);
-
+			if(width > 0) {
+				table.setPrefWidth(width);
+			}
+			
 			ObservableList<T> data = FXCollections.observableArrayList(list);
 
 			// TagTool.TableTool.initTable( tableView, String [] args, List<T> list);
@@ -533,6 +558,153 @@ public class TagTool {
 	        return tClass;
 	    }*/
 		
+		public static<T> TableView<T> tablePage(Integer pageIndex, String getCommonResultMethod, CommonRequest request, 
+				 List<TableHeadFields> cols, int defaultWidth, Boolean editAble) {
+			((PageCommonRequest) request).setPageNo(pageIndex + 1);
+			PageCommonResult comR;
+			try {
+				comR = (PageCommonResult) ButiToolClassZz.ReflexRel.reflexMethod(getCommonResultMethod.substring(getCommonResultMethod.lastIndexOf(".")+1), 
+						getCommonResultMethod.substring(0,getCommonResultMethod.lastIndexOf(".")), request);
+				TableView<T> table = TagTool.TableTool.initTableOld(cols, (List<T>) comR.getBody(), defaultWidth, editAble);
+				//table.setAccessibleText(String.format("totalPages_%s_,totalRecords_%s_,", comR.getTotalPages(),comR.getTotalRecords()));
+				return table;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				
+			} 			
+			return null;
+			
+		}
+		
+		/**
+		 * Desc:分页表格，获取分页的数据行
+		 * @author jld.zhangzhou
+		 * @datetime 2020-05-06 23:26:48
+		 * @modify_record:
+		 * @param pageIndex
+		 * @param getCommonResultMethod
+		 * @param request
+		 * @param cols
+		 * @param defaultWidth
+		 * @param editAble
+		 * @return
+		 */
+		public static<T> CommonResult tablePageCommonResult(Integer pageIndex, String getCommonResultMethod, CommonRequest request, 
+				 List<TableHeadFields> cols, int defaultWidth, Boolean editAble) {
+			((PageCommonRequest) request).setPageNo(pageIndex + 1);
+			CommonResult comR;
+			try {
+				comR = (CommonResult) ButiToolClassZz.ReflexRel.reflexMethod(getCommonResultMethod.substring(getCommonResultMethod.lastIndexOf(".")+1), 
+						getCommonResultMethod.substring(0,getCommonResultMethod.lastIndexOf(".")), request);
+				//return TagTool.TableTool.initTableOld(cols, (List<T>) comR.getBody(), defaultWidth, editAble);
+				return comR;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				
+			} 			
+			return null;
+			
+		}
+
+		/**
+		 * Desc:分页表格，获取Pagination
+		 * @author jld.zhangzhou
+		 * @datetime 2020-05-06 23:27:36
+		 * @modify_record:
+		 * @param indicatorCount
+		 * @param getCommonResultMethod
+		 * @param request
+		 * @param cols
+		 * @param tableWidth
+		 * @param defaultColumnWidth
+		 * @param editAble
+		 * @return
+		 */
+		
+		public static <T> Pagination tablePagePagination(int indicatorCount, String getCommonResultMethod,CommonRequest request, List<TableHeadFields> cols, 
+				int defaultColumnWidth,Boolean editAble) {
+
+			PageCommonResult comR;
+
+			//comR = (PageCommonResult) tablePageCommonResult(defaultWidth, getCommonResultMethod, request, cols, defaultWidth, editAble);
+			//TableView<T> t = new TableView<T>();t.setAccessibleText("a");
+			Pagination pagination = new TagBase().new PaginationButi();
+			
+			//tv = loginTable;
+			pagination.setStyle("-fx-font-size:16");
+			pagination.setMaxPageIndicatorCount(indicatorCount <= 0 ? ((PageCommonRequest) request).getPageSize() : indicatorCount);
+			pagination.setPageFactory((Integer thePageIndex) -> {
+				return tablePagePaginationFactory(thePageIndex, request, getCommonResultMethod, cols, editAble, pagination);
+				//TableView<T> table = tablePage(thePageIndex, getCommonResultMethod, request, cols, defaultColumnWidth, editAble);
+				//pagination.setPageCount(1);
+				//return table;
+				
+							});
+			return pagination;
+
+		}
+		
+		/**
+		 * Desc:分页表格,获取PageFactory Node
+		 * @author jld.zhangzhou
+		 * @datetime 2020-05-07 17:25:19
+		 * @modify_record:
+		 * @param thePageIndex
+		 * @param request
+		 * @param getCommonResultMethod
+		 * @param cols
+		 * @param editAble
+		 * @param pagination
+		 * @return
+		 */
+		public static<T>  TableView<T> tablePagePaginationFactory(int thePageIndex, CommonRequest request, String getCommonResultMethod, List<TableHeadFields> cols,
+				Boolean editAble, Pagination pagination) {
+
+			((PageCommonRequest) request).setPageNo(thePageIndex + 1);
+			PageCommonResult pcomR;
+			try {
+				pcomR = (PageCommonResult) ButiToolClassZz.ReflexRel.reflexMethod(getCommonResultMethod.substring(getCommonResultMethod.lastIndexOf(".")+1), 
+						getCommonResultMethod.substring(0,getCommonResultMethod.lastIndexOf(".")), request);
+				TableView<T> table = TagTool.TableTool.initTableOld(cols, (List<T>) pcomR.getBody(), defaultWidth, editAble);
+				
+				pagination.setPageCount((int) pcomR.getTotalPages());
+				
+				/**
+				 * 设置事实变更的总数
+				 */
+				Label lab = (Label) pagination.lookup("#table_sum_lab");
+				if(lab != null) {
+					lab.setText(String.format("  总数:%s", pcomR.getTotalRecords()));
+				}
+				
+				pagination.setAccessibleText(String.format("totalPages_%s_,totalRecords_%s_,", pcomR.getTotalPages(),pcomR.getTotalRecords()));
+				return table;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				
+			} 			
+			return null;
+
+		}
+		
+		/**
+		 * Desc:分页表格,通过PagePagination 获取tableview<T>
+		 * @author jld.zhangzhou
+		 * @datetime 2020-05-07 17:27:24
+		 * @modify_record:
+		 * @param pagi
+		 * @return
+		 */
+		public static<T>  TableView<T> tablePagePaginationGetTable(Pagination pagination){
+			
+			return ((StackPane) pagination.getChildrenUnmodifiable().get(0)).getChildren().size() == 0 ? (TableView<T>) ((StackPane) pagination.getChildrenUnmodifiable().get(1)).getChildren().get(0)
+					: (TableView<T>) ((StackPane) pagination.getChildrenUnmodifiable().get(0)).getChildren().get(0);
+		}
+		
+
 		
 		
 

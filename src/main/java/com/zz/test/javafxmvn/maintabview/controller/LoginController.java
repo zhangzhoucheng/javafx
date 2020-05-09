@@ -7,10 +7,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
 
+import com.zz.test.javafxmvn.common.aop.PaginationAopAno;
 import com.zz.test.javafxmvn.common.entity.PyProcess;
 import com.zz.test.javafxmvn.commonbean.BaseObjectViewOth;
+import com.zz.test.javafxmvn.commonbean.CommonRequest;
+import com.zz.test.javafxmvn.commonbean.CommonResult;
+import com.zz.test.javafxmvn.commonbean.PageCommonRequest;
 import com.zz.test.javafxmvn.commontag.TableHeadFields;
+import com.zz.test.javafxmvn.commontag.TagBase.PaginationButi;
 import com.zz.test.javafxmvn.commontag.TagTool;
 import com.zz.test.javafxmvn.commontool.threadtool.ButiToolClassZz;
 import com.zz.test.javafxmvn.commontool.threadtool.SpringUtils;
@@ -19,14 +25,20 @@ import com.zz.test.javafxmvn.maintabview.service.LoginService;
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Pagination;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 
 /**
  * 
@@ -71,6 +83,7 @@ public class LoginController extends BaseObjectViewOth{
 	
 	private Button editButton = new Button("编辑");//编辑按钮
 	
+	private Pagination thePagination;
 	
 	/**
 	 * 菜单渲染行头 首字符：菜单名，_$c_ :菜单id(code),_$w_:菜单宽度，_$node_cb:启用CheckBoxTableCell。_$noadd_:'新增'按钮，新增内容是否有它，_$noadd_空则有，_$noadd_1存在值则没有
@@ -92,17 +105,39 @@ public class LoginController extends BaseObjectViewOth{
 	 */
 	@SuppressWarnings("rawtypes")
 	@FXML
+	@PaginationAopAno
 	public void loginSerch(ActionEvent event) throws InstantiationException, IllegalAccessException {
 		//列宽
-		final int windth = 100;
-		//Button btn = (Button) event.getSource();
-		List<PyProcess> list = logSer.loginSerch(type_code.getText(),process_code.getText());
-		TableView<PyProcess> table = new TableView<>();
+		final int width = 100;
+		// Button btn = (Button) event.getSource();
+		// List<PyProcess> list =
+		// logSer.loginSerch(type_code.getText(),process_code.getText());
 		
-		table = TagTool.TableTool.initTableOld(fieldsHead.getTableHeadFields(), list, windth, false);
+		CommonRequest request = new PageCommonRequest(10, 1);
+		request.addParameter("type_code", type_code.getText());
+		request.addParameter("process_code", process_code.getText());
+		//logSer.loginSerchnew((PageCommonRequest) request);该方法上注解生效的。
+		//pagination的装载table内容，会在loginserch完成后，由@FXML所触发，才会将tableview赋值。所以如下@1无法得到loginTable；
+		thePagination = TagTool.TableTool.tablePagePagination(10,"loginService.loginSerchnew", request, fieldsHead.getTableHeadFields(), width, false);
+		//@1：loginTable = (TableView<PyProcess>) ((StackPane) pagination.getChildrenUnmodifiable().get(0)).getChildren().get(0);
+		
+	/*	Pagination pagination = new Pagination();
+		pagination.setStyle("-fx-font-size:16");
+		pagination.setMaxPageIndicatorCount(12);
+		
+		pagination.setPageFactory((Integer pageIndex) -> {
+			loginTable =  TagTool.TableTool.tablePage(pageIndex, "loginService.loginSerchnew",
+					request, fieldsHead.getTableHeadFields(), width, false);
+			return loginTable;
+
+		});*/
+		
+		
+	
+		
 		login_table.getChildren().clear();
-		login_table.getChildren().add(table);
-		
+		login_table.getChildren().add(thePagination);
+		this.testAop("hhh");
 		if(login_table_addrow.getChildren().size() > 0) {
 			editButton.setText("编辑");//查询后置为 ’编辑‘
 			return;
@@ -121,7 +156,7 @@ public class LoginController extends BaseObjectViewOth{
 			}
 			textField.setPromptText(f.getFieldName());
 			textField.setId(f.getField());
-			textField.setMaxWidth(w_ == null ? windth : Integer.parseInt((String)w_));
+			textField.setMaxWidth(w_ == null ? width : Integer.parseInt((String)w_));
 			login_table_addrow.getChildren().add(textField);
 
 		}
@@ -153,6 +188,13 @@ public class LoginController extends BaseObjectViewOth{
 		 * 删除按钮点击事件
 		 */
 		deleteButton.setOnAction(this.deleteButton());
+		//Event.fireEvent(editButton, event);//触发事件
+		
+	}
+	
+	@PaginationAopAno
+	private void testAop(String a) {
+		System.out.println("aop:"+a);
 	}
 	
 	/**
@@ -165,7 +207,12 @@ public class LoginController extends BaseObjectViewOth{
 	private EventHandler<ActionEvent> editButtonClick() { 
 		// TODO Auto-generated method stub
 		return  (ActionEvent e) -> {
-			TableView<PyProcess> tab = (TableView<PyProcess>) login_table.getChildren().get(0);
+			Node n = login_table;
+			Pagination p = (Pagination) login_table.getChildren().get(0);
+		
+			
+			
+			TableView<PyProcess> tab =  TagTool.TableTool.tablePagePaginationGetTable(thePagination);
 			
 			if("编辑".equals(editButton.getText())) {
 				tab.setEditable(true);
@@ -215,8 +262,8 @@ public class LoginController extends BaseObjectViewOth{
 				return;
 			}
 			if(1 == insertRet) {
-				TableView<PyProcess> table = (TableView<PyProcess>) (login_table.getChildren().get(0));
-				table.getItems().add(addP);
+				
+				TagTool.TableTool.tablePagePaginationGetTable(thePagination).getItems().add(addP);
 				//成功设置值则清除文本值
 				TagTool.TableTool.delTextOfTextFieldOrT(login_table_addrow.getChildren());
 			}
@@ -229,10 +276,7 @@ public class LoginController extends BaseObjectViewOth{
 	public EventHandler<ActionEvent> saveButtonClick() {
 
 		return (ActionEvent e) -> {
-
-			TableView<PyProcess> tab = (TableView<PyProcess>) login_table.getChildren().get(0);
-		
-			
+			TableView<PyProcess> tab =  TagTool.TableTool.tablePagePaginationGetTable(thePagination);
 			ObservableList<PyProcess> list =tab.getItems();
 			Iterator<PyProcess> itpy = list.iterator();
 			int i = 0;
@@ -248,7 +292,7 @@ public class LoginController extends BaseObjectViewOth{
 			editButton.setText("编辑");
 			tab.setEditable(false);
 			try {
-				this.loginSerch(null);
+				//this.loginSerch(null);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -260,10 +304,7 @@ public class LoginController extends BaseObjectViewOth{
 	public EventHandler<ActionEvent> deleteButton() {
 
 		return (ActionEvent e) -> {
-
-			TableView<PyProcess> tab = (TableView<PyProcess>) login_table.getChildren().get(0);
-		
-			
+			TableView<PyProcess> tab =  TagTool.TableTool.tablePagePaginationGetTable(thePagination);
 			ObservableList<PyProcess> list =tab.getItems();
 			Iterator<PyProcess> itpy = list.iterator();
 			int i = 0;

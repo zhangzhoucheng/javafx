@@ -35,7 +35,13 @@ public class CommonRequest {
 
     // 其他的参数我们把它分装成一个Map对象
     protected Map<String, Object> params  = new HashMap<String, Object>();
-
+    
+    
+    //用于通过mapper接口直接调用exmaple方法
+    private Object mapper_example;
+    //用于通过mapper接口直接调用非传参为example的方法
+    private Object mapper_object;
+    
     public Map<String, Object> getParams() {
 	return this.params;
     }
@@ -86,8 +92,26 @@ public class CommonRequest {
     public Object getValue(String key) {
 	return params.get(key);
     }
+    
+    
 
-    /**
+	public Object getMapper_example() {
+		return mapper_example;
+	}
+
+	public void setMapper_example(Object mapper_example) {
+		this.mapper_example = mapper_example;
+	}
+
+	public Object getMapper_object() {
+		return mapper_object;
+	}
+
+	public void setMapper_object(Object mapper_object) {
+		this.mapper_object = mapper_object;
+	}
+
+	/**
      * @return the traceId
      */
     public String getTraceId() {

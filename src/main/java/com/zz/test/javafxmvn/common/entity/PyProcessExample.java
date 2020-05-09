@@ -3,7 +3,8 @@ package com.zz.test.javafxmvn.common.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PyProcessExample {
+public class PyProcessExample  {
+
     protected String orderByClause;
 
     protected boolean distinct;
@@ -62,8 +63,11 @@ public class PyProcessExample {
         orderByClause = null;
         distinct = false;
     }
+    
 
-    protected abstract static class GeneratedCriteria {
+
+
+	protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
         protected GeneratedCriteria() {
@@ -909,6 +913,7 @@ public class PyProcessExample {
 
         private String typeHandler;
 
+        
         public String getCondition() {
             return condition;
         }

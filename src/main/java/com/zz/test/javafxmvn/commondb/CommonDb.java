@@ -16,6 +16,7 @@ import com.zz.test.javafxmvn.commonbean.CommonResult;
 import com.zz.test.javafxmvn.commonbean.PageCommonRequest;
 import com.zz.test.javafxmvn.commonbean.PageCommonResult;
 import com.zz.test.javafxmvn.commontool.SqlHelper;
+import com.zz.test.javafxmvn.commontool.threadtool.ButiToolClassZz;
 
 
 /**
@@ -128,6 +129,59 @@ public class CommonDb extends SqlSessionDaoSupport{
 		}
 
 	}
+	
+	public CommonResult getListExample(String key, CommonRequest commonRequest) {
+
+		long startTime = System.currentTimeMillis();
+		try {
+
+			if (commonRequest instanceof PageCommonRequest) {
+				PageCommonRequest pageCommonRequest = (PageCommonRequest) commonRequest;
+				PageCommonResult pageCommonResult = new PageCommonResult();
+				pageCommonResult.setPageNo(pageCommonRequest.getPageNo());
+				pageCommonResult.setPageSize(pageCommonRequest.getPageSize());
+				List<Object> returnList;
+				PageHelper.startPage(pageCommonRequest.getPageNo(), pageCommonRequest.getPageSize());
+				
+				if(commonRequest.getMapper_example() != null) {//当传入参数包括example类型，则通过该种方式调用。
+					returnList = getSqlSession().selectList(key, commonRequest.getMapper_example());
+				}else if(commonRequest.getMapper_object() != null){
+					returnList = getSqlSession().selectList(key, commonRequest.getMapper_object());
+				}else {
+					returnList = getSqlSession().selectList(key, commonRequest);
+				}
+				
+				if (returnList == null) {
+					pageCommonResult.setBody(new ArrayList<Object>());
+					return pageCommonResult;
+				}
+				PageInfo<Object> pageinfo = new PageInfo<Object>(returnList);
+				pageCommonResult.setBody(returnList);
+				pageCommonResult.setTotalRecords(pageinfo.getTotal());
+				return pageCommonResult;
+			}
+
+			CommonResult commonResult = new CommonResult();
+			List<Object> returnList;
+			if(commonRequest.getMapper_example() != null) {//当传入参数包括example类型，则通过该种方式调用。
+				returnList = getSqlSession().selectList(key, commonRequest.getMapper_example());
+			}else if(commonRequest.getMapper_object() != null){
+				returnList = getSqlSession().selectList(key, commonRequest.getMapper_object());
+			}else {
+				returnList = getSqlSession().selectList(key, commonRequest);
+			}
+			commonResult.setBody(returnList);
+			if (returnList == null) {
+				commonResult.setBody(new ArrayList<Object>());
+			}
+			return commonResult;
+		} finally {
+			long endTime = System.currentTimeMillis();
+			this.logger.info("@@@ sql=[" + key + "], and time is [" + (endTime - startTime) + "] ms");
+		}
+
+	}
+
 
 	public int addBatch(String key, List<Object> list) {
 		return getSqlSession().insert(key, list);
