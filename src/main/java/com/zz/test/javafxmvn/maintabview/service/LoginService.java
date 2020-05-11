@@ -54,7 +54,7 @@ public class LoginService {
 			c.andTypeCodeEqualTo((String) request.getValue("type_code"));
 		}
 		if(StringUtils.isNotBlank((String) request.getValue("process_code"))) {
-			c.andProcessCodeEqualTo((String) request.getValue("type_code"));
+			c.andProcessCodeEqualTo((String) request.getValue("process_code"));
 		}
 		c.andDisableNotEqualTo(2);
 		

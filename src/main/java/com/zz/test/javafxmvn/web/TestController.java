@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.zz.test.javafxmvn.commonbean.MenuNode;
 import com.zz.test.javafxmvn.commondb.CommonDb;
 import com.zz.test.javafxmvn.main.service.MainService;
+import com.zz.test.javafxmvn.maintabview.service.StartPyMainService;
 
 
 
@@ -27,6 +28,9 @@ public class TestController {
 	
 	@Autowired
 	private CommonDb db;
+	
+	@Autowired
+	private StartPyMainService startPyMainService;
 	
 	@RequestMapping("/test1")
 	private String test1(HttpServletRequest request,HttpServletResponse response) throws Exception {
@@ -50,4 +54,14 @@ public class TestController {
 		System.out.println("nihao,honey!");
 		return "hi!";
 	}
+	
+	@RequestMapping("/startPyMainService")
+	private String startPyMainService(HttpServletRequest request,HttpServletResponse response, String key) {
+		// TODO Auto-generated method stub
+		System.out.println("nihao,honey!");
+		startPyMainService.startPyFile(key);
+		return "hi!";
+	}
+	
+	
 }

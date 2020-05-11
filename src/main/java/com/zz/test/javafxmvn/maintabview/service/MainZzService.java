@@ -10,6 +10,8 @@ import com.zz.test.javafxmvn.common.entity.PyProcess;
 import com.zz.test.javafxmvn.common.entity.PyProcessExample;
 import com.zz.test.javafxmvn.common.entity.PyProcessExample.Criteria;
 import com.zz.test.javafxmvn.common.entity.mapper.PyProcessMapper;
+import com.zz.test.javafxmvn.commonbean.PageCommonRequest;
+import com.zz.test.javafxmvn.commonbean.PageCommonResult;
 import com.zz.test.javafxmvn.commondb.CommonDb;
 
 import javafx.scene.control.Label;
@@ -41,7 +43,21 @@ public class MainZzService {
 		return pyProList;
 	}
 
-	
+	public PageCommonResult loginSerchnew(PageCommonRequest request) {
+		PyProcessExample pyProExa = new PyProcessExample();
+		request.setMapper_example(pyProExa);
+		Criteria c = pyProExa.createCriteria();
+		if(StringUtils.isNotBlank((String) request.getValue("type_code"))) {
+			c.andTypeCodeEqualTo((String) request.getValue("type_code"));
+		}
+		if(StringUtils.isNotBlank((String) request.getValue("process_code"))) {
+			c.andProcessCodeEqualTo((String) request.getValue("process_code"));
+		}
+		c.andDisableNotEqualTo(2);
+		
+		return (PageCommonResult) db.getListExample(pyProcessMapper.namespace + ".selectByExample", request);
+				
+	}
 	public int updatePyProcessList(PyProcess py) {
 		return pyProcessMapper.updateByPrimaryKey(py);
 	}
