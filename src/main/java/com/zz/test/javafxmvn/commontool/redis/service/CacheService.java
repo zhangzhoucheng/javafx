@@ -40,7 +40,7 @@ import com.zz.test.javafxmvn.commontool.redis.TTLCacheable;
 //@CacheConfig(cacheNames="zz-cache")
 public class CacheService extends BaseObject{
 	@Autowired
-	private CommonDb mybatisDao;
+	private CommonDb commonDb;
 	@Autowired
 	private DictService dict;
 	@Autowired
@@ -51,7 +51,7 @@ public class CacheService extends BaseObject{
 		logger.debug("get from oracle audit");
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("mainTreeView", mainTreeView);
-		return mybatisDao.getList("DictMapper.getProcessListNew",params);
+		return commonDb.getList("DictMapper.getProcessListNew",params);
 	}
 	
 	/**
@@ -78,6 +78,6 @@ public class CacheService extends BaseObject{
 		logger.debug("get from oracle audit");
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("mainTreeView", mainTreeView);
-		return mybatisDao.getList("DictMapper.getProcessListNew",params);
+		return commonDb.getList("DictMapper.getProcessListNew",params);
 	}
 }

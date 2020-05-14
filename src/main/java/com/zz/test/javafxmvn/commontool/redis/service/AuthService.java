@@ -38,7 +38,7 @@ import com.zz.test.javafxmvn.commontool.redis.TTLCacheable;
 @Service
 public class AuthService extends BaseObject{
 	@Autowired
-	private CommonDb mybatisDao;
+	private CommonDb commonDb;
 	@Autowired
 	private DictService dictService;
 	
@@ -47,7 +47,7 @@ public class AuthService extends BaseObject{
 		logger.debug("get from oracle audit");
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("mainTreeView", mainTreeView);
-		return mybatisDao.getList("DictMapper.getProcessListNew",params);
+		return commonDb.getList("DictMapper.getProcessListNew",params);
 	}
 	
 	
@@ -81,7 +81,7 @@ public class AuthService extends BaseObject{
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("opCode", opCode);
 		params.put("menuResourceId", menuResourceId);
-		return mybatisDao.getList("AuthMapper.queryDeptIdList",params);
+		return commonDb.getList("AuthMapper.queryDeptIdList",params);
 	}
 	/**
 	 * 
@@ -100,7 +100,7 @@ public class AuthService extends BaseObject{
 	@TTLCacheable(type="auth_cdeptid",key="0",expire=ExpireTime.FOUR_HOUR,isRsetTTL=true, clazzType = ArrayList.class)
 	public List<Map<String, String>> queryCDeptIdList(String opCode){
 		logger.debug("get from oracle audit");
-		return mybatisDao.getList("AuthMapper.queryCDeptIdList",opCode);
+		return commonDb.getList("AuthMapper.queryCDeptIdList",opCode);
 	}
 	/**
 	 * 
@@ -121,8 +121,8 @@ public class AuthService extends BaseObject{
 		params.put("opCode", opCode);
 		params.put("deptL2Ids", (null!=deptL2Ids&&deptL2Ids!="")?Arrays.asList(deptL2Ids.split(",")):null);
 		params.put("menuResourceId", menuResourceId);
-		logger.debug(mybatisDao.getNativeSQL("AuthMapper.queryOrgIdList", params));
-		return mybatisDao.getList("AuthMapper.queryOrgIdList",params);
+		logger.debug(commonDb.getNativeSQL("AuthMapper.queryOrgIdList", params));
+		return commonDb.getList("AuthMapper.queryOrgIdList",params);
 	}
 	/**
 	 * 
@@ -142,8 +142,8 @@ public class AuthService extends BaseObject{
 		logger.debug("get from oracle audit");
 		//Map<String, Object> params = new HashMap<String, Object>();
 		//params.put("menuResourceId", menuResourceId);
-		logger.debug(mybatisDao.getNativeSQL("AuthMapper.queryOpcodeList", menuResourceId));
-		return mybatisDao.getList("AuthMapper.queryOpcodeList",menuResourceId);
+		logger.debug(commonDb.getNativeSQL("AuthMapper.queryOpcodeList", menuResourceId));
+		return commonDb.getList("AuthMapper.queryOpcodeList",menuResourceId);
 
 	}
 	/**
@@ -171,8 +171,8 @@ public class AuthService extends BaseObject{
 		}else{
 			params.put("deptL2Ids", Arrays.asList(deptL2Ids.split(",")));
 		}
-		logger.debug(mybatisDao.getNativeSQL("AuthMapper.queryCOrgIdList", params));
-		return mybatisDao.getList("AuthMapper.queryCOrgIdList",params);
+		logger.debug(commonDb.getNativeSQL("AuthMapper.queryCOrgIdList", params));
+		return commonDb.getList("AuthMapper.queryCOrgIdList",params);
 	}
 	/**
 	 * 
@@ -188,7 +188,7 @@ public class AuthService extends BaseObject{
 	@TTLCacheable(type="auth_userinfo",expire=ExpireTime.HALF_A_DAY,isRsetTTL=true,clazzType=ArrayList.class)
 	public List<Map<String, String>> queryUserInfoByOpcode(String opCode){
 		logger.debug("get from oracle audit");
-		return mybatisDao.getList("AuthMapper.queryUserInfoByOpcode",opCode);
+		return commonDb.getList("AuthMapper.queryUserInfoByOpcode",opCode);
 	}
 	
 	/**
@@ -200,7 +200,7 @@ public class AuthService extends BaseObject{
 	@TTLCacheable(type="auth_res",expire=ExpireTime.FOUR_HOUR,isRsetTTL=true,clazzType=ArrayList.class)
 	public List<String> queryResDateList(String opCode){
 		logger.debug("get from oracle audit");
-		List<Map<String, String>> results = mybatisDao.getList("AuthMapper.queryResDateList",opCode);
+		List<Map<String, String>> results = commonDb.getList("AuthMapper.queryResDateList",opCode);
 		List<String> resList = new ArrayList<String>();
 		for(Map<String, String> result:results){
 			resList.add(result.get("resId"));
@@ -216,20 +216,20 @@ public class AuthService extends BaseObject{
 	@TTLCacheable(type="auth_res_rela",expire=ExpireTime.FOUR_HOUR,isRsetTTL=true,clazzType=ArrayList.class)
 	public List<Map<String, Object>> queryResWithRelateDateList(String opCode){
 		//权限下0级菜单
-		List<Map<String, Object>> menuZero = mybatisDao.getList("AuthMapper.queryResMenuZeroDateList",opCode);
+		List<Map<String, Object>> menuZero = commonDb.getList("AuthMapper.queryResMenuZeroDateList",opCode);
 		//权限下1级菜单
 		for(Map<String, Object> zero : menuZero){
 			Map<String, String> paramsOne = new HashMap<String, String>();
 			paramsOne.put("opCode", opCode);
 			paramsOne.put("menuId", (String) zero.get("id"));
-			List<Map<String, Object>> menuOne = mybatisDao.getList("AuthMapper.queryResMenuOneDateList",paramsOne);
+			List<Map<String, Object>> menuOne = commonDb.getList("AuthMapper.queryResMenuOneDateList",paramsOne);
 			zero.put("arr", menuOne);
 			//权限下二级菜单
 			for(Map<String, Object> one : menuOne){
 				Map<String, String> paramsTwo = new HashMap<String, String>();
 				paramsTwo.put("opCode", opCode);
 				paramsTwo.put("menuId", (String) one.get("id"));
-				List<Map<String, Object>> menuTwo = mybatisDao.getList("AuthMapper.queryResMenuTwoDateList",paramsTwo);
+				List<Map<String, Object>> menuTwo = commonDb.getList("AuthMapper.queryResMenuTwoDateList",paramsTwo);
 				for(Map<String, Object> two : menuTwo){
 					two.put("sid", getMenuTwoMapRel(two.get("id").toString()));
 					two.put("arr", "");
@@ -254,7 +254,7 @@ public class AuthService extends BaseObject{
 	@TTLCacheable(type="queryUserInfoInOrg", expire=ExpireTime.FOUR_HOUR,isRsetTTL=true,clazzType=ArrayList.class)
 	public List<Map<String, String>> queryUserInfoInOrg(String orgId){
 		logger.debug("get from oracle metadata");
-		return mybatisDao.getList("AuthMapper.queryUserInfoInOrg",orgId);
+		return commonDb.getList("AuthMapper.queryUserInfoInOrg",orgId);
 	}
 	/**
 	 * 
@@ -272,8 +272,8 @@ public class AuthService extends BaseObject{
 		logger.debug("get from oracle metadata");
 		Map<String, String> params = new HashMap<String,String>();
 		params.put("level", level);
-		logger.debug(mybatisDao.getNativeSQL("AuthMapper.queryPersonalErrType",params));
-		return mybatisDao.getList("AuthMapper.queryPersonalErrType",params);
+		logger.debug(commonDb.getNativeSQL("AuthMapper.queryPersonalErrType",params));
+		return commonDb.getList("AuthMapper.queryPersonalErrType",params);
 	}
 	/**
 	 * 
@@ -292,8 +292,8 @@ public class AuthService extends BaseObject{
 		logger.debug("get from oracle audit");
 		Map<String, String> params = new HashMap<String,String>();
 		params.put("resourceId", resourceId);
-		logger.debug(mybatisDao.getNativeSQL("AuthMapper.queryUserInMenuResources",params));
-		return mybatisDao.getList("AuthMapper.queryUserInMenuResources",params);
+		logger.debug(commonDb.getNativeSQL("AuthMapper.queryUserInMenuResources",params));
+		return commonDb.getList("AuthMapper.queryUserInMenuResources",params);
 	}
 	
 	/**
@@ -314,8 +314,8 @@ public class AuthService extends BaseObject{
 		Map<String, String> params = new HashMap<String,String>();
 		params.put("roleId", roleId);
 		params.put("orgId", orgId);
-		logger.debug(mybatisDao.getNativeSQL("AuthMapper.queryUserInAuthRoleOrg",params));
-		return mybatisDao.getList("AuthMapper.queryUserInAuthRoleOrg",params);
+		logger.debug(commonDb.getNativeSQL("AuthMapper.queryUserInAuthRoleOrg",params));
+		return commonDb.getList("AuthMapper.queryUserInAuthRoleOrg",params);
 	}
 	
 	/**
@@ -343,6 +343,6 @@ public class AuthService extends BaseObject{
 	
 	public List<Map<String, String>> queryRoleByOpCode(String opCode){
 		logger.debug("get from oracle eaudit");
-		return mybatisDao.getList("AuthMapper.queryRoleByOpCode",opCode);
+		return commonDb.getList("AuthMapper.queryRoleByOpCode",opCode);
 	}
 }

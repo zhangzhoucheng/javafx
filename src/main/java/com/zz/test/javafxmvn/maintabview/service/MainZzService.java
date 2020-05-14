@@ -17,11 +17,11 @@ import com.zz.test.javafxmvn.commondb.CommonDb;
 import javafx.scene.control.Label;
 
 
-@Service
+@Service("mainZzService")
 public class MainZzService {
 
 	@Autowired
-	private CommonDb db;
+	private CommonDb commonDb;
 	
 	@Autowired
 	private PyProcessMapper pyProcessMapper;
@@ -55,7 +55,7 @@ public class MainZzService {
 		}
 		c.andDisableNotEqualTo(2);
 		
-		return (PageCommonResult) db.getListExample(pyProcessMapper.namespace + ".selectByExample", request);
+		return (PageCommonResult) commonDb.getListExample(pyProcessMapper.namespace + ".selectByExample", request);
 				
 	}
 	public int updatePyProcessList(PyProcess py) {

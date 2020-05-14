@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import com.zz.test.javafaxmvn.commoninterceptor.AccessInfoContextHolder;
 import com.zz.test.javafxmvn.commonbean.CommonRequest;
 import com.zz.test.javafxmvn.commondb.CommonDb;
+import com.zz.test.javafxmvn.commoninterface.Function;
 
 
 /**
@@ -35,10 +36,10 @@ import com.zz.test.javafxmvn.commondb.CommonDb;
  * 1.0 		  2018-12-10 14:14:27    jld.zhangzhou     mobile base 3th,BeiJing      1.create the class            
  * </note>
  */
-public class ThreadPollTool {
+public class ThreadPollTool<T> {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ThreadPollTool.class);
-    private static  CommonDb mybatisDao=(CommonDb) SpringUtils.getBean("commonDb");
+    private static  CommonDb commonDb=(CommonDb) SpringUtils.getBean("commonDb");
 	private static final int count=14;//线程池数量10
 	private static ExecutorService executor = Executors.newFixedThreadPool(count);//线程池数量
 
@@ -87,7 +88,7 @@ public class ThreadPollTool {
 				@Override
 				public void run() {					
 					try {
-						ThreadPollTool.mybatisDao.update(batchSql[inew], commonRequest);
+						ThreadPollTool.commonDb.update(batchSql[inew], commonRequest);
 						
 					}catch(Exception e){
 						mapFlag.put("errTrue", true);//其中一个线程出问题。则记录
@@ -130,7 +131,7 @@ public class ThreadPollTool {
 				@Override
 				public void run() {					
 					try {
-						ThreadPollTool.mybatisDao.update(batchSql[inew], commonRequest);
+						ThreadPollTool.commonDb.update(batchSql[inew], commonRequest);
 						logger.warn("@@planId" + commonRequest.getParams().get("planId") + "@executorBatchSqlAsyn," + batchSql[inew] + " success!");
 						
 					}catch(Exception e){
@@ -174,7 +175,7 @@ public class ThreadPollTool {
 						System.out.println("@@@sql:"+inew);
 						//list.addAll((Collection<? extends Map<String, Object>>) ThreadPollTool.mybatisDao.getList(batchSql[inew], commonRequest).getBody());
 						//Object ob = ThreadPollTool.mybatisDao.getList(batchSql[inew], commonRequest).getBody();
-						map.put(inew, (List<Map<String, Object>>) ThreadPollTool.mybatisDao.getList(batchSql[inew], commonRequest).getBody());
+						map.put(inew, (List<Map<String, Object>>) ThreadPollTool.commonDb.getList(batchSql[inew], commonRequest).getBody());
 					}catch(Exception e){
 						String traceId = AccessInfoContextHolder.getTraceId() == null ? StringUtils.trimToEmpty(commonRequest.getTraceId()) : AccessInfoContextHolder.getTraceId();
 						logger.error("@@taceid:" + traceId + ","+batchSql[inew] + " error!", e);
@@ -345,6 +346,44 @@ public class ThreadPollTool {
 		return true;
 	}
 	
+	/**
+	 * Desc:返回一个runnable，该runnable 顺序执行methods中的多个方法
+	 * @author jld.zhangzhou
+	 * @datetime 2020-05-14 14:35:52
+	 * @modify_record:
+	 * @param methods
+	 * @param object
+	 * @return
+	 * @throws InterruptedException
+	 */
+	public static Runnable getRunnableExecutorBatchMethod(String [] methods, Object object){
+
+				System.out.println("getRunnableExecutorBatchMethod");
+					
+				return new Runnable() {
+				@Override
+				public void run() {
+					for(String methods : methods) {
+						try {
+							
+							
+							ThreadPollTool.reflexMethodMap(methods.substring(methods.lastIndexOf(".")+1), methods.substring(0, methods.lastIndexOf(".")), object);
+							
+						}catch(Exception e){
+							String traceId = AccessInfoContextHolder.getTraceId() == null ? "" : AccessInfoContextHolder.getTraceId();
+							logger.error("@@taceid:" + traceId + ","+methods + " error!", e);
+							e.printStackTrace();
+						}finally{
+						
+						}
+					}
+					
+				}
+			};
+			
+	
+	}
+	
 	public static boolean executorBatchMethodByMoreThread(String [] methods, Map<String, Object> map) throws InterruptedException {
 
 		Map<String,Boolean> mapFlag = new HashMap<>();
@@ -383,6 +422,41 @@ public class ThreadPollTool {
 		return true;
 	}
 	
+	/**
+	 * Desc:异步冲击函数，is buti
+	 * @author jld.zhangzhou
+	 * @datetime 2020-05-14 17:34:22
+	 * @modify_record:
+	 * @param function :call function
+	 * @param t :parmas
+	 * @param count :fire times
+	 * @param million:fire time
+	 * @throws InterruptedException 
+	 */
+	public static<T> void asycfuctionFire(Function<T, Boolean> function , T t, int count, Long million) throws InterruptedException {
+		int i = 0;
+		while (true) {
+			System.out.println("asycfuctionFire-i:"+i);
+			try {
+				if(function.apply(t)) {
+					break;
+				}
+				
+			} catch (Exception e) {
+				// 继续获取
+				Thread.sleep(million);
+				if(i > count) {
+					break;
+				}
+			}
+			i ++;
+
+		}
+
+	}
+	
+	
+	
 	public static Object reflexMethod(String methodName, String beanName, CommonRequest commonRequest) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException {
 		//Object theClass=Class.forName(tableList.classMethod).newInstance();//获取class实例，即获取service层的对应class
 		Object ob=SpringUtils.getBean(beanName);
@@ -395,5 +469,12 @@ public class ThreadPollTool {
 		Object ob=SpringUtils.getBean(beanName);
 		Method method=ob.getClass().getMethod(methodName,map.getClass());
 		return method.invoke(ob, map);
+	}
+	
+	public static Object reflexMethodMap(String methodName, String beanName, Object object) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException {
+		//Object theClass=Class.forName(tableList.classMethod).newInstance();//获取class实例，即获取service层的对应class
+		Object ob=SpringUtils.getBean(beanName);
+		Method method=ob.getClass().getMethod(methodName,object.getClass());
+		return method.invoke(ob, object);
 	}
 }

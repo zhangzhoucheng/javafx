@@ -13,14 +13,22 @@ import com.zz.test.javafxmvn.common.entity.mapper.PyProcessMapper;
 import com.zz.test.javafxmvn.commonbean.PageCommonRequest;
 import com.zz.test.javafxmvn.commonbean.PageCommonResult;
 import com.zz.test.javafxmvn.commondb.CommonDb;
+import com.zz.test.javafxmvn.commoninterface.Function;
+import com.zz.test.javafxmvn.commontag.TagBase;
+import com.zz.test.javafxmvn.commontag.TagTool;
 import com.zz.test.javafxmvn.commontool.pytool.StartPy;
 import com.zz.test.javafxmvn.maintabview.view.LoginFxmlView;
 
-@Service
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.Pagination;
+import javafx.scene.control.TableView;
+
+@Service("startPyMainService")
 public class StartPyMainService {
 
 	@Autowired
-	private CommonDb db;
+	private CommonDb commonDb;
 	
 	@Autowired
 	private PyProcessMapper pyProcessMapper;
@@ -54,7 +62,7 @@ public class StartPyMainService {
 		}
 		c.andDisableNotEqualTo(2);
 		
-		return (PageCommonResult) db.getListExample(pyProcessMapper.namespace + ".selectByExample", request);
+		return (PageCommonResult) commonDb.getListExample(pyProcessMapper.namespace + ".selectByExample", request);
 				
 	}
 	
@@ -92,5 +100,24 @@ public class StartPyMainService {
 			StartPy.startByRuntime("python  D:\\demo.py");
 		}
 		
+	}
+	
+	/**
+	 * Desc:点击PaginationButi中的table的行触发事件。（如果PaginationButi中没有table，就不停冲击，到一定频次后结束）
+	 * @author jld.zhangzhou
+	 * @datetime 2020-05-14 18:20:26
+	 * @modify_record:
+	 * @param p
+	 * @throws InterruptedException
+	 */
+	public void startPyMainTableClickRow(TagBase.PaginationButi p) throws InterruptedException {
+		TagTool.TableTool.startPyMainTableClickRow(new ChangeListener<PyProcess>() {
+			@Override
+			public void changed(ObservableValue<? extends PyProcess> observableValue, PyProcess oldItem,
+					PyProcess newItem) {
+				System.out.println("ii:" + newItem.getProcessCode());
+			}
+		}, p);
+
 	}
 }

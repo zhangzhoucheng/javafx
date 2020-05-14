@@ -27,7 +27,7 @@ import com.zz.test.javafxmvn.commondb.CommonDb;
  */
 public class BatchOperateRunnable implements Runnable {
 	//@Autowired//线程类暂时无法捕捉注解bean,所以通过如下方法
-    private  CommonDb mybatisDao=(CommonDb) SpringUtils.getBean("commonDb");
+    private  CommonDb commonDb=(CommonDb) SpringUtils.getBean("commonDb");
 	private String batchSql;//批量update mapper语句
 	//private int times;//控制线程数量
 	private Map<String, Object> params = new HashMap<String, Object>();//参数
@@ -42,7 +42,7 @@ public class BatchOperateRunnable implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		try {
-			this.mybatisDao.update(batchSql, params);
+			this.commonDb.update(batchSql, params);
 			//System.out.println("当前线程："+Thread.currentThread().getId()+"。sql:"+batchSql+"。params:"+params.toString());
 		} 
 		catch(Exception e){

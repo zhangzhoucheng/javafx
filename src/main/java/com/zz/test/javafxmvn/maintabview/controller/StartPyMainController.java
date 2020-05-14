@@ -4,7 +4,6 @@ package com.zz.test.javafxmvn.maintabview.controller;
 
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import com.zz.test.javafxmvn.common.aop.PaginationAopAno;
@@ -14,10 +13,9 @@ import com.zz.test.javafxmvn.commonbean.CommonRequest;
 import com.zz.test.javafxmvn.commonbean.PageCommonRequest;
 import com.zz.test.javafxmvn.commontag.TableHeadFields;
 import com.zz.test.javafxmvn.commontag.TagTool;
-import com.zz.test.javafxmvn.commontool.RegexpTool;
 import com.zz.test.javafxmvn.commontool.threadtool.ButiToolClassZz;
 import com.zz.test.javafxmvn.commontool.threadtool.SpringUtils;
-import com.zz.test.javafxmvn.maintabview.service.LoginService;
+import com.zz.test.javafxmvn.commontool.threadtool.ThreadPollTool;
 import com.zz.test.javafxmvn.maintabview.service.StartPyMainService;
 
 import de.felixroske.jfxsupport.FXMLController;
@@ -58,7 +56,7 @@ public class StartPyMainController extends BaseObjectViewOth{
 	 */
 	// 不能通过注解方式获取实体，因为启动类不是该LoginFxmlView，而是MainFxmlView，
 	// 所以无法把具有fxmlcontroller的LoginController和容器依赖起来。此时暂时通过getBean方式获取。
-	private StartPyMainService logSer = (StartPyMainService) SpringUtils.getBean("startPyMainService");
+	private StartPyMainService startPyMainService = (StartPyMainService) SpringUtils.getBean("startPyMainService");
 
 	/**
 	 * 登陆进程的table容器
@@ -135,6 +133,7 @@ public class StartPyMainController extends BaseObjectViewOth{
 		this.testAop("hhh");
 		if(login_table_addrow.getChildren().size() > 0) {
 			editButton.setText("编辑");//查询后置为 ’编辑‘
+			ThreadPollTool.executorThread(ThreadPollTool.getRunnableExecutorBatchMethod(new String [] {"startPyMainService.asycTableAddClickRow"}, thePagination));
 			return;
 		}
 			
@@ -184,6 +183,20 @@ public class StartPyMainController extends BaseObjectViewOth{
 		 */
 		deleteButton.setOnAction(this.deleteButton());
 		//Event.fireEvent(editButton, event);//触发事件
+		
+		/**
+		 * 点击行事件
+		 */
+	/*	table1.getSelectionModel().selectedItemProperty().addListener(// 选中某一行
+                new ChangeListener<ILayer>() {
+                    @Override
+                    public void changed(
+                            ObservableValue<? extends ILayer> observableValue,
+                            ILayer oldItem, ILayer newItem) {
+                        System.out.println(newItem.getLayerName());
+        }*/
+                    
+        ThreadPollTool.executorThread(ThreadPollTool.getRunnableExecutorBatchMethod(new String [] {"startPyMainService.startPyMainTableClickRow"}, thePagination));
 		
 	}
 	
@@ -250,7 +263,7 @@ public class StartPyMainController extends BaseObjectViewOth{
 			}
 			int insertRet = -1;
 			try {
-				insertRet = logSer.insertPyProcess(addP);
+				insertRet = startPyMainService.insertPyProcess(addP);
 			} catch(Exception e1){
 				logger.error("@@addButtonClick,insertPyProcess error!",e1);
 				TagTool.AlertPrompt.alertMsg_warn("进程编码已经存在等！");
@@ -278,7 +291,7 @@ public class StartPyMainController extends BaseObjectViewOth{
 			while(itpy.hasNext()){
 				PyProcess p = itpy.next();
 				if(p.getChoice().getValue() == true && "取消编辑".equals(editButton.getText())) {
-					int ret = logSer.updatePyProcessList(p);
+					int ret = startPyMainService.updatePyProcessList(p);
 					p.getChoice().set(false);
 					i ++ ;
 				}
@@ -306,7 +319,7 @@ public class StartPyMainController extends BaseObjectViewOth{
 			while(itpy.hasNext()){
 				PyProcess p = itpy.next();
 				if(p.getChoice().getValue() == true && "取消编辑".equals(editButton.getText())) {
-					int ret = logSer.deleteByPrimaryKeySet2(p);
+					int ret = startPyMainService.deleteByPrimaryKeySet2(p);
 					p.getChoice().set(false);
 					itpy.remove();
 				}

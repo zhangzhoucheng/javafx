@@ -41,7 +41,7 @@ import com.zz.test.javafxmvn.commondb.CommonDb;
 @CacheConfig(cacheNames="zz-cache")//给改类定义cache name,类下所有方法都会是cacheNames="zz-cache"，除非在方法上进一步定义。
 public class DictService {
 	@Autowired
-	private CommonDb mybatisDao;
+	private CommonDb commonDb;
 	
 	/**
 	 * Desc:获取指定键的值
@@ -77,7 +77,7 @@ public class DictService {
 	 * @return
 	 */
 	public List<Map<String, String>> getCacheFromKeyValue(){
-		return mybatisDao.getList("DictMapper.getCacheFromKeyValue");
+		return commonDb.getList("DictMapper.getCacheFromKeyValue");
 	}
 	
 	/**
@@ -88,7 +88,7 @@ public class DictService {
 	 * @return
 	 */
 	public List<Map<String, String>> getCacheFromSql(){
-		return mybatisDao.getList("DictMapper.getCacheFromSql");
+		return commonDb.getList("DictMapper.getCacheFromSql");
 	}
 	
 	/**
@@ -103,7 +103,7 @@ public class DictService {
 	 */
 
 	public List<Map<String, String>> getKeyValueFromOracleAudit(String sql){
-		return mybatisDao.getList("DictMapper.executeSql",sql);
+		return commonDb.getList("DictMapper.executeSql",sql);
 	}
 	/**
 	 * 
@@ -117,7 +117,7 @@ public class DictService {
 	 */
 
 	public List<Map<String, String>> getKeyValueFromOracleMetadata(String sql){
-		return mybatisDao.getList("DictMapper.executeSql",sql);
+		return commonDb.getList("DictMapper.executeSql",sql);
 	}
 	
 	/**
@@ -131,7 +131,7 @@ public class DictService {
 	 * </pre>
 	 */
 	public List<Map<String, String>> getKeyValueFromMysql(String sql){
-		return mybatisDao.getList("DictMapper.executeSql",sql);
+		return commonDb.getList("DictMapper.executeSql",sql);
 	}
 
 

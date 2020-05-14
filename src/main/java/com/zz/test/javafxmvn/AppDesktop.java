@@ -68,7 +68,7 @@ public class AppDesktop implements CommandLineRunner {
 	}
 
 	@Bean
-	public CommonDb mybatisDao() {
+	public CommonDb commonDb() {
 		return new CommonDb();
 
 	}

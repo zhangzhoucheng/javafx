@@ -24,10 +24,11 @@ import com.zz.test.javafxmvn.commonbean.CommonResult;
 import com.zz.test.javafxmvn.commonbean.Constants;
 import com.zz.test.javafxmvn.commonbean.PageCommonRequest;
 import com.zz.test.javafxmvn.commonbean.PageCommonResult;
+import com.zz.test.javafxmvn.commoninterface.Function;
 import com.zz.test.javafxmvn.commontag.TagBase.PaginationButi;
 import com.zz.test.javafxmvn.commontool.RegexpTool;
 import com.zz.test.javafxmvn.commontool.threadtool.ButiToolClassZz;
-import com.zz.test.javafxmvn.functioninterface.Test;
+import com.zz.test.javafxmvn.commontool.threadtool.ThreadPollTool;
 import com.zz.test.javafxmvn.main.Main;
 import com.zz.test.javafxmvn.main.view.MainFxmlView;
 import com.zz.test.javafxmvn.maintabview.view.LoginFxmlView;
@@ -705,7 +706,81 @@ public class TagTool {
 		}
 		
 
+		/**
+		 * Desc:传入paginationButi ，对function冲击
+		 * 
+		 *remrk:这是一个函数式接口非常buti的一个应用。通过传入funtion，从而把代码段传入，。
+		 *     总用时每隔20毫秒冲击一次function，直到函数返回ture，或者冲击大于100次，也就是2秒.
+		 *     其实最开始的实现仅仅是注释@@1部分的代码，后来发现其中变化的只要try{}部分的逻辑，索性把它做成函数式接口，用户可以
+		 *     实现function，之后调用冲击函数asycfuctionFire，
+		 * @author jld.zhangzhou
+		 * @datetime 2020-05-14 17:22:52
+		 * @modify_record:
+		 * @param f
+		 * @param p
+		 * @throws InterruptedException
+		 */
+		public static void asycPaginationButiOper(Function<TagBase.PaginationButi, Boolean> function, TagBase.PaginationButi paginationButi) throws InterruptedException {
+			ThreadPollTool.asycfuctionFire(function, paginationButi, 100, 20L);
+			
+			/*@@1
+			 * int i = 0;
+			while (true) {
+				System.out.println("i:"+i);
+				try {
+					TableView<PyProcess> tab = TagTool.TableTool.tablePagePaginationGetTable(p);
+					if (tab.getItems().size() > 0) {
+						tab.getSelectionModel().selectedItemProperty().addListener(// 选中某一行
+								new ChangeListener<PyProcess>() {
+									@Override
+									public void changed(ObservableValue<? extends PyProcess> observableValue,
+											PyProcess oldItem, PyProcess newItem) {
+										System.out.println("i:"+newItem.getProcessCode());
+									}
+								});
+						break;
+
+					}
+					if(function.apply(paginationButi)) {
+						break;
+					}
+					
+				} catch (Exception e) {
+					// 继续获取
+					Thread.sleep(20);
+					if(i>100) {
+						break;
+					}
+				}
+				i ++;
+
+			}*/
+
+		}
 		
+		/**
+		 * Desc:公用的，传入一个实现的listener事件，通过PaginationButi 冲击，
+		 * @author jld.zhangzhou
+		 * @datetime 2020-05-14 18:13:06
+		 * @modify_record:
+		 * @param listener
+		 * @param paginationButi
+		 * @throws InterruptedException
+		 */
+		public static<T> void startPyMainTableClickRow(ChangeListener<? super T> listener, TagBase.PaginationButi paginationButi) throws InterruptedException {
+			//ThreadPollTool.asycfuctionFire(function, paginationButi, 100, 20L);
+			
+			TagTool.TableTool.asycPaginationButiOper((TagBase.PaginationButi p1) -> {
+				TableView<T> tab = TagTool.TableTool.tablePagePaginationGetTable(p1);
+				if (tab.getItems().size() > 0) {
+					tab.getSelectionModel().selectedItemProperty().addListener(listener);
+					return true;
+				}
+				return false;
+
+			}, paginationButi);
+
+		}
 		
 
 	}

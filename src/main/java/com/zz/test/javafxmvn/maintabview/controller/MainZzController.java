@@ -60,7 +60,7 @@ public class MainZzController extends BaseObjectViewOth{
 	 */
 	// 不能通过注解方式获取实体，因为启动类不是该LoginFxmlView，而是MainFxmlView，
 	// 所以无法把具有fxmlcontroller的LoginController和容器依赖起来。此时暂时通过getBean方式获取。
-	private MainZzService logSer = (MainZzService) SpringUtils.getBean("mainZzService");
+	private MainZzService mainZzService = (MainZzService) SpringUtils.getBean("mainZzService");
 
 	/**
 	 * 登陆进程的table容器
@@ -252,7 +252,7 @@ public class MainZzController extends BaseObjectViewOth{
 			}
 			int insertRet = -1;
 			try {
-				insertRet = logSer.insertPyProcess(addP);
+				insertRet = mainZzService.insertPyProcess(addP);
 			} catch(Exception e1){
 				logger.error("@@addButtonClick,insertPyProcess error!",e1);
 				TagTool.AlertPrompt.alertMsg_warn("进程编码已经存在等！");
@@ -280,7 +280,7 @@ public class MainZzController extends BaseObjectViewOth{
 			while(itpy.hasNext()){
 				PyProcess p = itpy.next();
 				if(p.getChoice().getValue() == true && "取消编辑".equals(editButton.getText())) {
-					int ret = logSer.updatePyProcessList(p);
+					int ret = mainZzService.updatePyProcessList(p);
 					p.getChoice().set(false);
 					i ++ ;
 				}
@@ -308,7 +308,7 @@ public class MainZzController extends BaseObjectViewOth{
 			while(itpy.hasNext()){
 				PyProcess p = itpy.next();
 				if(p.getChoice().getValue() == true && "取消编辑".equals(editButton.getText())) {
-					int ret = logSer.deleteByPrimaryKeySet2(p);
+					int ret = mainZzService.deleteByPrimaryKeySet2(p);
 					p.getChoice().set(false);
 					itpy.remove();
 				}

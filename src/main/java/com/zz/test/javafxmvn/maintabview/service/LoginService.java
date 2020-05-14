@@ -11,13 +11,12 @@ import com.zz.test.javafxmvn.common.entity.PyProcess;
 import com.zz.test.javafxmvn.common.entity.PyProcessExample;
 import com.zz.test.javafxmvn.common.entity.PyProcessExample.Criteria;
 import com.zz.test.javafxmvn.common.entity.mapper.PyProcessMapper;
-import com.zz.test.javafxmvn.commonbean.CommonRequest;
 import com.zz.test.javafxmvn.commonbean.PageCommonRequest;
 import com.zz.test.javafxmvn.commonbean.PageCommonResult;
 import com.zz.test.javafxmvn.commondb.CommonDb;
 import com.zz.test.javafxmvn.maintabview.view.LoginFxmlView;
 
-@Service
+@Service("loginService")
 public class LoginService {
 
 	@Autowired
