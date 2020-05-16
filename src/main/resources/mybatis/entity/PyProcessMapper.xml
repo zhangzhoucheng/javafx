@@ -14,6 +14,7 @@
     <result column="every_day_start_flag" jdbcType="INTEGER" property="everyDayStartFlag" />
     <result column="execute_max" jdbcType="INTEGER" property="executeMax" />
     <result column="process_limittime" jdbcType="INTEGER" property="processLimittime" />
+    <result column="process_othmsg" jdbcType="VARCHAR" property="processOthmsg" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -75,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List">
     process_id, process_code, process_name, type_code, process_remark, process_status, 
-    disable, process_cron, cron_calibration, every_day_start_flag, execute_max, process_limittime
+    disable, process_cron, cron_calibration, every_day_start_flag, execute_max, process_limittime, process_othmsg
   </sql>
   <select id="selectByExample" parameterType="com.zz.test.javafxmvn.common.entity.PyProcessExample" resultMap="BaseResultMap">
     select

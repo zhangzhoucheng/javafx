@@ -133,7 +133,7 @@ public class StartPyMainController extends BaseObjectViewOth{
 		this.testAop("hhh");
 		if(login_table_addrow.getChildren().size() > 0) {
 			editButton.setText("编辑");//查询后置为 ’编辑‘
-			ThreadPollTool.executorThread(ThreadPollTool.getRunnableExecutorBatchMethod(new String [] {"startPyMainService.asycTableAddClickRow"}, thePagination));
+			ThreadPollTool.executorThread(ThreadPollTool.getRunnableExecutorBatchMethod(new String [] {"startPyMainService.startPyMainTableClickRow"}, thePagination));
 			return;
 		}
 			
@@ -157,10 +157,13 @@ public class StartPyMainController extends BaseObjectViewOth{
 		
 		final Button addButton = new Button("新增");
 		editButton.setText("编辑");//查询后置为 ’编辑‘
+		editButton.setId("btn_edit");
 		final Button saveButton = new Button("保存");
 		final Button deleteButton = new Button("删除");
+		deleteButton.setVisible(false);
+		final Button startButton = new Button("启动");
 		
-		login_table_addrow.getChildren().addAll(addButton, editButton, saveButton, deleteButton);
+		login_table_addrow.getChildren().addAll(addButton, editButton, saveButton, deleteButton, startButton);
 		
 		/**
 		 * 新增按钮点击事件
@@ -183,6 +186,8 @@ public class StartPyMainController extends BaseObjectViewOth{
 		 */
 		deleteButton.setOnAction(this.deleteButton());
 		//Event.fireEvent(editButton, event);//触发事件
+		
+		startButton.setOnAction(this.startButtonClick());
 		
 		/**
 		 * 点击行事件
@@ -322,6 +327,27 @@ public class StartPyMainController extends BaseObjectViewOth{
 					int ret = startPyMainService.deleteByPrimaryKeySet2(p);
 					p.getChoice().set(false);
 					itpy.remove();
+				}
+				i ++ ;
+			}
+			editButton.setText("编辑");
+			tab.setEditable(false);
+
+		};
+	}
+	
+	public EventHandler<ActionEvent> startButtonClick() {
+
+		return (ActionEvent e) -> {
+			TableView<PyProcess> tab =  TagTool.TableTool.tablePagePaginationGetTable(thePagination);
+			ObservableList<PyProcess> list =tab.getItems();
+			Iterator<PyProcess> itpy = list.iterator();
+			int i = 0;
+			while(itpy.hasNext()){
+				PyProcess p = itpy.next();
+				if(p.getChoice().getValue() == true && "取消编辑".equals(editButton.getText())) {
+					startPyMainService.startPyFile(p.getProcessOthmsg());
+					p.getChoice().set(false);
 				}
 				i ++ ;
 			}

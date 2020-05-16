@@ -28,6 +28,7 @@ public class PyProcess {
 
     private Integer processLimittime;
     
+    private String processOthmsg;
     /**
      * 多余列，用来首列显示checkbox复选框。
      */
@@ -139,6 +140,14 @@ public class PyProcess {
 
 	public void setChoice(BooleanProperty choice) {
 		this.choice = choice;
+	}
+
+	public String getProcessOthmsg() {
+		return processOthmsg;
+	}
+
+	public void setProcessOthmsg(String processOthmsg) {
+		this.processOthmsg = processOthmsg;
 	}
     
     

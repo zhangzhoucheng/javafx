@@ -1,6 +1,7 @@
 package com.zz.test.javafxmvn.commontool.pytool;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -8,6 +9,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
+import org.junit.Test;
+import org.python.modules.thread.thread;
 import org.python.util.PythonInterpreter;
 
 public class StartPy {
@@ -84,34 +87,44 @@ public class StartPy {
 	}
 
 
-//3.  使用Runtime.getRuntime()执行脚本文件
-	//这种方式和.net下面调用cmd执行命令的方式类似。如果执行的python脚本有引用第三方包的，建议使用此种方式。使用上面两种方式会报错java ImportError: No module named arcpy。
-	/**
-	 * Desc:执行python脚本，通过commnod，（推荐方式）
-	 * @author jld.zhangzhou
-	 * @datetime 2020-05-10 15:14:59
-	 * @modify_record:
-	 * @param pyCommand
-	 */
-	public static void startByRuntime(String pyCommand) {
+
+	public static void  startByRuntime(String pyCommand) {
+		StartMain.main(new String[] {pyCommand});
+		
+	}
+	
+	
+	//3.  使用Runtime.getRuntime()执行脚本文件
+		//这种方式和.net下面调用cmd执行命令的方式类似。如果执行的python脚本有引用第三方包的，建议使用此种方式。使用上面两种方式会报错java ImportError: No module named arcpy。
+		/**
+		 * Desc:执行python脚本，通过commnod，（推荐方式）
+		 * @author jld.zhangzhou
+		 * @datetime 2020-05-10 15:14:59
+		 * @modify_record:
+		 * @param pyCommand
+		 */
+	public  void startByRuntime1() {
 		Process proc;
         try {
-            proc = Runtime.getRuntime().exec(pyCommand);
-            BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-            String line = null;
-            while ((line = in.readLine()) != null) {
-                System.out.println(line);
-            }
-            in.close();
-            proc.waitFor();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        		String [] commands = new String[] {"dir"};
+        		String [] args = new String[] {"bb=123","aa=5"};
+    		 proc = Runtime.getRuntime().exec(new String[]{ "cmd", "/c","python d:/demo.py --a=1 --b=2"});
+             BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+             
+             String line = null;
+             while ((line = in.readLine()) != null) {
+                 System.out.println(line);
+             }
+             in.close();
+             proc.waitFor();
+        
+           
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
         } 
 		
 	}
-
-
 
 }

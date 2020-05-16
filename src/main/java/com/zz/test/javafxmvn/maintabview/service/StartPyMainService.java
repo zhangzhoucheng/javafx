@@ -21,8 +21,13 @@ import com.zz.test.javafxmvn.maintabview.view.LoginFxmlView;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
 
 @Service("startPyMainService")
 public class StartPyMainService {
@@ -83,8 +88,13 @@ public class StartPyMainService {
 		return pyProcessMapper.updateByPrimaryKey(p);
 	}
 	
+	public void startPyFile(String cmomand) {
+		
+		StartPy.startByRuntime(cmomand);
+	}
+
 	
-	public void startPyFile(String key) {
+	public void startPyFileTest(String key) {
 		if("1".equals(key)) {
 			StartPy.startByInterpreter(new String[]{"a =123123","print\\(a\\)"});
 		}
@@ -111,12 +121,22 @@ public class StartPyMainService {
 	 * @throws InterruptedException
 	 */
 	public void startPyMainTableClickRow(TagBase.PaginationButi p) throws InterruptedException {
-		TagTool.TableTool.startPyMainTableClickRow(new ChangeListener<PyProcess>() {
+		TagTool.TableTool.startPyMainTableClickRow(new EventHandler<MouseEvent>() {
+
 			@Override
-			public void changed(ObservableValue<? extends PyProcess> observableValue, PyProcess oldItem,
-					PyProcess newItem) {
-				System.out.println("ii:" + newItem.getProcessCode());
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				if(event.getClickCount() == 1) {
+					TableView<PyProcess> tab = TagTool.TableTool.tablePagePaginationGetTable(p);
+					PyProcess py = tab.getSelectionModel().getSelectedItem();
+					Button btn = (Button) p.getParent().getParent().lookup("#btn_edit");
+					if(py != null && "编辑".equals(btn.getText())) {
+						System.out.println("点击："+py.getProcessCode());
+					}
+				}
 			}
+
+			
 		}, p);
 
 	}

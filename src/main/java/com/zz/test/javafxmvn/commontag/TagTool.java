@@ -759,7 +759,7 @@ public class TagTool {
 		}
 		
 		/**
-		 * Desc:公用的，传入一个实现的listener事件，通过PaginationButi 冲击，
+		 * Desc:公用的，传入一个实现的mouseEvent事件，通过PaginationButi 冲击，
 		 * @author jld.zhangzhou
 		 * @datetime 2020-05-14 18:13:06
 		 * @modify_record:
@@ -767,13 +767,15 @@ public class TagTool {
 		 * @param paginationButi
 		 * @throws InterruptedException
 		 */
-		public static<T> void startPyMainTableClickRow(ChangeListener<? super T> listener, TagBase.PaginationButi paginationButi) throws InterruptedException {
+		public static<T> void startPyMainTableClickRow(EventHandler<? super MouseEvent> mouseEvent, TagBase.PaginationButi paginationButi) throws InterruptedException {
 			//ThreadPollTool.asycfuctionFire(function, paginationButi, 100, 20L);
 			
 			TagTool.TableTool.asycPaginationButiOper((TagBase.PaginationButi p1) -> {
-				TableView<T> tab = TagTool.TableTool.tablePagePaginationGetTable(p1);
+				TableView<T> tab = TagTool.TableTool.tablePagePaginationGetTable(p1); 
+				//Node n  = tab.getRowFactory().call(tab);
 				if (tab.getItems().size() > 0) {
-					tab.getSelectionModel().selectedItemProperty().addListener(listener);
+					//tab.getSelectionModel().selectedItemProperty().addListener(listener);//选择行改变事件
+					tab.setOnMouseClicked(mouseEvent);
 					return true;
 				}
 				return false;
