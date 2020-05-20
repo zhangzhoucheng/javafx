@@ -16,7 +16,8 @@ import com.zz.test.javafxmvn.commondb.CommonDb;
 import com.zz.test.javafxmvn.commoninterface.Function;
 import com.zz.test.javafxmvn.commontag.TagBase;
 import com.zz.test.javafxmvn.commontag.TagTool;
-import com.zz.test.javafxmvn.commontool.pytool.StartPy;
+import com.zz.test.javafxmvn.commontool.pytool.StartMain;
+import com.zz.test.javafxmvn.commontool.pytool.StartPyDemo;
 import com.zz.test.javafxmvn.maintabview.view.LoginFxmlView;
 
 import javafx.beans.value.ChangeListener;
@@ -37,6 +38,9 @@ public class StartPyMainService {
 	
 	@Autowired
 	private PyProcessMapper pyProcessMapper;
+	
+	@Autowired
+	private StartMain startMain;
 	
 	private LoginFxmlView loginFxmlView= new LoginFxmlView();
 	
@@ -90,24 +94,24 @@ public class StartPyMainService {
 	
 	public void startPyFile(String cmomand) {
 		
-		StartPy.startByRuntime(cmomand);
+		startMain.startPy(new String[] {"windows",cmomand});
 	}
 
 	
 	public void startPyFileTest(String key) {
 		if("1".equals(key)) {
-			StartPy.startByInterpreter(new String[]{"a =123123","print\\(a\\)"});
+			StartPyDemo.startByInterpreter(new String[]{"a =123123","print\\(a\\)"});
 		}
 		if("2".equals(key)) {
-			StartPy.startByPy("D:\\demo.py");
+			StartPyDemo.startByPy("D:\\demo.py");
 		}
 		if("3".equals(key)) {
-			StartPy.startByRuntime("python  D:\\demo.py");
+			StartPyDemo.startByRuntime("python  D:\\demo.py");
 		}
 		if("123".equals(key)) {
-			StartPy.startByInterpreter(new String[]{"a =123123","print\\(a\\)"});
-			StartPy.startByPy("D:\\demo.py");
-			StartPy.startByRuntime("python  D:\\demo.py");
+			StartPyDemo.startByInterpreter(new String[]{"a =123123","print\\(a\\)"});
+			StartPyDemo.startByPy("D:\\demo.py");
+			StartPyDemo.startByRuntime("python  D:\\demo.py");
 		}
 		
 	}

@@ -3,7 +3,7 @@ package com.zz.test.javafxmvn;
 //import javafx.application.Application;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +21,7 @@ import com.zz.test.javafaxmvn.commoninterceptor.LogInterceptor;
 import com.zz.test.javafxmvn.commondb.CommonDb;
 import com.zz.test.javafxmvn.commondb.SqlMapper;
 import com.zz.test.javafxmvn.main.view.MainFxmlView;
+import com.zz.test.javafaxmvn.config.PyConfig;
 
 
 
@@ -88,7 +89,12 @@ public class AppDesktopBoot extends AbstractJavaFxApplicationSupport {
 		return new SqlMapper();
 
 	}
-
+	
+	@Bean
+	@ConfigurationProperties(prefix = "py.config")
+	public PyConfig PyConfig() {
+		return new PyConfig();
+	}
 	/*@Configuration //2.x放弃这个方式
 	public class WebMvcConfig extends WebMvcConfigurerAdapter {
 

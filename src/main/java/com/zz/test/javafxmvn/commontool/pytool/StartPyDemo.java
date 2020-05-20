@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.python.modules.thread.thread;
 import org.python.util.PythonInterpreter;
 
-public class StartPy {
+public class StartPyDemo {
 	
 //解决调用python出现的Cannot import site module and its dependencies: No module named site问题
 	static void init() {
@@ -89,7 +89,7 @@ public class StartPy {
 
 
 	public static void  startByRuntime(String pyCommand) {
-		StartMain.main(new String[] {pyCommand});
+		//startMain.startPy(new String[] {pyCommand});
 		
 	}
 	
