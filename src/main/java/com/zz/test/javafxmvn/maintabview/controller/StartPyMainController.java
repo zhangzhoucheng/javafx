@@ -3,6 +3,8 @@ package com.zz.test.javafxmvn.maintabview.controller;
 
 
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+
 import java.util.Iterator;
 import java.util.Map;
 
@@ -74,6 +76,8 @@ public class StartPyMainController extends BaseObjectViewOth{
 	private Label process_code;
 	
 	private Button editButton = new Button("编辑");//编辑按钮
+	
+	private  Button startButton = new Button("启动");
 	
 	private Pagination thePagination;
 	
@@ -159,9 +163,13 @@ public class StartPyMainController extends BaseObjectViewOth{
 		editButton.setText("编辑");//查询后置为 ’编辑‘
 		editButton.setId("btn_edit");
 		final Button saveButton = new Button("保存");
+		
 		final Button deleteButton = new Button("删除");
 		deleteButton.setVisible(false);
-		final Button startButton = new Button("启动");
+		deleteButton.setManaged(false);
+		
+		//启动按钮
+		startButton.setId("btn_start");
 		
 		login_table_addrow.getChildren().addAll(addButton, editButton, saveButton, deleteButton, startButton);
 		
@@ -339,6 +347,7 @@ public class StartPyMainController extends BaseObjectViewOth{
 	public EventHandler<ActionEvent> startButtonClick() {
 
 		return (ActionEvent e) -> {
+			startButton.setText("启动中........");
 			TableView<PyProcess> tab =  TagTool.TableTool.tablePagePaginationGetTable(thePagination);
 			ObservableList<PyProcess> list =tab.getItems();
 			Iterator<PyProcess> itpy = list.iterator();
@@ -351,6 +360,7 @@ public class StartPyMainController extends BaseObjectViewOth{
 				}
 				i ++ ;
 			}
+			startButton.setText("启动");
 			editButton.setText("编辑");
 			tab.setEditable(false);
 

@@ -93,8 +93,8 @@ public class StartPyMainService {
 	}
 	
 	public void startPyFile(String cmomand) {
+		String pid = startMain.startPy(new String[] {"windows",cmomand});
 		
-		startMain.startPy(new String[] {"windows",cmomand});
 	}
 
 	

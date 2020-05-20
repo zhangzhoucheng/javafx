@@ -24,6 +24,15 @@ import org.junit.Test;
  * </note>
  */
 public class RegexpTool {
+	/**
+	 * Desc:get on by pattern
+	 * @author jld.zhangzhou
+	 * @datetime 2020-05-20 17:50:34
+	 * @modify_record:
+	 * @param str
+	 * @param pattern
+	 * @return
+	 */
 	public static String getOneByReg(String str, String pattern) {
 		Pattern p = Pattern.compile(pattern);
 		Matcher m = p.matcher(str);
@@ -33,6 +42,15 @@ public class RegexpTool {
 		return null;
 	}
 	
+	/**
+	 * Desc:is match
+	 * @author jld.zhangzhou
+	 * @datetime 2020-05-20 17:50:23
+	 * @modify_record:
+	 * @param str
+	 * @param pattern
+	 * @return
+	 */
 	public static boolean isMatch(String str,  String pattern) {
 		Pattern p = Pattern.compile(pattern);
 		Matcher m = p.matcher(str);
@@ -59,8 +77,28 @@ public class RegexpTool {
 		return null;
 	}
 	
+	/**
+	 * Desc:replace By Pattern
+	 * @author jld.zhangzhou
+	 * @datetime 2020-05-20 17:53:14
+	 * @modify_record:
+	 * @param replacedStr
+	 * @param replaceStr
+	 * @param pattern
+	 * @return
+	 */
+	public static String replaceByPattern(String replacedStr, String replaceStr,  String pattern) {
+		Pattern p = Pattern.compile(pattern);
+		Matcher m = p.matcher(replacedStr);
+		return m.replaceAll(replaceStr);
+	}
+	
 	@Test
 	public void test () {
 		System.out.println(RegexpTool.getContent4LR("进程编码_$c_processCode_$w_100_$w_200_", "_\\$c_", "_"));
+		System.out.println(RegexpTool.replaceByPattern("hh    xixexe 456789    8   j   k", ",", "[ ]+"));
+		
 	}
+	
+	
 }
